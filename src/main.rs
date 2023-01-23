@@ -1,16 +1,15 @@
 mod fairings;
+mod routes;
 
 use rocket::*;
-use rocket_dyn_templates::Template;
 
-pub use crate::fairings::{
-    sass::Sass,
+use crate::{
+    fairings::FairingManager,
+    routes::RouteManager,
 };
 
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build()
-        .attach(Template::fairing())
-        .attach(Sass::fairing())
+    rocket::build().add_fairings().add_routes()
 }
