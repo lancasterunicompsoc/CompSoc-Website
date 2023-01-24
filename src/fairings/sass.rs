@@ -11,6 +11,7 @@ use rocket::{
     yansi::Paint, tokio::{fs::{File, create_dir_all}, io::AsyncWriteExt},
 };
 
+use path_absolutize::*;
 use rsass::{compile_scss_path, output::{Format, Style}};
 use walkdir::{WalkDir, DirEntry};
 
@@ -39,7 +40,8 @@ struct SassContext {
 impl SassContext {
     fn new(sass_dir: PathBuf, css_dir: PathBuf) -> Self {
         Self {
-            sass_dir, css_dir,
+            sass_dir: sass_dir.absolutize().unwrap().to_path_buf(),
+            css_dir: css_dir.absolutize().unwrap().to_path_buf(),
             rsass_format: Format { style: Style::Compressed, precision: 5 },
         }
     }
