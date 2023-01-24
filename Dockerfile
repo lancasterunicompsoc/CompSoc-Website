@@ -12,7 +12,7 @@ RUN rm ./target/release/deps/comp_soc_website*
 RUN cargo build --release
 
 
-FROM debian:buster-slim
+FROM debian:bullseye
 ARG APP=/usr/src/app
 
 RUN apt-get update \
@@ -29,6 +29,9 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 COPY --from=builder /comp-soc-website/target/release/comp-soc-website ${APP}/comp-soc-website
+ADD ./templates ${APP}/templates
+ADD ./static ${APP}/static
+ADD ./Rocket.toml ${APP}/Rocket.toml
 
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
