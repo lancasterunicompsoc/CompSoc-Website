@@ -9,7 +9,7 @@ HOST_PORT := 8000
 build:
 	sudo $(DOCKER) build -t $(TAG) -f ./Dockerfile .
 
-run: build
+run:
 	sudo $(DOCKER) run -p $(HOST_PORT):$(CONTAINER_PORT) --name $(TAG) $(TAG)
 
 stop:
