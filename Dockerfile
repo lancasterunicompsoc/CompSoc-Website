@@ -30,7 +30,7 @@ RUN groupadd $APP_USER \
 
 COPY --from=builder /comp-soc-website/target/release/comp-soc-website ${APP}/comp-soc-website
 ADD ./templates ${APP}/templates
-ADD ./static ${APP}/static
+ADD ./public ${APP}/public
 ADD ./Rocket.toml ${APP}/Rocket.toml
 
 RUN chown -R $APP_USER:$APP_USER ${APP}
