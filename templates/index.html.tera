@@ -1,0 +1,5 @@
+{% extends "base" %}
+
+{% block content %}
+    <h1>Lancaster University Computer Science Society</h1>
+{% endblock content %}
