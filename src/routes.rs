@@ -1,6 +1,6 @@
 mod home;
 
-use rocket::*;
+use rocket::{*, fs::FileServer};
 
 use home::HomeRoutes;
 
@@ -18,5 +18,6 @@ pub trait RouteManager {
 impl RouteManager for Rocket<Build> {
     fn add_routes(self) -> Self {
         self.mount(HomeRoutes::base_url(), HomeRoutes::routes())
+            .mount("/public", FileServer::from("public/"))
     }
 }
