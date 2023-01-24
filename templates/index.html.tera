@@ -1,7 +1,6 @@
 {% extends "base" %}
-
 {% block content %}
-    <h1>Lancaster University Computer Science Society</h1>
+    <h1>Compsoc</h1>
 
-    <img src="/public/img/lucss-profile-picture.jpg">
+    <img src="/public/img/logo.webp">
 {% endblock content %}
