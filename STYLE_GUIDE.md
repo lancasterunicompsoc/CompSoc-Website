@@ -11,9 +11,7 @@ If this document is missing a rule, defer to the Rust style guide.
 
 ### Indentation and Line Length
 
-- Use spaces, not tabs
-- Each level of indentation must be 4 spaces
-    (that is, all indentation outside of string literals and comments must be a multiple of four).
+- Use tabs, not spaces
 - The absolute **maximum line length is 100** characters, however a lower limit of
     **90 characters should be preferred** if it does not harm readability.
 
