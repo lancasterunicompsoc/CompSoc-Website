@@ -1,10 +1,11 @@
+pub mod rsx;
 pub mod sass;
 
 
 use rocket::*;
 use rocket_dyn_templates::Template;
 
-use crate::fairings::sass::Sass;
+use crate::engines::sass::Sass;
 
 
 pub trait FairingManager {

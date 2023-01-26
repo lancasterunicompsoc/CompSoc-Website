@@ -13,3 +13,6 @@ rocket_dyn_templates = { version = "0.1.0-rc.2", features = ["tera"] }
 rsass = "0.27.0"
 walkdir = "2"
 path-absolutize = "3.0.14"
+yew = { version = "0.20.0", features = ["ssr"] }
+
+macros = { path = "./macros" }

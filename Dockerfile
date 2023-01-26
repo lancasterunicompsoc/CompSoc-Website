@@ -2,6 +2,12 @@ FROM rust:1.66 as builder
 
 RUN USER=root cargo new --bin comp-soc-website
 WORKDIR /comp-soc-website
+
+ADD ./macros ./macros
+WORKDIR /comp-soc-website/macros
+RUN cargo build --release
+
+WORKDIR /comp-soc-website
 COPY ./Cargo.toml ./Cargo.toml
 RUN cargo build --release
 RUN rm src/*.rs
