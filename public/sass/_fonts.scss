@@ -1,0 +1,15 @@
+ 
+$body: 'Open Sans', sans-serif;
+$title: 'Open Sans', sans-serif;
+$code: 'Ubuntu Mono', monospace;
+
+
+body {
+    font-family: $body;
+}
+
+@for $i from 1 through 6 {
+    h#{$i} {
+        font-family: $title;
+    }
+}

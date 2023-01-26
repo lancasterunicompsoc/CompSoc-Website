@@ -1,24 +1,3 @@
-/* CompSoc Blue */
-$primary: #1089b5;
-$primaryLight: #14a6db;
-$primaryDark: #007298;
-
-/*$secondary:
-$secondaryLight:
-$secondaryDark:
-
-$tertiary:
-$tertiaryLight:
-$tertiaryDark:*/
-
-/* Neutral Colours */
-$neutralDarker: #293132;
-$neutralDark: #414549;
-$neutral: #cccfcf;
-$neutralLight: #d9dbdb;
-$neutralLighter: #e8ebeb;
-$neutralLightest: #fff;
-
-body {
-    font-family: sans-serif;
-}
+@use 'colours';
+@use 'fonts';
+@use 'reset';
