@@ -1,3 +1,4 @@
+pub mod rsx;
 pub mod sass;
 
 

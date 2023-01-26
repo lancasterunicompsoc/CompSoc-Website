@@ -1,8 +1,8 @@
 use rocket::{*, http::ContentType};
 use rocket_dyn_templates::{Template, context};
-use yew::{prelude::*, ServerRenderer};
 
 use super::RouteProvider;
+use super::super::engines::rsx::*;
 
 
 #[get("/")]
@@ -27,9 +27,7 @@ fn jsx_component() -> Html {
 
 #[get("/jsx")]
 async fn jsx() -> (ContentType, String) {
-    let mut buff = String::new();
-    ServerRenderer::<JSX>::new().render_to_string(&mut buff).await;
-    (ContentType::HTML, buff)
+    render::<JSX>().await
 }
 
 
