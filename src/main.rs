@@ -1,10 +1,10 @@
-mod fairings;
+mod engines;
 mod routes;
 
 use rocket::*;
 
 use crate::{
-    fairings::FairingManager,
+    engines::FairingManager,
     routes::RouteManager,
 };
 
