@@ -1,6 +1,7 @@
 use rocket::http::ContentType;
 use yew::{prelude::*, ServerRenderer};
 
+pub use macros::component_route;
 pub use yew::prelude::{function_component, Html, html};
 
 pub async fn render<COMPONENT>() -> (ContentType, String)

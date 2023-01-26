@@ -1,6 +1,5 @@
 use rocket::{*, http::ContentType};
 use rocket_dyn_templates::{Template, context};
-use macros::component_route;
 
 use super::RouteProvider;
 use super::super::engines::rsx::*;
