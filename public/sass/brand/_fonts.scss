@@ -3,6 +3,12 @@ $body: 'Open Sans', sans-serif;
 $title: 'Open Sans', sans-serif;
 $code: 'Ubuntu Mono', monospace;
 
+$fonts: (
+    'body': $body,
+    'title': $title,
+    'code': $code,
+);
+
 
 body {
     font-family: $body;
@@ -16,4 +22,11 @@ body {
 
 pre, code {
     font-family: $code;
+}
+
+
+@each $name, $font in $fonts {
+    .ff-#{$name} {
+        font-family: $font;
+    }
 }

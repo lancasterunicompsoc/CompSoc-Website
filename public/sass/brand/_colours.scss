@@ -1,3 +1,5 @@
+@use 'sass:map' as map;
+
 /* CompSoc Blue */
 $primary-300: #14a6db;
 $primary-500: #1089b5;
@@ -13,3 +15,31 @@ $neutral-600: #cccfcf;
 $neutral-700: #d9dbdb;
 $neutral-800: #e8ebeb;
 $neutral-900: #ffffff;
+
+
+$colours: (
+    'primary-300': $primary-300,
+    'primary-500': $primary-500,
+    'primary-700': $primary-700,
+
+    'neutral-100': $neutral-100,
+    'neutral-200': $neutral-200,
+    'neutral-300': $neutral-300,
+    'neutral-400': $neutral-400,
+    'neutral-600': $neutral-600,
+    'neutral-700': $neutral-700,
+    'neutral-800': $neutral-800,
+    'neutral-900': $neutral-900,
+
+    'transparent': transparent,
+);
+
+@each $name, $colour in $colours {
+    .clr-#{$name} {
+        color: $colour;
+    }
+
+    .bg-clr-#{$name} {
+        background-color: $colour;
+    }
+}

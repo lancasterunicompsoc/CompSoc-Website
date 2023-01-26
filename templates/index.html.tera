@@ -2,5 +2,5 @@
 {% block content %}
     <h1>Compsoc</h1>
 
-    <img src="/public/img/logo.webp">
+    <img src="/public/img/logo.webp" class="border-solid border-clr-neutral-200 border-r500 border-w200">
 {% endblock content %}
