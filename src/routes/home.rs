@@ -1,5 +1,6 @@
 use rocket::{*, http::ContentType};
 use rocket_dyn_templates::{Template, context};
+use macros::component_route;
 
 use super::RouteProvider;
 use super::super::engines::rsx::*;
@@ -10,8 +11,9 @@ fn index() -> Template {
     Template::render("index", context!{title: "LU CSS"})
 }
 
-#[function_component(JSX)]
-fn jsx_component() -> Html {
+
+#[component_route(get, "/jsx", JSX)]
+fn jsx() -> Html {
     let component = html! { <div id="component">{"Some component"}</div> };
     
     let text_var = "You can interpolate text variables";
@@ -24,12 +26,6 @@ fn jsx_component() -> Html {
        </div>
     }
 }
-
-#[get("/jsx")]
-async fn jsx() -> (ContentType, String) {
-    render::<JSX>().await
-}
-
 
 pub struct HomeRoutes;
 

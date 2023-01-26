@@ -271,6 +271,7 @@ dependencies = [
 name = "comp-soc-website"
 version = "0.1.0"
 dependencies = [
+ "macros",
  "path-absolutize",
  "rocket",
  "rocket_dyn_templates",
@@ -1185,6 +1186,14 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "macros"
+version = "0.1.0"
+dependencies = [
+ "quote",
+ "syn",
 ]
 
 [[package]]
