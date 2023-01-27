@@ -1,0 +1,18 @@
+
+@each $display in (block, hidden, inline, inline-block, inline-flex, inline-grid, flex, grid, flow-root) {
+    .#{$display} {
+        display: $display;
+    }
+}
+
+
+// ************************
+// ****      FLEX      ****
+// ************************
+
+$flex-directions: (column, column-reverse, row, row-reverse);
+@each $direction in $flex-directions {
+    .flex-.#{$direction} {
+        flex-direction: $direction;
+    }
+}
