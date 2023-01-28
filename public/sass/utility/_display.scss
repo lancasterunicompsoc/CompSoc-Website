@@ -12,7 +12,7 @@
 
 $flex-directions: (column, column-reverse, row, row-reverse);
 @each $direction in $flex-directions {
-    .flex-.#{$direction} {
+    .flex-#{$direction} {
         flex-direction: $direction;
     }
 }
