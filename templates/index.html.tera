@@ -1,6 +1,22 @@
 {% extends "base" %}
-{% block content %}
-    <h1>Compsoc</h1>
 
-    <img src="/public/img/logo.webp" class="border-solid border-clr-neutral-200 border-r500 border-w200">
+{% block main_attrs %}
+    class="flex flex-column"
+{% endblock main_attrs %}
+
+{% block content %}
+    <div class="flex flex-column flex-grow-1 align-center justify-center clr-neutral-200 bg-clr-neutral-800">
+        <h1>
+            <pre>&gt; compsoc join<span class="flash clr-primary-300">|</span></pre>
+        </h1>
+
+        <p class="max-width-50vw align-center bold">
+            Lancaster University Computer Science Society exists to promote interest in
+            computing and technology among students and wider society.
+        </p>
+
+        <a href="https://lancastersu.co.uk/groups/computer-science-society-2c91/join" class="button">
+            Join the society
+        </a>
+    </div>
 {% endblock content %}
