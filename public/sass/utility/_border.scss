@@ -1,0 +1,33 @@
+@use '../brand/colours';
+@use '../brand/size';
+
+
+@each $name, $colour in colours.$colours {
+    .border-clr-#{$name} {
+        border-color: $colour;
+    }
+}
+
+@each $border-type in (solid, dashed, dotted, double none) {
+    .border-#{$border-type} {
+        border-style: $border-type;
+    }
+}
+
+@each $name, $size in size.$raw-sizes {
+    .border-r#{$name} {
+        border-radius: $size;
+    }
+
+    .border-w#{$name} {
+        border-width: $size;
+    }
+}
+
+.border-collapse {
+    border-collapse: collapse;
+}
+
+.border-separate {
+    border-collapse: separate;
+}

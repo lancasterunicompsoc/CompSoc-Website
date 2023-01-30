@@ -1,0 +1,36 @@
+$size-050: 0.48rem;
+$size-100: 0.56rem;
+$size-200: 0.75rem;
+$size-300: 1.00rem;
+$size-400: 1.33rem;
+$size-500: 1.78rem;
+$size-600: 2.37rem;
+$size-700: 3.16rem;
+$size-800: 4.21rem;
+$size-900: 5.61rem;
+
+$sizes: (
+    'size-050': $size-050,
+    'size-100': $size-100,
+    'size-200': $size-200,
+    'size-300': $size-300,
+    'size-400': $size-400,
+    'size-500': $size-500,
+    'size-600': $size-600,
+    'size-700': $size-700,
+    'size-800': $size-800,
+    'size-900': $size-900,
+);
+
+$raw-sizes: (
+    '050': $size-050,
+    '100': $size-100,
+    '200': $size-200,
+    '300': $size-300,
+    '400': $size-400,
+    '500': $size-500,
+    '600': $size-600,
+    '700': $size-700,
+    '800': $size-800,
+    '900': $size-900,
+);

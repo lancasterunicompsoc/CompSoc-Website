@@ -1,0 +1,37 @@
+ 
+$body: 'Open Sans', sans-serif;
+$title: 'Open Sans', sans-serif;
+$code: 'Fira Code', 'Ubuntu Mono', monospace;
+
+$fonts: (
+    'body': $body,
+    'title': $title,
+    'code': $code,
+);
+
+
+body {
+    font-family: $body;
+}
+
+@for $i from 1 through 6 {
+    h#{$i} {
+        font-family: $title;
+    }
+}
+
+pre, code {
+    font-family: $code;
+}
+
+
+@each $name, $font in $fonts {
+    .ff-#{$name} {
+        font-family: $font;
+    }
+}
+
+
+.bold {
+    font-weight: 800;
+}

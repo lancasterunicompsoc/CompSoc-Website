@@ -1,0 +1,42 @@
+
+@each $display in (block, hidden, inline, inline-block, inline-flex, inline-grid, flex, grid, flow-root) {
+    .#{$display} {
+        display: $display;
+    }
+}
+
+
+// ************************
+// ****      FLEX      ****
+// ************************
+
+$flex-directions: (column, column-reverse, row, row-reverse);
+@each $direction in $flex-directions {
+    .flex-#{$direction} {
+        flex-direction: $direction;
+    }
+}
+
+@for $grow from 1 to 1000 {
+    .flex-grow-#{$grow} {
+        flex-grow: $grow;
+    }
+}
+
+
+$align-items: (baseline, center, flex-end, flex-start, stretch);
+@each $align in $align-items {
+    .align-#{$align} {
+        align-items: $align;
+    }
+}
+
+$justifications: (
+    center, end, flex-end, flex-start, left, right, space-around,
+    space-between, space-evenly, start, stretch
+);
+@each $justification in $justifications {
+    .justify-#{$justification} {
+        justify-content: $justification;
+    }
+}
