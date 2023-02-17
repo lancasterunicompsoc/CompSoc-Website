@@ -5,14 +5,19 @@ use std::{
 };
 
 use rocket::{
-    async_trait, Build, Rocket, Orbit,
+    async_trait, Build, Config, Rocket, Orbit,
     fairing::{Fairing, Info, Kind},
+    figment::{
+        Figment,
+        providers::{Format, Toml},
+        value::magic::RelativePathBuf
+    },
     log::PaintExt,
     yansi::Paint, tokio::{fs::{File, create_dir_all}, io::AsyncWriteExt},
 };
 
 use path_absolutize::*;
-use rsass::{compile_scss_path, output::{Format, Style}};
+use rsass::{compile_scss_path, output};
 use walkdir::{WalkDir, DirEntry};
 
 
@@ -34,7 +39,7 @@ fn file_is_not_partial(entry: &DirEntry) -> bool {
 struct SassContext {
     pub sass_dir: PathBuf,
     pub css_dir: PathBuf,
-    pub rsass_format: Format,
+    pub rsass_format: output::Format,
 }
 
 impl SassContext {
@@ -42,7 +47,7 @@ impl SassContext {
         Self {
             sass_dir: sass_dir.absolutize().unwrap().to_path_buf(),
             css_dir: css_dir.absolutize().unwrap().to_path_buf(),
-            rsass_format: Format { style: Style::Compressed, precision: 5 },
+            rsass_format: output::Format { style: output::Style::Compressed, precision: 5 },
         }
     }
 }
@@ -64,7 +69,7 @@ impl SassContextManager {
 
         let mut errors = HashMap::<String, String>::new();
         for entry in walk_files(sass_dir).filter(file_is_not_partial) {
-            match self.compile(&entry) {
+            match self.compile(entry.path()) {
                 Ok(result) => match self.write(&entry, result).await {
                     Ok(_) => (),
                     Err(e) => {
@@ -91,9 +96,9 @@ impl SassContextManager {
         }
     }
 
-    fn compile(&self, src_entry: &DirEntry) -> Result<Vec<u8>, rsass::Error> {
-        let file_name = src_entry.path().file_name().unwrap().to_str().unwrap().to_string();
-        match compile_scss_path(&src_entry.path(), self.context().rsass_format) {
+    fn compile(&self, src_entry: &Path) -> Result<Vec<u8>, rsass::Error> {
+        let file_name = src_entry.file_name().unwrap().to_str().unwrap().to_string();
+        match compile_scss_path(&src_entry, self.context().rsass_format) {
             Ok(result) => Ok(result),
             Err(e) => {
                 rocket::error!("Failed to compile file '{}'", file_name);
@@ -122,11 +127,30 @@ impl SassContextManager {
 }
 
 
+fn path_from_figment(figment: &Figment, name: &'static str) -> Result<PathBuf, rocket::figment::Error> {
+    let dir = figment.extract_inner::<RelativePathBuf>(name).map(|path| path.relative());
+    match dir {
+        Ok(dir) => Ok(dir),
+        Err(e) if e.missing() => Ok("static/sass".into()),
+        Err(e) => Err(e)
+    }
+}
+
+
 pub struct Sass;
 
 impl Sass {
     pub fn fairing() -> Self {
         Self{}
+    }
+
+    pub fn compile(src_path: PathBuf) -> Result<Vec<u8>, rsass::Error> {
+        let figment = Config::figment().merge(Toml::file("Rocket.toml"));
+        let sass_dir = path_from_figment(&figment, "sass_dir").expect("Invalid sass dir provided");
+        let css_dir = path_from_figment(&figment, "css_dir").expect("Invalid css dir provided");
+        let ctxt = SassContext::new(sass_dir, css_dir);
+        let manager = SassContextManager::new(ctxt);
+        manager.compile(&src_path)
     }
 }
 
@@ -140,7 +164,6 @@ impl Fairing for Sass {
     }
 
     async fn on_ignite(&self, rocket: Rocket<Build>) -> rocket::fairing::Result {
-        use rocket::figment::value::magic::RelativePathBuf;
 
         let sass_dir = rocket.figment()
                              .extract_inner::<RelativePathBuf>("sass_dir")
