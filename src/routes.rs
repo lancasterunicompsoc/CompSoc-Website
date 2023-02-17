@@ -7,6 +7,8 @@ use rocket::{*, fs::FileServer, request::FromRequest};
 
 use home::HomeRoutes;
 
+use crate::engines::sass::Sass;
+
 pub trait RouteProvider {
     fn base_url() -> &'static str;
     
@@ -64,8 +66,8 @@ impl<'r> FromRequest<'r> for CSSGuard {
 
 
 #[get("/<path..>")]
-fn styles(path: PathBuf, _css: CSSGuard) {
+fn styles(path: PathBuf, _css: CSSGuard) -> Option<String> {
     let file_path = Path::new("public/").join(path);
-    println!("Recompiling {:?}", file_path);
+    Sass::compile(file_path).ok().map(|result| String::from_utf8(result).ok()).flatten()
 }
 
