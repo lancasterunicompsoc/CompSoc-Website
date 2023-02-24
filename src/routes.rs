@@ -3,7 +3,7 @@ mod home;
 use std::path::{Path, PathBuf};
 
 pub use macros::router;
-use rocket::{*, fs::FileServer, request::FromRequest};
+use rocket::{*, fs::FileServer, request::FromRequest, http::ContentType};
 
 use home::HomeRoutes;
 
@@ -66,8 +66,14 @@ impl<'r> FromRequest<'r> for CSSGuard {
 
 
 #[get("/<path..>")]
-fn styles(path: PathBuf, _css: CSSGuard) -> Option<String> {
-    let file_path = Path::new("public/").join(path);
-    Sass::compile(file_path).ok().map(|result| String::from_utf8(result).ok()).flatten()
+fn styles(path: PathBuf, _css: CSSGuard) -> Option<(ContentType, String)> {
+    let path = match path.strip_prefix("css/") {
+        Ok(p) => p.with_extension("scss"),
+        Err(e) => { eprintln!("An error occurred {e:?}"); return None }
+    };
+    Sass::compile(Path::new("public/sass/").join(path))
+        .ok()
+        .map(|result| String::from_utf8(result).ok())
+        .flatten()
+        .map(|style| (ContentType::CSS, style))
 }
-
