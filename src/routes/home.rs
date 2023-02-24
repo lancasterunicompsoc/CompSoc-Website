@@ -14,7 +14,11 @@ mod HomeRoutes {
     #[component_route(get, "/agm", AGM)]
     fn agm() -> Html {
         html! {
-            <p>{"Hello world!"}</p>
+            <>
+                <title>{"AGM 2023"}</title>
+                <script src="https://js.tito.io/v2" async=true></script>
+                <tito-widget event="lu-compsoc/agm-2023"></tito-widget>
+            </>
         }
     }
 
