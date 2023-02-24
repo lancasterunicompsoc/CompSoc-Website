@@ -21,19 +21,4 @@ mod HomeRoutes {
             </>
         }
     }
-
-    #[component_route(get, "/jsx", JSX)]
-    fn jsx() -> Html {
-        let component = html! { <div id="component">{"Some component"}</div> };
-
-        let text_var = "You can interpolate text variables";
-
-        html! {
-           <div>
-              {"You can type text right into the elements"}
-              { component }
-              { text_var }
-           </div>
-        }
-    }
 }
