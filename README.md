@@ -9,9 +9,17 @@ Make sure you join our [Discord] server!
 
 ### System Dependencies
 
-- [Git](https://github.com/git-guides/install-git)
-- [Docker](https://docs.docker.com/get-docker/)
-- [Rust](https://www.rust-lang.org/learn/get-started)
+hugo, docker and docker-compose
+
+### testing
+
+`hugo serve`
+
+### docker build
+
+`docker-compose up`
+
+`docker-compose build`
 
 
 [discord]: https://discord.gg/compsoc
