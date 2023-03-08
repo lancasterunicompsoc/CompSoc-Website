@@ -1,24 +1,30 @@
-use rocket::{http::ContentType, *};
-use rocket_dyn_templates::{context, Template};
+use rocket::{*, http::ContentType};
 
 use crate::engines::rsx::*;
 use super::{RouteProvider, router};
 
 #[router("/")]
 mod HomeRoutes {
-    #[get("/")]
-    fn index() -> Template {
-        Template::render("index", context! {title: "LU CSS"})
-    }
-
-    #[component_route(get, "/agm", AGM)]
-    fn agm() -> Html {
+    #[component_route(get, "/", IndexPage)]
+    fn index() -> Html {
         html! {
-            <>
-                <title>{"AGM 2023"}</title>
-                <script src="https://js.tito.io/v2" async=true></script>
-                <tito-widget event="lu-compsoc/agm-2023"></tito-widget>
-            </>
+            <Page title="LUCompSoc" main_classes="flex flex-column">
+                <div class="flex flex-column flex-grow-1 align-center justify-center clr-neutral-200 bg-clr-neutral-800">
+                    <h1>
+                        <pre>{"> compsoc join"}<span class="flash clr-primary-300">{"|"}</span></pre>
+                    </h1>
+
+                    <p class="max-width-50vw align-center bold">
+                        {"Lancaster University Computer Science Society exists to promote interest in"}
+                        {"computing and technology among students and wider society."}
+                    </p>
+
+                    <a href="https://lancastersu.co.uk/groups/computer-science-society-2c91/join" class="button">
+                        {"Join the society"}
+                    </a>
+                </div>
+            </Page>
         }
     }
 }
+

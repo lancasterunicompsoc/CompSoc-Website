@@ -32,7 +32,7 @@ pub fn component_route(attr: TokenStream, item: TokenStream) -> TokenStream {
 
         #[#method(#path)]
         async fn #name() -> (ContentType, String) {
-            render::<#component_name>().await
+            (ContentType::HTML, render::<#component_name>().await)
         }
     };
 
