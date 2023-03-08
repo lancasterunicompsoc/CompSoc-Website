@@ -3,11 +3,11 @@ mod home;
 use std::path::{Path, PathBuf};
 
 pub use macros::router;
-use rocket::{*, fs::FileServer, request::FromRequest, http::ContentType};
+use rocket::{*, fs::FileServer, http::ContentType};
 
 use home::HomeRoutes;
 
-use crate::engines::sass::Sass;
+use crate::engines::sass::{CSSGuard, Sass};
 
 pub trait RouteProvider {
     fn base_url() -> &'static str;
@@ -35,36 +35,6 @@ impl RouteManager for Rocket<Build> {
 }
 
 
-struct CSSGuard;
-
-#[derive(Debug)]
-enum CSSGuardError {}
-
-#[async_trait]
-impl<'r> FromRequest<'r> for CSSGuard {
-    type Error = CSSGuardError;
-
-    #[cfg(debug_assertions)]
-    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        let path = Path::new(req.uri().path().as_str());
-        match path.extension() {
-            Some(extension) => {
-                if extension != "css" {
-                    return request::Outcome::Forward(());
-                }
-            },
-            None => return request::Outcome::Forward(())
-        };
-        request::Outcome::Success(CSSGuard {})
-    }
-
-    #[cfg(not(debug_assertions))]
-    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        request::Outcome::Forward(())
-    }
-}
-
-
 #[get("/<path..>")]
 fn styles(path: PathBuf, _css: CSSGuard) -> Option<(ContentType, String)> {
     let path = match path.strip_prefix("css/") {
@@ -77,3 +47,4 @@ fn styles(path: PathBuf, _css: CSSGuard) -> Option<(ContentType, String)> {
         .flatten()
         .map(|style| (ContentType::CSS, style))
 }
+

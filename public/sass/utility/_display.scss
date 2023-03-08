@@ -17,10 +17,8 @@ $flex-directions: (column, column-reverse, row, row-reverse);
     }
 }
 
-@for $grow from 1 to 1000 {
-    .flex-grow-#{$grow} {
-        flex-grow: $grow;
-    }
+.flex-grow {
+    flex-grow: 1;
 }
 
 
@@ -40,3 +38,4 @@ $justifications: (
         justify-content: $justification;
     }
 }
+

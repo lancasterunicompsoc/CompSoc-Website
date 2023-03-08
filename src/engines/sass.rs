@@ -12,9 +12,11 @@ use rocket::{
         providers::{Format, Toml},
         value::magic::RelativePathBuf
     },
+    request::{FromRequest, Request, self},
     log::PaintExt,
     yansi::Paint, tokio::{fs::{File, create_dir_all}, io::AsyncWriteExt},
 };
+
 
 use path_absolutize::*;
 use rsass::{compile_scss_path, output};
@@ -212,3 +214,34 @@ impl Fairing for Sass {
         };
     }
 }
+
+
+pub struct CSSGuard;
+
+#[derive(Debug)]
+pub enum CSSGuardError {}
+
+#[async_trait]
+impl<'r> FromRequest<'r> for CSSGuard {
+    type Error = CSSGuardError;
+
+    #[cfg(debug_assertions)]
+    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
+        let path = Path::new(req.uri().path().as_str());
+        match path.extension() {
+            Some(extension) => {
+                if extension != "css" {
+                    return request::Outcome::Forward(());
+                }
+            },
+            None => return request::Outcome::Forward(())
+        };
+        request::Outcome::Success(CSSGuard {})
+    }
+
+    #[cfg(not(debug_assertions))]
+    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
+        request::Outcome::Forward(())
+    }
+}
+
