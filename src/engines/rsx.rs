@@ -100,6 +100,7 @@ fn Fonts() -> Html {
 
 
 #[derive(PartialEq)]
+#[allow(dead_code)]
 pub enum StylesheetType {
     CSS,
     SCSS,
@@ -119,6 +120,115 @@ pub fn Stylesheet(props: &StylesheetProps) -> Html {
     };
     html! {
         <link rel="stylesheet" href={href} />
+    }
+}
+
+
+/***********************/
+//  COMMON COMPONENTS  //
+/***********************/
+#[derive(Clone, PartialEq)]
+#[allow(dead_code)]
+pub enum Align {
+    Baseline,
+    Center,
+    FlexEnd,
+    FlexStart,
+    Stretch
+}
+
+impl ToString for Align {
+    fn to_string(&self) -> String {
+        match self {
+            Align::Baseline => "align-baseline",
+            Align::Center => "align-center",
+            Align::FlexEnd => "align-flex-end",
+            Align::FlexStart => "align-flex-start",
+            Align::Stretch => "align-stretch",
+        }.to_string()
+    }
+}
+
+#[derive(Clone, PartialEq)]
+#[allow(dead_code)]
+pub enum Justify {
+    Center,
+    End,
+    FlexEnd,
+    FlexStart,
+    Left,
+    Right,
+    SpaceAround,
+    SpaceBetween,
+    SpaceEvenly,
+    Start,
+    Stretch,
+}
+
+impl ToString for Justify {
+    fn to_string(&self) -> String {
+        match self {
+            Justify::Center => "justify-center",
+            Justify::End => "justify-end",
+            Justify::FlexEnd => "justify-flex-end",
+            Justify::FlexStart => "justify-flex-start",
+            Justify::Left => "justify-left",
+            Justify::Right => "justify-right",
+            Justify::SpaceAround => "justify-space-around",
+            Justify::SpaceBetween => "justify-space-between",
+            Justify::SpaceEvenly => "justify-space-evenly",
+            Justify::Start => "justify-start",
+            Justify::Stretch => "justify-stretch",
+        }.to_string()
+    }
+}
+
+
+#[derive(Clone, PartialEq)]
+#[allow(dead_code)]
+pub enum FlexDirection {
+    Column,
+    Row,
+    ReversedColumn,
+    ReversedRow,
+}
+
+impl ToString for FlexDirection {
+    fn to_string(&self) -> String {
+        match self {
+            FlexDirection::Column => "flex-column",
+            FlexDirection::Row => "flex-row",
+            FlexDirection::ReversedColumn => "flex-column-reverse",
+            FlexDirection::ReversedRow => "flex-row-reverse",
+        }.to_string()
+    }
+}
+
+#[derive(Properties, PartialEq)]
+pub struct FlexProps {
+    pub children: Children,
+    pub class: String,
+    pub align: Option<Align>,
+    pub direction: Option<FlexDirection>,
+    pub grow: Option<u16>,
+    pub justify: Option<Justify>,
+}
+
+#[function_component]
+pub fn Flex(props: &FlexProps) -> Html {
+    // TODO: add TS support to correctly set flex-grow on client
+    let flex_class = format!(
+        "flex {direction} {grow} {align} {justify} {class}",
+        class = props.class,
+        align = props.align.clone().map_or(String::new(), |a| a.to_string()),
+        direction = props.direction.clone().map_or(String::new(), |d| d.to_string()),
+        grow = props.grow.map_or("", |_| "flex-grow"),
+        justify = props.justify.clone().map_or(String::new(), |j| j.to_string()),
+    );
+    html! {
+        <div class={flex_class} data-flex-grow={props.grow.clone().unwrap_or(0).to_string()}>
+            {for props.children.clone()}
+        </div>
     }
 }
 

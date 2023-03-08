@@ -9,7 +9,7 @@ mod HomeRoutes {
     fn index() -> Html {
         html! {
             <Page title="LUCompSoc" main_classes="flex flex-column">
-                <div class="flex flex-column flex-grow-1 align-center justify-center clr-neutral-200 bg-clr-neutral-800">
+                <Flex direction={FlexDirection::Column} grow={1} align={Align::Center} justify={Justify::Center} class="clr-neutral-200 bg-clr-neutral-800">
                     <h1>
                         <pre>{"> compsoc join"}<span class="flash clr-primary-300">{"|"}</span></pre>
                     </h1>
@@ -22,7 +22,7 @@ mod HomeRoutes {
                     <a href="https://lancastersu.co.uk/groups/computer-science-society-2c91/join" class="button">
                         {"Join the society"}
                     </a>
-                </div>
+                </Flex>
             </Page>
         }
     }
