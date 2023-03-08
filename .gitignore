@@ -1,2 +1,2 @@
-target/
-public/css/
+public/*
+.hugo_build.lock

@@ -1,0 +1,10 @@
+baseURL = 'https://compsoc.io/'
+languageCode = 'en-gb'
+title = 'LU CompSoc'
+theme = 'main'
+contentdir = "src"
+enableRobotsTXT = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
