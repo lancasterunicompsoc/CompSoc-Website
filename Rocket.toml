@@ -1,9 +1,0 @@
-[default]
-sass_dir = "public/sass"
-css_dir = "public/css"
-
-[global]
-address = "0.0.0.0"
-
-[development]
-address = "0.0.0.0"

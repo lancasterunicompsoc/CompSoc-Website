@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="{{.Description}}">
+  {{ with .Keywords }}
+  <meta name="keywords" content="{{ range $i, $e := . }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}">{{ end }}
+  <link rel="canonical" href="{{ .Permalink }}" />
+  <meta charset="UTF-8">
+  <title>
+    {{- if .IsHome -}}
+    {{ .Site.Title }}
+    {{- else if .Params.hide_site_title -}}
+    {{ .Page.Title }}
+    {{- else if .Page.Title -}}
+    {{ .Page.Title }}
+    {{- else -}}
+    {{ .Site.Title }}
+    {{- end -}}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&amp;family=Open+Sans:ital,wght@0,400;0,600;0,800;1,300;1,400&amp;family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header>
+      <a href="/"><h1><span class="logo1">LU</span><span class="logo2">Comp</span><span class="logo3">Soc</span></h1></a>
+    <nav></nav>
+  </header>
+  <article>
+    <h2>
+      {{- if .IsHome -}}
+      {{- else -}}
+      {{ .Page.Title}}
+      {{- end -}}
+    </h2>
+    {{ .Content}}
+  </article>
+  <footer>
+    <a href="" target="_blank" class="social-icon"><img src="/img/discord.svg" alt="Discord"></a>
+    <a href="" target="_blank" class="social-icon"><img src="/img/github.svg" alt="Github"></a>
+    <a href="" target="_blank" class="social-icon"><img src="/img/instagram.svg" alt="Instagram"></a>
+    <a href="" target="_blank" class="social-icon"><img src="/img/twitter.svg" alt="Twitter"></a>
+    <a href="" target="_blank" class="social-icon"><img src="/img/facebook.svg" alt="Facebook"></a>
+
+  </footer>
+</body>

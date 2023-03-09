@@ -1,47 +1,12 @@
-FROM rust:1.66 as builder
+FROM alpine:3.14
 
-RUN USER=root cargo new --bin comp-soc-website
-WORKDIR /comp-soc-website
+RUN apk add --update --no-cache hugo
 
-ADD ./macros ./macros
-WORKDIR /comp-soc-website/macros
-RUN cargo build --release
+WORKDIR /site
 
-WORKDIR /comp-soc-website
-COPY ./Cargo.toml ./Cargo.toml
-RUN cargo build --release
-RUN rm src/*.rs
+COPY . .
 
-ADD . ./
+EXPOSE 1313
 
-RUN rm ./target/release/deps/comp_soc_website*
-RUN cargo build --release
+CMD ["hugo", "server", "--bind", "0.0.0.0"]
 
-
-FROM debian:bullseye
-ARG APP=/usr/src/app
-
-RUN apt-get update \
-    && apt-get install -y ca-certificates tzdata \
-    && rm -rf /var/lib/apt/lists/*
-
-EXPOSE 8000
-
-ENV TZ=Etc/UTC \
-    APP_USER=appuser
-
-RUN groupadd $APP_USER \
-    && useradd -g $APP_USER $APP_USER \
-    && mkdir -p ${APP}
-
-COPY --from=builder /comp-soc-website/target/release/comp-soc-website ${APP}/comp-soc-website
-ADD ./templates ${APP}/templates
-ADD ./public ${APP}/public
-ADD ./Rocket.toml ${APP}/Rocket.toml
-
-RUN chown -R $APP_USER:$APP_USER ${APP}
-
-USER $APP_USER
-WORKDIR ${APP}
-
-CMD ["./comp-soc-website"]
