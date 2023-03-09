@@ -2,7 +2,7 @@ baseURL = 'https://compsoc.io/'
 languageCode = 'en-gb'
 title = 'LU CompSoc'
 theme = 'main'
-contentdir = "src"
+contentdir = "pages"
 enableRobotsTXT = true
 
 [markup.goldmark.renderer]
