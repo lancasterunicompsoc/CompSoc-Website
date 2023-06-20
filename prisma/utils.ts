@@ -1,5 +1,7 @@
 import { execSync } from 'child_process'
 
+const config = useRuntimeConfig()
+
 /**
  * Helper to reset the database via a programmatic prisma invocation. Helpful to add to `beforeEach` or `beforeAll` of your testing setup.
  *
@@ -10,7 +12,7 @@ import { execSync } from 'child_process'
  * @param databaseUrl Connection URL to database. Inferred from `process.env.DATABASE_URL` if not provided
  */
 export const resetDatabase = (databaseUrl?: string) => {
-  const url = databaseUrl || process.env.DATABASE_URL
+  const url = databaseUrl || config.database_url
   if (!url) {
     throw new Error('Cannot reset database - connection string could not be inferred.')
   }

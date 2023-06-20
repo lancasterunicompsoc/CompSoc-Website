@@ -15,6 +15,12 @@ This is a straight-forward setup with minimal templating and scaffolding. The op
 - [the First Steps documentation](https://sidebase.io/sidebase/usage)
 - [our discord](https://discord.gg/auc8eCeGzx)
 
+TODO: add vueuse
+TODO: add unocss
+TODO: @nuxtjs/color-mode
+TODO: @nuxt/devtools
+TODO: iconify
+
 Some tasks you should probably do in the beginning are:
 - [ ] replace this generic README with a more specific one
 - [ ] install the Vue Volar extension

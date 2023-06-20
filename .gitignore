@@ -6,3 +6,4 @@ dist
 .nuxt
 .env
 .idea/
+db.sqlite
