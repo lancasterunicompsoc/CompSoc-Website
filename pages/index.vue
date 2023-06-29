@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="heading">
-      <h1 class="heading__title">
+      <h1 class="heading__title dark:text-white">
         Welcome to your new <span class="gradient__text">sidebase</span> app!
       </h1>
       <p class="heading__credits">

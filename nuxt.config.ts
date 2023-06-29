@@ -1,9 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@sidebase/nuxt-auth", "@nuxtjs/tailwindcss"],
+  modules: [
+    "@sidebase/nuxt-auth",
+    "@nuxt/devtools",
+    "@vueuse/nuxt",
+    "@nuxt/content",
+    "@unocss/nuxt",
+    "nuxt-icon",
+  ],
   build: {
     transpile: ["trpc-nuxt"],
   },
+  css: ["@unocss/reset/tailwind.css"],
   typescript: {
     shim: false,
   },

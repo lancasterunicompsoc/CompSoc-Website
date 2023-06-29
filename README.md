@@ -15,19 +15,10 @@ This is a straight-forward setup with minimal templating and scaffolding. The op
 - [the First Steps documentation](https://sidebase.io/sidebase/usage)
 - [our discord](https://discord.gg/auc8eCeGzx)
 
-TODO: add vueuse
-TODO: add unocss
-TODO: @nuxtjs/color-mode
-TODO: @nuxt/devtools
-TODO: iconify
-
 Some tasks you should probably do in the beginning are:
+- [ ] get pnpm working. rn the whole project doesnt run when compiled using pnpm
 - [ ] replace this generic README with a more specific one
 - [ ] install the Vue Volar extension
-- [ ] enable [Volar takeover mode](https://nuxt.com/docs/getting-started/installation#prerequisites) to ensure a smooth editor setup
-- [ ] [install Nuxt 3 devtools](https://github.com/nuxt/devtools#installation) if you want to use them
-- [ ] Prisma: Edit your `prisma/prisma.schema` to your liking
-- [ ] Prisma: Run `npx prisma db push` to sync the schema to your database & generate the Prisma Client
 - [ ] Auth: Configure your auth providers to the [NuxtAuthHandler](./server/api/auth/[...].ts)
 - [ ] Auth, optional: Enable global protection by setting `enableGlobalAppMiddleware: true` in [your nuxt.config.ts](./nuxt.config.ts). Delete the local middleware in the [protected.vue](./pages/protected.vue) page if you do
 
@@ -36,7 +27,7 @@ Some tasks you should probably do in the beginning are:
 Make sure to install the dependencies:
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Development Server
@@ -44,7 +35,7 @@ pnpm install
 Start the development server on http://localhost:3000
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 ### Production
@@ -52,11 +43,11 @@ pnpm run dev
 Build the application for production:
 
 ```bash
-pnpm run build
+npm run build
 ```
 
 Locally preview production build:
 
 ```bash
-pnpm run preview
+npm run preview
 ```
