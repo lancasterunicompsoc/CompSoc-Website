@@ -17,7 +17,6 @@ This is a straight-forward setup with minimal templating and scaffolding. The op
 
 Some tasks you should probably do in the beginning are:
 - [ ] get pnpm working. rn the whole project doesnt run when compiled using pnpm
-- [ ] replace this generic README with a more specific one
 - [ ] install the Vue Volar extension
 - [ ] Auth: Configure your auth providers to the [NuxtAuthHandler](./server/api/auth/[...].ts)
 - [ ] Auth, optional: Enable global protection by setting `enableGlobalAppMiddleware: true` in [your nuxt.config.ts](./nuxt.config.ts). Delete the local middleware in the [protected.vue](./pages/protected.vue) page if you do
