@@ -20,5 +20,7 @@ export default defineNuxtConfig({
     github_client_id: "", // same here
     github_client_secret: "", // same here
     database_url: "", // same here
+    discord_client_secret: "",
+    discord_client_id: "",
   },
 });
