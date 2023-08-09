@@ -1,7 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 
+import TerminalBlinker from './TerminalBlinker.vue'
+import TerminalHistoryItem from './TerminalHistoryItem.vue'
+import TerminalMarker from './TerminalMarker.vue'
+
+
 const inputBuffer = ref('')
+const history = ref([])
+const activeLineBuffer = ref('')
+const historySelectionOffset = ref(0)
 
 
 const commands = {
@@ -24,9 +32,37 @@ const commands = {
         }
     },
     join: () => {
-        // redirect to sign up page
+        // TODO: redirect to sign up page
         return 'Redirecting to sign up page'
-    }
+    },
+    whoami: () => {
+        // TODO: pull name from user system if signed in
+        return 'anonymous'
+    },
+
+    clear: () => { history.value = []; return false },
+
+    // LUHack related stuff
+    ls: () => 'flag.md',
+    cat: params => params[0] === 'flag.md' ? 'So you think you\'re a [hacker](https://scc-luhack.lancs.ac.uk/)?' : `'${params[0]}': No such file or directory`,
+
+    // Calculator
+    '+': params => {
+        const [a, b, ..._] = params
+        return '' + (+a + +b)
+    },
+    '-': params => {
+        const [a, b, ..._] = params
+        return '' + (+a - +b)
+    },
+    '*': params => {
+        const [a, b, ..._] = params
+        return '' + (+a * +b)
+    },
+    '/': params => {
+        const [a, b, ..._] = params
+        return '' + (+a / +b)
+    },
 }
 
 
@@ -48,38 +84,58 @@ function handleInput(event) {
     event.preventDefault()
 
     if (key == 'Enter') {
-        const command = inputBuffer.value.trim()
+        const command = activeLineBuffer.value.trim()
         if (command !== '') {
             let response = handleCommand(command)
-            if (response)
-                target.innerHTML += `<br>${response}`
+            if (response !== false)
+                history.value.push({ input: command, output: response})
         }
 
         inputBuffer.value = ''
-        const scope_ids = Object.keys(target.dataset).filter(s => s.startsWith('v-')).map(id => `data-${id}=""`).join(' ')
-        target.innerHTML += `<br><span class="marker" ${scope_ids}>&gt;</span>`
+        activeLineBuffer.value = ''
+        historySelectionOffset.value = 0
+
         return
     }
     if (key == 'Backspace') {
         if (inputBuffer.value === '') return
-        inputBuffer.value = inputBuffer.value.slice(0, -1)
-        target.innerHTML = target.innerHTML.slice(0, -1)
+        activeLineBuffer.value = activeLineBuffer.value.slice(0, -1)
+        inputBuffer.value = activeLineBuffer.value
         return
     }
 
-    if (key.length > 1)
+    if (key == 'ArrowUp') {
+        historySelectionOffset.value++
+        const historySelection = history.value[history.value.length - historySelectionOffset.value]
+        activeLineBuffer.value = historySelection.input
         return
+    }
+    if (key == 'ArrowDown') {
+        historySelectionOffset.value--
+        if (historySelectionOffset.value <= 0) {
+            historySelectionOffset.value = 0
+            activeLineBuffer.value = inputBuffer.value
+        } else {
+            const historySelection = history.value[history.value.length - historySelectionOffset.value]
+            activeLineBuffer.value = historySelection.input
+        }
+        return
+    }
 
-    if (inputBuffer.value === '')
-        target.innerHTML += ' '
-    target.innerHTML += key
-    inputBuffer.value += key
+    if (key.length > 1) {
+        console.log(key)
+        return
+    }
+
+    activeLineBuffer.value += key
+    inputBuffer.value = activeLineBuffer.value
 }
 </script>
 
 <template>
     <code class="terminal edit" @keydown="handleInput" tabindex="0">
-        <span class="marker">&gt;</span>
+        <TerminalHistoryItem v-for="item in history" :input="item.input" :output="item.output" />
+        <TerminalMarker /> {{ activeLineBuffer }}<TerminalBlinker />
     </code>
 </template>
 
@@ -90,6 +146,7 @@ function handleInput(event) {
 
     .terminal {
         display: block;
+        margin-inline: auto;
 
         width: 80ch;
         aspect-ratio: 4/3;
