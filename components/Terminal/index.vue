@@ -5,46 +5,27 @@ import TerminalBlinker from './TerminalBlinker.vue'
 import TerminalHistoryItem from './TerminalHistoryItem.vue'
 import TerminalMarker from './TerminalMarker.vue'
 
+import get_command from './commands'
+import { cwd } from './commands/filesystem'
+
 
 const inputBuffer = ref('')
 const history = ref([])
 const activeLineBuffer = ref('')
 const historySelectionOffset = ref(0)
 
+const commandState = ref({})
+cwd(commandState.value)
+
 
 const commands = {
-    echo: params => params.join(' '),
     help: () => 'No commands have been implemented yet',
-    info: params => {
-        let target = params.join(' ')
-        switch (target.toLowerCase()) {
-            case 'compsoc':
-            case 'lucompsoc':
-            case 'computer science society':
-                return 'Lancaster University Computer Science Society exists to promote interest in computing and technology among students and wider society.'
-
-            case 'lu':
-            case 'lancaster university':
-                return 'Lancaster University is a collegiate university 3 miles south of Lancaster.'
-
-            default:
-                return `Could not find information for \`${target}\`. Try \`info compsoc\``
-        }
-    },
     join: () => {
         // TODO: redirect to sign up page
         return 'Redirecting to sign up page'
     },
-    whoami: () => {
-        // TODO: pull name from user system if signed in
-        return 'anonymous'
-    },
 
     clear: () => { history.value = []; return false },
-
-    // LUHack related stuff
-    ls: () => 'flag.md',
-    cat: params => params[0] === 'flag.md' ? 'So you think you\'re a [hacker](https://scc-luhack.lancs.ac.uk/)?' : `'${params[0]}': No such file or directory`,
 
     // Calculator
     '+': params => {
@@ -69,16 +50,16 @@ const commands = {
 function handleCommand(command) {
     let [cmd, ...params] = command.split(' ')
 
-    let handler = commands[cmd.toLowerCase()]
+    const handler = get_command(cmd.toLowerCase())
     if (handler === undefined)
         return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`
 
-    return handler(params)
+    return handler(commandState.value, params)
 }
 
 
 function handleInput(event) {
-    const { key, target } = event
+    const { key } = event
 
     if (key == 'Tab') return
     event.preventDefault()
@@ -135,7 +116,7 @@ function handleInput(event) {
 <template>
     <code class="terminal edit" @keydown="handleInput" tabindex="0">
         <TerminalHistoryItem v-for="item in history" :input="item.input" :output="item.output" />
-        <TerminalMarker /> {{ activeLineBuffer }}<TerminalBlinker />
+        <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer }}<TerminalBlinker />
     </code>
 </template>
 
