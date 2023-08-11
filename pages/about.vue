@@ -1,8 +1,6 @@
 
 <template>
     <main class="main-container">
-        <Terminal />
-
         <p class="info-line">
             Lancaster University Computer Science Society
             exists to promote interest in computing and
@@ -16,11 +14,11 @@
 </template>
 
 <style scoped>
-    /* .main-container {       */ 
-    /*     max-width: 45vw;    */ 
-    /*     margin: auto;       */ 
-    /*     padding-top: 60px;  */ 
-    /* }                       */ 
+    .main-container {
+        max-width: 45vw;
+        margin: auto;
+        padding-top: 60px;
+    }
 
     /* HEADING */
 
@@ -115,14 +113,19 @@
     /* RESPONSIVE */
 
     @media (max-width: 1600px) {
-        /* .main-container {      */
-        /*     max-width: 100vw;  */
-        /*     padding: 50px;     */
-        /* }                      */
+        .main-container {
+            max-width: 100vw;
+            padding: 50px;
+        }
 
         .cards {
             justify-content: center;
             grid-template-columns: repeat(1, minmax(0, 1fr));
         }
     }
+
+    .prisma__card { background: radial-gradient(#3fbafe, #5A67D8FF); }
+    .auth__card { background: radial-gradient(#0FCF97, #0B9A71); }
+    .trpc__card { background: radial-gradient(#a07ccf, #926dc2); }
+    .tailwind__card { background: radial-gradient(#7466e3, #5a4ad9); }
 </style>

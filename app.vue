@@ -29,6 +29,15 @@
 
     main {
         flex: 1;
+
+        max-width: 60vw;
+        margin-inline: auto;
+    }
+
+    @media (max-width: 60rem) {
+        main {
+            max-width: 100vw;
+        }
     }
 </style>
 
