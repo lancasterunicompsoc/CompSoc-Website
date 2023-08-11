@@ -127,16 +127,27 @@ function handleInput(event) {
     }
 
     .terminal {
-        display: block;
-        margin-inline: auto;
+        --padding: 0.5rem;
+        --border-scale: 0.25rem;
 
-        width: 80ch;
+        display: block;
+        width: calc(80ch + var(--padding));
         aspect-ratio: 4/3;
+        padding-inline: calc(var(--padding));
+        padding-block: calc(var(--padding) * 0.75);
+        margin: 2rem auto;
 
         font-family: monospace;
 
         color: #fff;
         background-color: #000;
+        box-shadow: red 0 0 0 0, red 0 0 0 0 inset;
+
+        transition: box-shadow 250ms ease-in-out;   
+    }
+
+    .terminal:focus {
+        box-shadow: red 0 0 var(--border-scale) calc(var(--border-scale) / 2), red 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4) inset;
     }
 
     .marker {

@@ -1,5 +1,5 @@
 <template>
-    <div class="dark:bg-darkgrey bg-#e7e7e7">
+    <div class="dark:bg-darkgrey dark:text-gray-300 bg-#e7e7e7">
         <NuxtLayout name="default">
             <NuxtPage />
         </NuxtLayout>
@@ -16,9 +16,6 @@
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
             Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
-        color: #484848;
-        background-color: #eefbfc;
     }
 
     .page {
@@ -30,13 +27,21 @@
     main {
         flex: 1;
 
-        max-width: 60vw;
-        margin-inline: auto;
+        max-width: 100vw;
+        padding: 1rem 2rem;
     }
 
-    @media (max-width: 60rem) {
+    @media (min-width: 30rem) {
         main {
-            max-width: 100vw;
+            padding-inline: 0;
+            max-width: 36rem;
+            margin-inline: auto;
+        }
+    }
+
+    @media (min-width: 60rem) {
+        main {
+            max-width: 60vw;
         }
     }
 </style>
