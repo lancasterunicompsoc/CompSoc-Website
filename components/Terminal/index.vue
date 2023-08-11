@@ -26,24 +26,6 @@ const commands = {
     },
 
     clear: () => { history.value = []; return false },
-
-    // Calculator
-    '+': params => {
-        const [a, b, ..._] = params
-        return '' + (+a + +b)
-    },
-    '-': params => {
-        const [a, b, ..._] = params
-        return '' + (+a - +b)
-    },
-    '*': params => {
-        const [a, b, ..._] = params
-        return '' + (+a * +b)
-    },
-    '/': params => {
-        const [a, b, ..._] = params
-        return '' + (+a / +b)
-    },
 }
 
 
@@ -138,6 +120,7 @@ function handleInput(event) {
         margin: 2rem auto;
 
         font-family: monospace;
+        white-space: pre-line;
 
         color: #fff;
         background-color: #000;

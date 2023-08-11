@@ -1,4 +1,5 @@
 import register from './registry'
+import { whoami } from './session'
 
 function echo(_, params) {
     return params.join(' ')
@@ -23,6 +24,21 @@ function info(_, params) {
 }
 
 
+function neofetch(state, _) {
+    const responseLines = []
+    responseLines.push(`${whoami(state)}@compsoc.io`)
+    responseLines.push('-'.repeat(responseLines[responseLines.length - 1].length))
+    responseLines.push('OS: CompSocOS (Terminal Edition)')
+    responseLines.push('Shell: holy-sea 0.0.1')
+    responseLines.push('Resolution: 80x25')
+    responseLines.push('Theme: Matrix-red')
+    responseLines.push('Terminal: megantereon')
+    responseLines.push('Processor: unknown')
+    return responseLines.join('\n')
+}
+
+
 register('echo', echo)
 register('info', info)
+register('neofetch', neofetch)
 
