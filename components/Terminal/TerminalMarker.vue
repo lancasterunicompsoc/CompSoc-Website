@@ -8,7 +8,7 @@ defineProps(['cwd'])
 
 <style scoped>
     .marker {
-        color: red;
+        color: var(--red);
     }
 </style>
 

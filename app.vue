@@ -29,19 +29,25 @@
 
         max-width: 100vw;
         padding: 1rem 2rem;
+        line-height: 1.75;
+    }
+
+    main * {
+        margin-bottom: 1em;
     }
 
     @media (min-width: 30rem) {
         main {
             padding-inline: 0;
-            max-width: 36rem;
+            width: 80vw;
             margin-inline: auto;
         }
     }
 
     @media (min-width: 60rem) {
         main {
-            max-width: 60vw;
+            max-width: 80rem;
+            width: 60vw;
         }
     }
 </style>

@@ -112,6 +112,8 @@ function handleInput(event) {
         --padding: 0.5rem;
         --border-scale: 0.25rem;
 
+        --red: #e20025;
+
         display: block;
         width: calc(80ch + var(--padding));
         aspect-ratio: 4/3;
@@ -124,17 +126,18 @@ function handleInput(event) {
 
         color: #fff;
         background-color: #000;
-        box-shadow: red 0 0 0 0, red 0 0 0 0 inset;
+        box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
 
         transition: box-shadow 250ms ease-in-out;   
     }
 
     .terminal:focus {
-        box-shadow: red 0 0 var(--border-scale) calc(var(--border-scale) / 2), red 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4) inset;
+        box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+            var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4) inset;
     }
 
     .marker {
-        color: red;
+        color: var(--red);
     }
 
     @media (max-width: 80ch) {

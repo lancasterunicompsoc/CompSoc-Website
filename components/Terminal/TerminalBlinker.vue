@@ -4,7 +4,7 @@
 
 <style scoped>
     .blinker {
-        color: red;
+        color: var(--red);
         animation: blink 750ms linear alternate infinite;
     }
 

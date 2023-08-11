@@ -9,19 +9,13 @@
             technology among students and wider society.
         </p>
 
-        <a href="#" class="button">
+        <a href="#" class="button block">
             Join the society
         </a>
     </main>
 </template>
 
 <style scoped>
-    /* .main-container {       */ 
-    /*     max-width: 45vw;    */ 
-    /*     margin: auto;       */ 
-    /*     padding-top: 60px;  */ 
-    /* }                       */ 
-
     /* HEADING */
 
     .heading {
@@ -115,11 +109,6 @@
     /* RESPONSIVE */
 
     @media (max-width: 1600px) {
-        /* .main-container {      */
-        /*     max-width: 100vw;  */
-        /*     padding: 50px;     */
-        /* }                      */
-
         .cards {
             justify-content: center;
             grid-template-columns: repeat(1, minmax(0, 1fr));
