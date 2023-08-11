@@ -1,11 +1,11 @@
 <script setup>
 import TerminalMarker from './TerminalMarker.vue'
 
-defineProps(['input', 'output'])
+defineProps(['input', 'output', 'cwd'])
 </script>
 
 <template>
-    <TerminalMarker />
+    <TerminalMarker :cwd="cwd" />
     {{ input }} <br/>
     {{ output }} <br v-if="output" />
 </template>

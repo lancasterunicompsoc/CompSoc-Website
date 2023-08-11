@@ -6,6 +6,12 @@ export function whoami(state, params) {
     return 'anonymous'
 }
 
+function join(state, params) {
+    // TODO: perform redirect
+    return 'Redirecting to join page...'
+}
+
 
 register('whoami', whoami)
+register('join', join)
 

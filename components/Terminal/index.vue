@@ -66,11 +66,12 @@ function handleInput(event) {
 
     if (key == 'Enter') {
         const command = activeLineBuffer.value.trim()
+        const pwd = cwd(commandState.value)
+        let response = null
         if (command !== '') {
-            let response = handleCommand(command)
-            if (response !== false)
-                history.value.push({ input: command, output: response})
+            response = handleCommand(command)
         }
+        history.value.push({ input: command, output: response, cwd: pwd })
 
         inputBuffer.value = ''
         activeLineBuffer.value = ''
@@ -115,7 +116,7 @@ function handleInput(event) {
 
 <template>
     <code class="terminal edit" @keydown="handleInput" tabindex="0">
-        <TerminalHistoryItem v-for="item in history" :input="item.input" :output="item.output" />
+        <TerminalHistoryItem v-for="item in history" :input="item.input" :output="item.output" :cwd="item.cwd" />
         <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer }}<TerminalBlinker />
     </code>
 </template>
@@ -140,6 +141,12 @@ function handleInput(event) {
 
     .marker {
         color: red;
+    }
+
+    @media (max-width: 80ch) {
+        .terminal {
+            display: none;
+        }
     }
 </style>
 

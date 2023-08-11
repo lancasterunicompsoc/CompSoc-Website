@@ -1,11 +1,11 @@
 import register from './registry'
 
-function echo(params, state) {
+function echo(_, params) {
     return params.join(' ')
 }
 
 
-function info(params, state) {
+function info(_, params) {
     let target = params.join(' ')
     switch (target.toLowerCase()) {
         case 'compsoc':
