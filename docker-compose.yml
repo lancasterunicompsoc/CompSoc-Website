@@ -1,0 +1,12 @@
+version: '3'
+services:
+  frontend-dev:
+    image: "node:18"
+    user: node
+    working_dir: /home/node/CompSoc-Website
+    volumes:
+      - ./:/home/node/CompSoc-Website
+    expose:
+      - 3000
+    command: sh ./run_dev.sh
+
