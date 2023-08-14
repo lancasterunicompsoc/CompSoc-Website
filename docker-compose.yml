@@ -8,5 +8,4 @@ services:
       - ./:/home/node/CompSoc-Website
     expose:
       - 3000
-    command: sh ./run_dev.sh
-
+    command: sh -c "npm install; npm run dev"
