@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
 import TerminalBlinker from './TerminalBlinker.vue'
@@ -9,27 +9,23 @@ import get_command from './commands'
 import { cwd } from './commands/filesystem'
 
 
-const inputBuffer = ref('')
-const history = ref([])
-const activeLineBuffer = ref('')
-const historySelectionOffset = ref(0)
-
-const commandState = ref({})
-cwd(commandState.value)
-
-
-const commands = {
-    help: () => 'No commands have been implemented yet',
-    join: () => {
-        // TODO: redirect to sign up page
-        return 'Redirecting to sign up page'
-    },
-
-    clear: () => { history.value = []; return false },
+interface HistoryItem {
+    input: string,
+    output: string | undefined,
+    cwd: string,
 }
 
 
-function handleCommand(command) {
+const inputBuffer = ref('')
+const history = ref<HistoryItem[]>([])
+const activeLineBuffer = ref('')
+const historySelectionOffset = ref(0)
+
+const commandState = ref<{ [key: string]: any }>({})
+cwd(commandState.value, [])
+
+
+function handleCommand(command: string): string | undefined {
     let [cmd, ...params] = command.split(' ')
 
     const handler = get_command(cmd.toLowerCase())
@@ -40,7 +36,12 @@ function handleCommand(command) {
 }
 
 
-function handleInput(event) {
+interface KeydownEvent extends Event {
+    key: string
+}
+
+
+function handleInput(event: KeydownEvent) {
     const { key } = event
 
     if (key == 'Tab') return
@@ -48,8 +49,8 @@ function handleInput(event) {
 
     if (key == 'Enter') {
         const command = activeLineBuffer.value.trim()
-        const pwd = cwd(commandState.value)
-        let response = null
+        const pwd = cwd(commandState.value, [])
+        let response
         if (command !== '') {
             response = handleCommand(command)
         }

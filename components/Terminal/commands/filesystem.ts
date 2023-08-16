@@ -1,25 +1,25 @@
-import register from './registry'
+import register, { CommandHandler, Params, State } from './registry'
 
 import { whoami } from './session'
 
 
-const makeHomeDir = name => ({
+const makeHomeDir = (name: string) => ({
     name,
-    children: _ => [
+    children: (_: State) => [
         {
             name: 'events',
-            children: _ => [ /* TODO: get events for user */ ]
+            children: (_: State) => [ /* TODO: get events for user */ ]
         }
     ]
 })
 
 const fileTree = {
     name: '/',
-    children: () => [
+    children: (_: State) => [
         {
             name: 'home',
-            children: state => {
-                const iAm = whoami(state)
+            children: (state: State) => {
+                const iAm = whoami(state, [])
                 const children = [
                     makeHomeDir(iAm)
                 ]
@@ -32,26 +32,26 @@ const fileTree = {
 }
 
 
-function getOrDefault(obj, name, def) {
+function getOrDefault<T>(obj: { [key: string]: T }, name: string, def: T): T {
     if (!obj.hasOwnProperty(name))
         obj[name] = def
     return obj[name]
 }
 
 
-const userHome = state => `/home/${whoami(state)}`
+const userHome = (state: State) => `/home/${whoami(state, [])}`
 
 
-function normalizePath(state, path) {
+function normalizePath(state: State, path: string): string {
     const parts = path.split('/')
-    let normalizedParts = []
+    let normalizedParts: string[] = []
 
     for (const part of parts) {
         switch (part) {
             case '':
             case '.': continue
             case '..': normalizedParts.pop(); break
-            case '~': normalizedParts = ['/home', whoami(state)]; break
+            case '~': normalizedParts = ['/home', whoami(state, [])]; break
             default: normalizedParts.push(part)
         }
     }
@@ -63,11 +63,11 @@ function normalizePath(state, path) {
     return normalizedPath
 }
 
-function findDirectory(state, path) {
+function findDirectory(state: State, path: string) {
     if (path === '/')
         return fileTree
 
-    const parts = path.split('/').splice(1)
+    const parts = normalizePath(state, path).split('/').splice(1)
     let dir = fileTree
     for (const part of parts) {
         let found = false
@@ -83,37 +83,41 @@ function findDirectory(state, path) {
     return dir
 }
 
-const exists = (state, path) => findDirectory(state, path) !== null
+const exists = (state: State, path: string) => findDirectory(state, path) !== null
 
 
-export function cwd(state) {
+export const cwd = (state: State, _: Params): string => {
     const filesystem_state = getOrDefault(state, 'filesystem', {})
     return getOrDefault(filesystem_state, 'cwd', userHome(state))
 }
 
-function cd(state, params) {
+const cd: CommandHandler = (state, params) => {
     const filesystem_state = getOrDefault(state, 'filesystem', {})
     let basePath
     if (params[0] === undefined)
-        basePath = cwd(state)
+        basePath = cwd(state, [])
     else if (params[0].startsWith('/'))
         basePath = params[0]
     else
-        basePath = cwd(state) + '/' + params[0]
+        basePath = cwd(state, []) + '/' + params[0]
+    if (typeof basePath === 'undefined')
+        throw new Error('Invalid state')
     const path = normalizePath(state, basePath)
     if (!exists(state, path))
         return `Cannot cd to ${path}: directory does not exist`
     filesystem_state.cwd = path
 }
 
-function ls(state, params) {
+const ls: CommandHandler = (state, params) => {
     let basePath
     if (params[0] === undefined)
-        basePath = cwd(state)
+        basePath = cwd(state, [])
     else if (params[0].startsWith('/'))
         basePath = params[0]
     else
-        basePath = cwd(state) + '/' + params[0]
+        basePath = cwd(state, []) + '/' + params[0]
+    if (typeof basePath === 'undefined')
+        throw new Error('Invalid state')
     const path = normalizePath(state, basePath)
     const item = findDirectory(state, path)
     if (item === null)
