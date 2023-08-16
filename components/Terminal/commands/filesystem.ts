@@ -3,7 +3,14 @@ import register, { CommandHandler, Params, State } from './registry'
 import { whoami } from './session'
 
 
-const makeHomeDir = (name: string) => ({
+interface Entry {
+    name: string,
+    children?: ChildFactory,
+}
+
+type ChildFactory = (state: State) => Entry[]
+
+const makeHomeDir = (name: string): Entry => ({
     name,
     children: (_: State) => [
         {
@@ -13,7 +20,7 @@ const makeHomeDir = (name: string) => ({
     ]
 })
 
-const fileTree = {
+const fileTree: Entry = {
     name: '/',
     children: (_: State) => [
         {
@@ -63,13 +70,27 @@ function normalizePath(state: State, path: string): string {
     return normalizedPath
 }
 
-function findDirectory(state: State, path: string) {
+function resolvePath(state: State, path?: string): string {
+    let fullPath
+    if (path === undefined)
+        fullPath = cwd(state, [])
+    else if (path.startsWith('/'))
+        fullPath = path
+    else
+        fullPath = cwd(state, []) + '/' + path
+    return normalizePath(state, fullPath)
+}
+
+function findDirectory(state: State, path: string): Entry | null {
     if (path === '/')
         return fileTree
 
     const parts = normalizePath(state, path).split('/').splice(1)
     let dir = fileTree
     for (const part of parts) {
+        if (dir.children === undefined)
+            return null
+
         let found = false
         for (const child of dir.children(state))
             if (child.name === part) {
@@ -83,7 +104,7 @@ function findDirectory(state: State, path: string) {
     return dir
 }
 
-const exists = (state: State, path: string) => findDirectory(state, path) !== null
+const exists = (state: State, path: string): boolean => findDirectory(state, path) !== null
 
 
 export const cwd = (state: State, _: Params): string => {
@@ -93,35 +114,21 @@ export const cwd = (state: State, _: Params): string => {
 
 const cd: CommandHandler = (state, params) => {
     const filesystem_state = getOrDefault(state, 'filesystem', {})
-    let basePath
-    if (params[0] === undefined)
-        basePath = cwd(state, [])
-    else if (params[0].startsWith('/'))
-        basePath = params[0]
-    else
-        basePath = cwd(state, []) + '/' + params[0]
-    if (typeof basePath === 'undefined')
-        throw new Error('Invalid state')
-    const path = normalizePath(state, basePath)
+    const path = resolvePath(state, params[0])
     if (!exists(state, path))
         return `Cannot cd to ${path}: directory does not exist`
     filesystem_state.cwd = path
 }
 
 const ls: CommandHandler = (state, params) => {
-    let basePath
-    if (params[0] === undefined)
-        basePath = cwd(state, [])
-    else if (params[0].startsWith('/'))
-        basePath = params[0]
-    else
-        basePath = cwd(state, []) + '/' + params[0]
-    if (typeof basePath === 'undefined')
-        throw new Error('Invalid state')
-    const path = normalizePath(state, basePath)
+    const path = resolvePath(state, params[0])
     const item = findDirectory(state, path)
     if (item === null)
         return `Cannot access '${path}': no such file or directory`
+
+    if (item.children === undefined)
+        return path
+
     const children = item.children(state)
     return children.map(child => child.name).join('    ')
 }
