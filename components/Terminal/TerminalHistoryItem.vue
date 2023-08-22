@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import TerminalMarker from './TerminalMarker.vue'
 
 defineProps(['input', 'output', 'cwd'])

@@ -1,12 +1,12 @@
-import register from './registry'
+import register, { CommandHandler } from './registry'
 import { whoami } from './session'
 
-function echo(_, params) {
+const echo: CommandHandler = (_, params) => {
     return params.join(' ')
 }
 
 
-function info(_, params) {
+const info: CommandHandler = (_, params) => {
     let target = params.join(' ')
     switch (target.toLowerCase()) {
         case 'compsoc':
@@ -24,9 +24,9 @@ function info(_, params) {
 }
 
 
-function neofetch(state, _) {
+const neofetch: CommandHandler = (state, _) => {
     const responseLines = []
-    responseLines.push(`${whoami(state)}@compsoc.io`)
+    responseLines.push(`${whoami(state, [])}@compsoc.io`)
     responseLines.push('-'.repeat(responseLines[responseLines.length - 1].length))
     responseLines.push('OS: CompSocOS (Terminal Edition)')
     responseLines.push('Shell: holy-sea 0.0.1')
