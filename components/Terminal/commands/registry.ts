@@ -5,7 +5,7 @@ export type CommandHandler = (
   params: Params
 ) => string | undefined;
 
-const registry: { [key: string]: CommandHandler } = {};
+export const registry: { [key: string]: CommandHandler } = {};
 
 export default function register(name: string, handler: CommandHandler) {
   registry[name] = handler;
