@@ -8,6 +8,7 @@ import type { State } from "./commands/registry";
 
 import get_command from "./commands";
 import { cwd } from "./commands/filesystem";
+import register from "./commands/registry";
 
 interface HistoryItem {
   input: string;
@@ -42,6 +43,7 @@ interface KeydownEvent extends Event {
 
 function handleInput(event: KeydownEvent) {
   const { key } = event;
+  console.log(`Main handler read: ${key}`)
 
   if (key == "Tab") return;
   event.preventDefault();
@@ -108,10 +110,32 @@ function handleInput(event: KeydownEvent) {
   activeLineBuffer.value += key;
   inputBuffer.value = activeLineBuffer.value;
 }
+
+function handleClear(event: KeydownEvent) {
+  event.preventDefault()
+  clearScreen()
+  // HACK
+  // Unfortunately the main keydown handler function `handleInput` also captures the `l` that was inputted and just displays it to the screen
+  // to get rid of the unnecessary `l`, we clear it shortly after it has been registered
+  setTimeout(() => {
+    activeLineBuffer.value = activeLineBuffer.value.slice(0, activeLineBuffer.value.length - 1)
+  }, 50);
+}
+
+function clearScreen() {
+  history.value = []
+}
+
+register('clear', (state, params) => {
+  // HACK
+  // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
+  setTimeout(clearScreen, 50);
+  return ''
+})
 </script>
 
 <template>
-  <code class="terminal edit" @keydown="handleInput" tabindex="0">
+  <code class="terminal edit" @keydown.ctrl.l="handleClear" @keydown="handleInput" tabindex="0">
     <TerminalHistoryItem
       v-for="item in history"
       :input="item.input"
