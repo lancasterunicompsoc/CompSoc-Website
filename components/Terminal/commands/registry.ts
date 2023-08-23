@@ -20,3 +20,7 @@ export function get_command(name: string) {
 export function get_help(name: string) {
   return registry[name]?.help
 }
+
+export function getAllCommands() {
+  return Object.keys(registry)
+}
