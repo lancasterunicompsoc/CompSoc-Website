@@ -9,6 +9,7 @@ import type { State } from "./commands/registry";
 import get_command from "./commands";
 import { cwd } from "./commands/filesystem";
 import register from "./commands/registry";
+import { get_all_commands } from "./commands/registry";
 
 interface HistoryItem {
   input: string;
@@ -16,10 +17,10 @@ interface HistoryItem {
   cwd: string;
 }
 
-const inputBuffer = ref("");
 const history = ref<HistoryItem[]>([]);
 const commandHistory = ref<string[]>([]);
-const activeLineBuffer = ref("");
+const inputBuffer = ref(""); // inputBuffer holds the user input
+const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
 const historySelectionOffset = ref(0);
 
 const coderef = ref<HTMLElement | null>(null);
@@ -43,8 +44,24 @@ function handleCommand(command: string): string | undefined {
 function handleInput(event: KeyboardEvent) {
   const { key } = event;
 
-  if (key === "Tab") return;
   event.preventDefault();
+
+  if (key === "Tab") {
+    const cmds = get_all_commands();
+    const [partialCmd, ...args] = activeLineBuffer.value.trim().split(" ");
+
+    if (!partialCmd || args.length > 0) {
+      // we dont wanna autocomplete when the user is supplying arguments or when there is no command
+      return;
+    }
+    const cmdStartsWith = cmds.filter((el) => el.startsWith(partialCmd));
+
+    // Doing autocomplete with several options is beyond our scope
+    if (cmdStartsWith.length === 1) {
+      activeLineBuffer.value = cmdStartsWith[0] as string;
+    }
+    return;
+  }
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
@@ -70,7 +87,7 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
   if (key === "Backspace") {
-    if (inputBuffer.value === "") return;
+    if (inputBuffer.value === "" && activeLineBuffer.value === "") return;
     activeLineBuffer.value = activeLineBuffer.value.slice(0, -1);
     inputBuffer.value = activeLineBuffer.value;
     return;
@@ -131,7 +148,7 @@ register({
   name: "clear",
   fn: (state, _) => {
     // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
-    nextTick(clearScreen)
+    nextTick(clearScreen);
     return "";
   },
   help: "Clear the screen completely",
@@ -184,6 +201,7 @@ register({
   box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
+  outline: none;
 }
 
 .marker {
