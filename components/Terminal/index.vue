@@ -213,6 +213,8 @@ register({
   box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
+  
+  cursor: text;
 }
 
 .terminal:focus {
