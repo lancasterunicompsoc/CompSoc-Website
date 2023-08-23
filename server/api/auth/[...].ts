@@ -15,8 +15,8 @@ if (!useMockAuth) {
     // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
     DiscordProvider.default({
       clientId: config.discord_client_id,
-      clientSecret: config.discord_client_secret
-    })
+      clientSecret: config.discord_client_secret,
+    }),
   );
 } else {
   providers.push(
@@ -24,22 +24,22 @@ if (!useMockAuth) {
     CredentialsProvider.default({
       id: "github",
       name: "Mocked GitHub",
-      async authorize (credentials: any) {
+      async authorize(credentials: any) {
         if (credentials) {
           const name = credentials.name;
           console.log("gonna return the user");
           return {
             id: name,
             name,
-            email: name
+            email: name,
           };
         }
         return null;
       },
       credentials: {
-        name: { type: "test" }
-      }
-    })
+        name: { type: "test" },
+      },
+    }),
   );
 }
 
@@ -47,5 +47,5 @@ export default NuxtAuthHandler({
   // TODO: SET A STRONG SECRET, SEE https://sidebase.io/nuxt-auth/configuration/nuxt-auth-handler#secret
   secret: config.secret,
   adapter: PrismaAdapter(prisma),
-  providers
+  providers,
 });

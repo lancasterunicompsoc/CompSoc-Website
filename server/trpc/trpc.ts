@@ -12,7 +12,7 @@ import superjson from "superjson";
 import { Context } from "~/server/trpc/context";
 
 const t = initTRPC.context<Context>().create({
-  transformer: superjson
+  transformer: superjson,
 });
 
 /**

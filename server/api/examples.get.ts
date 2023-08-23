@@ -11,5 +11,5 @@
  * ```
  */
 export default defineEventHandler(event =>
-  event.context.prisma.account.findMany()
+  event.context.prisma.account.findMany(),
 );

@@ -11,14 +11,14 @@ export default defineNuxtPlugin(() => {
     transformer: superjson,
     links: [
       httpBatchLink({
-        url: "/api/trpc"
-      })
-    ]
+        url: "/api/trpc",
+      }),
+    ],
   });
 
   return {
     provide: {
-      client
-    }
+      client,
+    },
   };
 });

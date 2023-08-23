@@ -43,7 +43,7 @@ interface KeydownEvent extends Event {
 
 function handleInput(event: KeydownEvent) {
   const { key } = event;
-  console.log(`Main handler read: ${key}`)
+  console.log(`Main handler read: ${key}`);
 
   if (key == "Tab") return;
   event.preventDefault();
@@ -76,11 +76,11 @@ function handleInput(event: KeydownEvent) {
       historySelectionOffset.value = history.value.length;
     }
     const historySelection = history.value.at(
-      -1 * historySelectionOffset.value
+      -1 * historySelectionOffset.value,
     );
     if (!historySelection) {
       console.error(
-        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${history.value.length}`
+        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${history.value.length}`,
       );
     }
     activeLineBuffer.value = historySelection?.input ?? "";
@@ -95,7 +95,7 @@ function handleInput(event: KeydownEvent) {
       activeLineBuffer.value = inputBuffer.value;
     } else {
       const historySelection = history.value.at(
-        -1 * historySelectionOffset.value
+        -1 * historySelectionOffset.value,
       );
       activeLineBuffer.value = historySelection?.input ?? "";
     }
@@ -112,30 +112,38 @@ function handleInput(event: KeydownEvent) {
 }
 
 function handleClear(event: KeydownEvent) {
-  event.preventDefault()
-  clearScreen()
+  event.preventDefault();
+  clearScreen();
   // HACK
   // Unfortunately the main keydown handler function `handleInput` also captures the `l` that was inputted and just displays it to the screen
   // to get rid of the unnecessary `l`, we clear it shortly after it has been registered
   setTimeout(() => {
-    activeLineBuffer.value = activeLineBuffer.value.slice(0, activeLineBuffer.value.length - 1)
+    activeLineBuffer.value = activeLineBuffer.value.slice(
+      0,
+      activeLineBuffer.value.length - 1,
+    );
   }, 50);
 }
 
 function clearScreen() {
-  history.value = []
+  history.value = [];
 }
 
-register('clear', (state, params) => {
+register("clear", (state, params) => {
   // HACK
   // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
   setTimeout(clearScreen, 50);
-  return ''
-})
+  return "";
+});
 </script>
 
 <template>
-  <code class="terminal edit" @keydown.ctrl.l="handleClear" @keydown="handleInput" tabindex="0">
+  <code
+    class="terminal edit"
+    @keydown.ctrl.l="handleClear"
+    @keydown="handleInput"
+    tabindex="0"
+  >
     <TerminalHistoryItem
       v-for="item in history"
       :input="item.input"
@@ -170,13 +178,16 @@ register('clear', (state, params) => {
 
   color: #fff;
   background-color: #000;
-  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
+  box-shadow:
+    var(--red) 0 0 0 0,
+    var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
 }
 
 .terminal:focus {
-  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow:
+    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
 }

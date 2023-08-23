@@ -6,14 +6,14 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/content",
     "@unocss/nuxt",
-    "nuxt-icon"
+    "nuxt-icon",
   ],
   build: {
-    transpile: ["trpc-nuxt"]
+    transpile: ["trpc-nuxt"],
   },
   css: ["@unocss/reset/tailwind.css"],
   typescript: {
-    shim: false
+    shim: false,
   },
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
@@ -21,6 +21,6 @@ export default defineNuxtConfig({
     github_client_secret: "", // same here
     database_url: "", // same here
     discord_client_secret: "",
-    discord_client_id: ""
-  }
+    discord_client_id: "",
+  },
 });

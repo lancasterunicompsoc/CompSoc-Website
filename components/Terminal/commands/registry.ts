@@ -2,15 +2,15 @@ export type State = { filesystem: { cwd: string } };
 export type Params = string[];
 export type CommandHandler = (
   state: State,
-  params: Params
+  params: Params,
 ) => string | undefined;
 
 export const registry: { [key: string]: CommandHandler } = {};
 
-export default function register (name: string, handler: CommandHandler) {
+export default function register(name: string, handler: CommandHandler) {
   registry[name] = handler;
 }
 
-export function get_command (name: string) {
+export function getCommand(name: string) {
   return registry[name];
 }

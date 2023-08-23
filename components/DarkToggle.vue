@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const color = useColorMode({initialValue: 'dark'});
+const color = useColorMode({ initialValue: "dark" });
 
 useHead({
   meta: [
