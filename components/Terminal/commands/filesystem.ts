@@ -122,4 +122,5 @@ const ls: CommandHandler = (state, params) => {
 
 register("cd", cd);
 register("cwd", cwd);
+register("pwd", cwd);
 register("ls", ls);
