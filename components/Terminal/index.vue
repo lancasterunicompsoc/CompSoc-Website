@@ -133,6 +133,11 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
 
+  if (key == "Escape") {
+    coderef.value?.blur()
+    return;
+  }
+
   if (key.length > 1) {
     console.log(key);
     return;
