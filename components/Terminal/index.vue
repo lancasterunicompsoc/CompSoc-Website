@@ -9,6 +9,7 @@ import type { State } from "./commands/registry";
 import get_command from "./commands";
 import { cwd } from "./commands/filesystem";
 import register from "./commands/registry";
+import { getAllCommands } from "./commands/registry";
 
 interface HistoryItem {
   input: string;
@@ -16,10 +17,13 @@ interface HistoryItem {
   cwd: string;
 }
 
-const inputBuffer = ref("");
 const history = ref<HistoryItem[]>([]);
-const activeLineBuffer = ref("");
+const commandHistory = ref<string[]>([]);
+const inputBuffer = ref(""); // inputBuffer holds the user input
+const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
 const historySelectionOffset = ref(0);
+
+const coderef = ref<HTMLElement | null>(null);
 
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
@@ -37,18 +41,29 @@ function handleCommand(command: string): string | undefined {
   return handler(commandState.value, params);
 }
 
-interface KeydownEvent extends Event {
-  key: string;
-}
-
-function handleInput(event: KeydownEvent) {
+function handleInput(event: KeyboardEvent) {
   const { key } = event;
-  console.log(`Main handler read: ${key}`);
 
-  if (key == "Tab") return;
   event.preventDefault();
 
-  if (key == "Enter") {
+  if (key === "Tab") {
+    const cmds = getAllCommands();
+    const [partialCmd, ...args] = activeLineBuffer.value.trim().split(" ");
+
+    if (!partialCmd || args.length > 0) {
+      // we dont wanna autocomplete when the user is supplying arguments or when there is no command
+      return;
+    }
+    const cmdStartsWith = cmds.filter((el) => el.startsWith(partialCmd));
+
+    // Doing autocomplete with several options is beyond our scope
+    if (cmdStartsWith.length === 1) {
+      activeLineBuffer.value = cmdStartsWith[0] as string;
+    }
+    return;
+  }
+
+  if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
     const pwd = cwd(commandState.value, []);
     let response;
@@ -56,49 +71,63 @@ function handleInput(event: KeydownEvent) {
       response = handleCommand(command);
     }
     history.value.push({ input: command, output: response, cwd: pwd });
+    commandHistory.value.push(command);
 
     inputBuffer.value = "";
     activeLineBuffer.value = "";
     historySelectionOffset.value = 0;
 
+    // Autoscroll down to the output of the last run command
+    // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
+    nextTick(() => {
+      if (coderef.value) {
+        coderef.value.scrollTop = coderef.value.scrollHeight;
+      }
+    });
     return;
   }
-  if (key == "Backspace") {
-    if (inputBuffer.value === "") return;
+  if (key === "Backspace") {
+    if (inputBuffer.value === "" && activeLineBuffer.value === "") return;
     activeLineBuffer.value = activeLineBuffer.value.slice(0, -1);
     inputBuffer.value = activeLineBuffer.value;
     return;
   }
 
-  if (key == "ArrowUp") {
+  if (key === "ArrowUp") {
+    if (commandHistory.value.length === 0) return;
     historySelectionOffset.value++;
-    if (historySelectionOffset.value >= history.value.length) {
-      historySelectionOffset.value = history.value.length;
+    if (historySelectionOffset.value >= commandHistory.value.length) {
+      historySelectionOffset.value = commandHistory.value.length;
     }
-    const historySelection = history.value.at(
-      -1 * historySelectionOffset.value,
+    const historySelection = commandHistory.value.at(
+      -1 * historySelectionOffset.value
     );
     if (!historySelection) {
       console.error(
-        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${history.value.length}`,
+        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`
       );
     }
-    activeLineBuffer.value = historySelection?.input ?? "";
+    activeLineBuffer.value = historySelection ?? "";
     return;
   }
 
-  if (key == "ArrowDown") {
+  if (key === "ArrowDown") {
     historySelectionOffset.value--;
 
     if (historySelectionOffset.value <= 0) {
       historySelectionOffset.value = 0;
       activeLineBuffer.value = inputBuffer.value;
     } else {
-      const historySelection = history.value.at(
-        -1 * historySelectionOffset.value,
+      const historySelection = commandHistory.value.at(
+        -1 * historySelectionOffset.value
       );
-      activeLineBuffer.value = historySelection?.input ?? "";
+      activeLineBuffer.value = historySelection ?? "";
     }
+    return;
+  }
+
+  if (key === "l" && event.ctrlKey) {
+    clearScreen();
     return;
   }
 
@@ -111,39 +140,23 @@ function handleInput(event: KeydownEvent) {
   inputBuffer.value = activeLineBuffer.value;
 }
 
-function handleClear(event: KeydownEvent) {
-  event.preventDefault();
-  clearScreen();
-  // HACK
-  // Unfortunately the main keydown handler function `handleInput` also captures the `l` that was inputted and just displays it to the screen
-  // to get rid of the unnecessary `l`, we clear it shortly after it has been registered
-  setTimeout(() => {
-    activeLineBuffer.value = activeLineBuffer.value.slice(
-      0,
-      activeLineBuffer.value.length - 1,
-    );
-  }, 50);
-}
-
 function clearScreen() {
   history.value = [];
 }
 
-register("clear", (state, params) => {
-  // HACK
-  // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
-  setTimeout(clearScreen, 50);
-  return "";
+register({
+  name: "clear",
+  fn: (state, _) => {
+    // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
+    nextTick(clearScreen);
+    return "";
+  },
+  help: "Clear the screen completely",
 });
 </script>
 
 <template>
-  <code
-    class="terminal edit"
-    @keydown.ctrl.l="handleClear"
-    @keydown="handleInput"
-    tabindex="0"
-  >
+  <code class="terminal edit" @keydown="handleInput" tabindex="0" ref="coderef">
     <TerminalHistoryItem
       v-for="item in history"
       :input="item.input"
@@ -175,6 +188,7 @@ register("clear", (state, params) => {
 
   font-family: monospace;
   white-space: pre-line;
+  overflow-y: scroll;
 
   color: #fff;
   background-color: #000;
@@ -190,6 +204,7 @@ register("clear", (state, params) => {
     var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
+  outline: none;
 }
 
 .marker {

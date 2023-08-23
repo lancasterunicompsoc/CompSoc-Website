@@ -138,6 +138,11 @@ const ls: CommandHandler = (state, params) => {
   return children.map(child => child.name).join("    ");
 };
 
-register("cd", cd);
-register("cwd", cwd);
-register("ls", ls);
+register({
+  name: "cd",
+  fn: cd,
+  help: "Change working directory to the one specified in the first argument",
+});
+register({ name: "cwd", fn: cwd, help: "Display current working directory" });
+register({ name: "pwd", fn: cwd, help: "Display current working directory" });
+register({ name: "ls", fn: ls, help: 'List all files and directories in current working directory, or in the specified directory when passed an argument' });

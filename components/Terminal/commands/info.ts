@@ -1,4 +1,4 @@
-import register, { CommandHandler, registry } from "./registry";
+import register, { CommandHandler, get_help, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
 const echo: CommandHandler = (_state, params) => {
@@ -38,12 +38,21 @@ const neofetch: CommandHandler = (state, _params) => {
   return responseLines.join("\n");
 };
 
-const help: CommandHandler = (_state, _params) => {
-  const commandStrings = Object.keys(registry).join("\n");
-  return `Help:\nThe following commands are available:\n${commandStrings}`;
+const man: CommandHandler = (state, params) => {
+  if (params.length > 0) {
+    if (params.length > 1) {
+      return "man can only display one helppage at a time";
+    }
+    const helptext = get_help(params[0] as string);
+    if (!helptext) return `No manual entry for ${params[0]}`;
+    return helptext;
+  }
+  const commandStrings = getAllCommands().join("\n");
+  return `Help:\nThe following commands are available:\n${commandStrings}\nFor more information, run \`man PROGRAMNAME\``;
 };
 
-register("echo", echo);
-register("info", info);
-register("neofetch", neofetch);
-register("help", help);
+register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
+register({ name: "info", fn: info, help: "Get information about various things" });
+register({ name: "neofetch", fn: neofetch, help: "Display informations about the current shell" });
+register({ name: "help", fn: man, help: "Get help about available commands" });
+register({ name: "man", fn: man, help: "Get help about available commands" });
