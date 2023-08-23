@@ -116,11 +116,15 @@ function clearScreen() {
   history.value = [];
 }
 
-register("clear", (state, params) => {
-  // HACK
-  // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
-  setTimeout(clearScreen, 50);
-  return "";
+register({
+  name: "clear",
+  fn: (state, params) => {
+    // HACK
+    // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
+    setTimeout(clearScreen, 50);
+    return "";
+  },
+  help: "Clear the screen completely",
 });
 </script>
 
