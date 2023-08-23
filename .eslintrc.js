@@ -16,5 +16,7 @@ module.exports = {
     "no-use-before-define": "warn",
     "require-await": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
+    "vue/multi-word-component-names": "off",
+    "vue/html-self-closing": "off",
   },
 };

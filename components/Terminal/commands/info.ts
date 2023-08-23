@@ -1,4 +1,5 @@
-import register, { CommandHandler, get_help, getAllCommands } from "./registry";
+import type { CommandHandler } from "./registry";
+import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
 const echo: CommandHandler = (_state, params) => {
@@ -27,7 +28,7 @@ const neofetch: CommandHandler = (state, _params) => {
   const responseLines = [];
   responseLines.push(`${whoami(state, [])}@compsoc.io`);
   responseLines.push(
-    "-".repeat((responseLines.at(responseLines.length - 1) as string).length),
+    "-".repeat((responseLines.at(responseLines.length - 1) as string).length)
   );
   responseLines.push("OS: CompSocOS (Terminal Edition)");
   responseLines.push("Shell: holy-sea 0.0.1");
@@ -38,13 +39,15 @@ const neofetch: CommandHandler = (state, _params) => {
   return responseLines.join("\n");
 };
 
-const man: CommandHandler = (state, params) => {
+const man: CommandHandler = (_state, params) => {
   if (params.length > 0) {
     if (params.length > 1) {
       return "man can only display one helppage at a time";
     }
-    const helptext = get_help(params[0] as string);
-    if (!helptext) return `No manual entry for ${params[0]}`;
+    const helptext = getHelp(params[0] as string);
+    if (!helptext) {
+      return `No manual entry for ${params[0]}`;
+    }
     return helptext;
   }
   const commandStrings = getAllCommands().join("\n");
@@ -52,7 +55,15 @@ const man: CommandHandler = (state, params) => {
 };
 
 register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
-register({ name: "info", fn: info, help: "Get information about various things" });
-register({ name: "neofetch", fn: neofetch, help: "Display informations about the current shell" });
+register({
+  name: "info",
+  fn: info,
+  help: "Get information about various things",
+});
+register({
+  name: "neofetch",
+  fn: neofetch,
+  help: "Display informations about the current shell",
+});
 register({ name: "help", fn: man, help: "Get help about available commands" });
 register({ name: "man", fn: man, help: "Get help about available commands" });

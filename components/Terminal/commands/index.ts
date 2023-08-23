@@ -1,6 +1,4 @@
-import { getCommand } from "./registry";
-
+import "./registry";
 import "./filesystem";
 import "./info";
 import "./session";
-export default getCommand;

@@ -6,15 +6,14 @@ import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 
-import get_command from "./commands";
 import { cwd } from "./commands/filesystem";
-import register from "./commands/registry";
-import { getAllCommands } from "./commands/registry";
+import { getAllCommands, register, getCommand } from "./commands/registry";
 
-interface HistoryItem {
+export interface HistoryItem {
   input: string;
   output: string | undefined;
   cwd: string;
+  timestamp: number; // mainly used for a unique key for v-for
 }
 
 const history = ref<HistoryItem[]>([]);
@@ -25,18 +24,24 @@ const historySelectionOffset = ref(0);
 
 const coderef = ref<HTMLElement | null>(null);
 
+const { focused } = useFocus(coderef, { initialValue: true });
+
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
 // but the issue is that it depends on this variable, hence introducing a circular dependency
 const commandState = ref<State>({ filesystem: { cwd: "/home/anonymous" } });
 
 function handleCommand(command: string): string | undefined {
-  let [cmd, ...params] = command.split(" ");
+  const [cmd, ...params] = command.split(" ");
 
-  if (!cmd) return ``;
-  const handler = get_command(cmd.toLowerCase());
-  if (handler === undefined)
+  if (!cmd) {
+    return "";
+  }
+
+  const handler = getCommand(cmd.toLowerCase());
+  if (handler === undefined) {
     return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`;
+  }
 
   return handler(commandState.value, params);
 }
@@ -54,7 +59,7 @@ function handleInput(event: KeyboardEvent) {
       // we dont wanna autocomplete when the user is supplying arguments or when there is no command
       return;
     }
-    const cmdStartsWith = cmds.filter((el) => el.startsWith(partialCmd));
+    const cmdStartsWith = cmds.filter(el => el.startsWith(partialCmd));
 
     // Doing autocomplete with several options is beyond our scope
     if (cmdStartsWith.length === 1) {
@@ -70,7 +75,12 @@ function handleInput(event: KeyboardEvent) {
     if (command !== "") {
       response = handleCommand(command);
     }
-    history.value.push({ input: command, output: response, cwd: pwd });
+    history.value.push({
+      input: command,
+      output: response,
+      cwd: pwd,
+      timestamp: Date.now(),
+    });
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
@@ -87,14 +97,18 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
   if (key === "Backspace") {
-    if (inputBuffer.value === "" && activeLineBuffer.value === "") return;
+    if (inputBuffer.value === "" && activeLineBuffer.value === "") {
+      return;
+    }
     activeLineBuffer.value = activeLineBuffer.value.slice(0, -1);
     inputBuffer.value = activeLineBuffer.value;
     return;
   }
 
   if (key === "ArrowUp") {
-    if (commandHistory.value.length === 0) return;
+    if (commandHistory.value.length === 0) {
+      return;
+    }
     historySelectionOffset.value++;
     if (historySelectionOffset.value >= commandHistory.value.length) {
       historySelectionOffset.value = commandHistory.value.length;
@@ -131,8 +145,13 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
 
+  if (key === "Escape") {
+    coderef.value?.blur();
+    return;
+  }
+
+  // Mods
   if (key.length > 1) {
-    console.log(key);
     return;
   }
 
@@ -146,7 +165,7 @@ function clearScreen() {
 
 register({
   name: "clear",
-  fn: (state, _) => {
+  fn: (_state, _) => {
     // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
     nextTick(clearScreen);
     return "";
@@ -156,15 +175,14 @@ register({
 </script>
 
 <template>
-  <code class="terminal edit" @keydown="handleInput" tabindex="0" ref="coderef">
+  <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
     <TerminalHistoryItem
       v-for="item in history"
-      :input="item.input"
-      :output="item.output"
-      :cwd="item.cwd"
+      v-bind="item"
+      :key="item.timestamp"
     />
     <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer
-    }}<TerminalBlinker />
+    }}<TerminalBlinker :focussed="focused ?? false" />
   </code>
 </template>
 
@@ -192,16 +210,13 @@ register({
 
   color: #fff;
   background-color: #000;
-  box-shadow:
-    var(--red) 0 0 0 0,
-    var(--red) 0 0 0 0 inset;
+  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
 }
 
 .terminal:focus {
-  box-shadow:
-    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
   outline: none;
