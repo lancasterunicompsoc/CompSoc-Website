@@ -25,6 +25,8 @@ const historySelectionOffset = ref(0);
 
 const coderef = ref<HTMLElement | null>(null);
 
+const { focused } = useFocus(coderef, { initialValue: true });
+
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
 // but the issue is that it depends on this variable, hence introducing a circular dependency
@@ -164,7 +166,7 @@ register({
       :cwd="item.cwd"
     />
     <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer
-    }}<TerminalBlinker />
+    }}<TerminalBlinker :focussed="focused ?? false" />
   </code>
 </template>
 

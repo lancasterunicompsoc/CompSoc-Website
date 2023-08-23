@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps(["cwd"]);
+defineProps<{ cwd: string }>();
 </script>
 
 <template>
