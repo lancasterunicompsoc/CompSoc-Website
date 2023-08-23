@@ -1,14 +1,13 @@
-<script setup>
-defineProps(['cwd'])
+<script setup lang="ts">
+defineProps<{ cwd: string }>();
 </script>
 
 <template>
-    <span class="marker">{{ cwd }}&gt;</span>
+  <span class="marker">{{ cwd }}&gt;</span>
 </template>
 
 <style scoped>
-    .marker {
-        color: var(--red);
-    }
+.marker {
+  color: var(--red);
+}
 </style>
-

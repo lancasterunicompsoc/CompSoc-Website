@@ -1,4 +1,3 @@
-
 <template>
   <div style="display:flex;">
     <img src="/img/logo/light.svg" alt="CompSoc Logo"/>

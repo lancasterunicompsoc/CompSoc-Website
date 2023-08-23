@@ -6,7 +6,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "prisma generate && nuxt prepare",
-    "lint": "eslint --max-warnings 0 .",
+    "lint:code": "eslint --max-warnings 0 .",
+    "lint:style": "prettier --check .",
+    "lint:fix": "prettier --write --list-different . && eslint --max-warnings 0 --fix .",
     "typecheck": "nuxt typecheck",
     "start": "NODE_ENV=production node .output/server/index.mjs"
   },
@@ -24,6 +26,7 @@
     "eslint": "^8.33.0",
     "nuxt": "^3.2.3",
     "nuxt-icon": "^0.4.1",
+    "prettier": "^3.0.2",
     "prisma": "^4.11.0",
     "typescript": "^4.9.5",
     "vue-tsc": "^1.0.24"
