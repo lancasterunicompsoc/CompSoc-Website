@@ -112,7 +112,7 @@ function handleInput(event) {
         --padding: 0.5rem;
         --border-scale: 0.25rem;
 
-        --red: #e20025;
+        --red: #d12415;
 
         display: block;
         width: calc(80ch + var(--padding));

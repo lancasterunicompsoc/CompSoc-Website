@@ -7,6 +7,12 @@
 </template>
 
 <style>
+:root{
+  --highlight1Dark: #ec5042;
+  --highlight2Dark: #d14537;
+  --highlight1Light: #d12415;
+  --highlight2Light: #ae3428;
+}
     * {
         margin: 0;
         padding: 0;

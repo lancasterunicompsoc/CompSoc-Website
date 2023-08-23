@@ -48,7 +48,7 @@ import Logo from './Logo'
     }
 
     .primary-navbar > :not(.sep):hover {
-        background-color: #990022;
+        background-color: #ae3428;
     }
 
     .primary-navbar > .sep {
