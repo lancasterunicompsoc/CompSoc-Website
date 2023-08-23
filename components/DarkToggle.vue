@@ -25,11 +25,6 @@ function toggleDark() {
     <IconSun class="sun" />
     <IconMoon class="moon" />
   </Switch>
-  <!-- <div class="dark:bg-gray-100 bg-darkgrey"> -->
-  <!--   <button class="!outline-none" @click="toggleDark"> -->
-  <!--     <div class="i-carbon-sun dark:i-carbon-moon" /> -->
-  <!--   </button> -->
-  <!-- </div> -->
 </template>
 
 <style scoped>

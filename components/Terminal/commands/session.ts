@@ -1,11 +1,12 @@
-import register, { CommandHandler, Params, State } from "./registry";
+import type { CommandHandler } from "./registry";
+import { register } from "./registry";
 
-export const whoami = (state: State, params: Params): string => {
+export const whoami: CommandHandler = (_state, _params): string => {
   // TODO: get username from session
   return "anonymous";
 };
 
-const join: CommandHandler = (state, params) => {
+const join: CommandHandler = (_state, _params) => {
   // TODO: perform redirect
   return "Redirecting to join page...";
 };

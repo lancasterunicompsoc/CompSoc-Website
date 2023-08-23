@@ -1,4 +1,5 @@
-import register, { CommandHandler, getHelp, getAllCommands } from "./registry";
+import type { CommandHandler } from "./registry";
+import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
 const echo: CommandHandler = (_state, params) => {
@@ -38,7 +39,7 @@ const neofetch: CommandHandler = (state, _params) => {
   return responseLines.join("\n");
 };
 
-const man: CommandHandler = (state, params) => {
+const man: CommandHandler = (_state, params) => {
   if (params.length > 0) {
     if (params.length > 1) {
       return "man can only display one helppage at a time";

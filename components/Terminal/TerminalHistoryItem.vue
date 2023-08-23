@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import TerminalMarker from "./TerminalMarker.vue";
+import type { HistoryItem } from "./index.vue";
 
-defineProps(["input", "output", "cwd"]);
+const props = defineProps<HistoryItem>();
 </script>
 
 <template>
-  <TerminalMarker :cwd="cwd" />
-  {{ input }} <br />
-  {{ output }} <br v-if="output" />
+  <TerminalMarker :cwd="props.cwd" />
+  {{ props.input }} <br />
+  {{ props.output }} <br v-if="props.output" />
 </template>

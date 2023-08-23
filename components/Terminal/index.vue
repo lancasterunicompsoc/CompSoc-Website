@@ -6,12 +6,10 @@ import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 
-import getCommand from "./commands";
 import { cwd } from "./commands/filesystem";
-import register from "./commands/registry";
-import { getAllCommands } from "./commands/registry";
+import { getAllCommands, register, getCommand } from "./commands/registry";
 
-interface HistoryItem {
+export interface HistoryItem {
   input: string;
   output: string | undefined;
   cwd: string;
@@ -152,8 +150,8 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
 
+  // Mods
   if (key.length > 1) {
-    console.log(key);
     return;
   }
 
@@ -180,10 +178,8 @@ register({
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
     <TerminalHistoryItem
       v-for="item in history"
+      v-bind="item"
       :key="item.timestamp"
-      :input="item.input"
-      :output="item.output"
-      :cwd="item.cwd"
     />
     <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer
     }}<TerminalBlinker :focussed="focused ?? false" />

@@ -2,7 +2,7 @@
 <template>
   <button class="Switch !dark:bg-darkgrey" type="button" role="switch">
     <span class="check">
-      <span class="icon" v-if="$slots.default">
+      <span v-if="$slots.default" class="icon">
         <slot />
       </span>
     </span>
@@ -39,9 +39,7 @@ button:focus:not(:focus-visible) {
   height: 18px;
   border-radius: 50%;
   background-color: #fff;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
   transition: transform 0.25s;
 }
 

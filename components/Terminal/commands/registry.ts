@@ -9,7 +9,7 @@ export const registry: Record<string, Command> = {};
 
 type registerParams = { name: string; fn: CommandHandler; help?: string };
 
-export default function register({ name, fn, help }: registerParams) {
+export function register({ name, fn, help }: registerParams) {
   registry[name] = { fn, help };
 }
 

@@ -1,4 +1,5 @@
-import register, { CommandHandler, Params, State } from "./registry";
+import type { CommandHandler, Params, State } from "./registry";
+import { register } from "./registry";
 
 import { whoami } from "./session";
 
@@ -145,4 +146,8 @@ register({
 });
 register({ name: "cwd", fn: cwd, help: "Display current working directory" });
 register({ name: "pwd", fn: cwd, help: "Display current working directory" });
-register({ name: "ls", fn: ls, help: 'List all files and directories in current working directory, or in the specified directory when passed an argument' });
+register({
+  name: "ls",
+  fn: ls,
+  help: "List all files and directories in current working directory, or in the specified directory when passed an argument",
+});
