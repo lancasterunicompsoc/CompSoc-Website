@@ -6,7 +6,7 @@ import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 
-import get_command from "./commands";
+import getCommand from "./commands";
 import { cwd } from "./commands/filesystem";
 import register from "./commands/registry";
 import { getAllCommands } from "./commands/registry";
@@ -15,6 +15,7 @@ interface HistoryItem {
   input: string;
   output: string | undefined;
   cwd: string;
+  timestamp: number; // mainly used for a unique key for v-for
 }
 
 const history = ref<HistoryItem[]>([]);
@@ -39,7 +40,7 @@ function handleCommand(command: string): string | undefined {
     return "";
   }
 
-  const handler = get_command(cmd.toLowerCase());
+  const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
     return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`;
   }
@@ -76,7 +77,12 @@ function handleInput(event: KeyboardEvent) {
     if (command !== "") {
       response = handleCommand(command);
     }
-    history.value.push({ input: command, output: response, cwd: pwd });
+    history.value.push({
+      input: command,
+      output: response,
+      cwd: pwd,
+      timestamp: Date.now(),
+    });
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
@@ -93,14 +99,18 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
   if (key === "Backspace") {
-    if (inputBuffer.value === "" && activeLineBuffer.value === "") return;
+    if (inputBuffer.value === "" && activeLineBuffer.value === "") {
+      return;
+    }
     activeLineBuffer.value = activeLineBuffer.value.slice(0, -1);
     inputBuffer.value = activeLineBuffer.value;
     return;
   }
 
   if (key === "ArrowUp") {
-    if (commandHistory.value.length === 0) return;
+    if (commandHistory.value.length === 0) {
+      return;
+    }
     historySelectionOffset.value++;
     if (historySelectionOffset.value >= commandHistory.value.length) {
       historySelectionOffset.value = commandHistory.value.length;
@@ -137,7 +147,7 @@ function handleInput(event: KeyboardEvent) {
     return;
   }
 
-  if (key == "Escape") {
+  if (key === "Escape") {
     coderef.value?.blur();
     return;
   }
@@ -157,7 +167,7 @@ function clearScreen() {
 
 register({
   name: "clear",
-  fn: (state, _) => {
+  fn: (_state, _) => {
     // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
     nextTick(clearScreen);
     return "";
@@ -167,9 +177,10 @@ register({
 </script>
 
 <template>
-  <code class="terminal edit" @keydown="handleInput" tabindex="0" ref="coderef">
+  <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
     <TerminalHistoryItem
       v-for="item in history"
+      :key="item.timestamp"
       :input="item.input"
       :output="item.output"
       :cwd="item.cwd"
