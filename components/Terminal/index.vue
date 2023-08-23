@@ -9,7 +9,7 @@ import type { State } from "./commands/registry";
 import get_command from "./commands";
 import { cwd } from "./commands/filesystem";
 import register from "./commands/registry";
-import { get_all_commands } from "./commands/registry";
+import { getAllCommands } from "./commands/registry";
 
 interface HistoryItem {
   input: string;
@@ -47,7 +47,7 @@ function handleInput(event: KeyboardEvent) {
   event.preventDefault();
 
   if (key === "Tab") {
-    const cmds = get_all_commands();
+    const cmds = getAllCommands();
     const [partialCmd, ...args] = activeLineBuffer.value.trim().split(" ");
 
     if (!partialCmd || args.length > 0) {

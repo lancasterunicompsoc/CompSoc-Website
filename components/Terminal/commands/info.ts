@@ -1,4 +1,4 @@
-import register, { CommandHandler, get_help, get_all_commands } from "./registry";
+import register, { CommandHandler, get_help, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
 const echo: CommandHandler = (_, params) => {
@@ -47,7 +47,7 @@ const man: CommandHandler = (state, params) => {
     if (!helptext) return `No manual entry for ${params[0]}`;
     return helptext;
   }
-  const commandStrings = get_all_commands().join("\n");
+  const commandStrings = getAllCommands().join("\n");
   return `Help:\nThe following commands are available:\n${commandStrings}\nFor more information, run \`man PROGRAMNAME\``;
 };
 

@@ -21,6 +21,6 @@ export function get_help(name: string) {
   return registry[name]?.help
 }
 
-export function get_all_commands() {
+export function getAllCommands() {
   return Object.keys(registry)
 }
