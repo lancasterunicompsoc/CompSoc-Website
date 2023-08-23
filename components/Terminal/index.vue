@@ -192,13 +192,16 @@ register({
 
   color: #fff;
   background-color: #000;
-  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
+  box-shadow:
+    var(--red) 0 0 0 0,
+    var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
 }
 
 .terminal:focus {
-  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow:
+    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
   outline: none;

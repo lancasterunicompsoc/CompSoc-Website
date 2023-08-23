@@ -16,7 +16,7 @@ if (!useMockAuth) {
     DiscordProvider.default({
       clientId: config.discord_client_id,
       clientSecret: config.discord_client_secret,
-    })
+    }),
   );
 } else {
   providers.push(
@@ -27,10 +27,10 @@ if (!useMockAuth) {
       async authorize(credentials: any) {
         if (credentials) {
           const name = credentials.name;
-          console.log('gonna return the user')
+          console.log("gonna return the user");
           return {
             id: name,
-            name: name,
+            name,
             email: name,
           };
         }
@@ -39,7 +39,7 @@ if (!useMockAuth) {
       credentials: {
         name: { type: "test" },
       },
-    })
+    }),
   );
 }
 

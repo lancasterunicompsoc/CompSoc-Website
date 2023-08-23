@@ -1,12 +1,12 @@
 import register, { CommandHandler, get_help, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
-const echo: CommandHandler = (_, params) => {
+const echo: CommandHandler = (_state, params) => {
   return params.join(" ");
 };
 
-const info: CommandHandler = (_, params) => {
-  let target = params.join(" ");
+const info: CommandHandler = (_state, params) => {
+  const target = params.join(" ");
   switch (target.toLowerCase()) {
     case "compsoc":
     case "lucompsoc":
@@ -23,11 +23,11 @@ const info: CommandHandler = (_, params) => {
   }
 };
 
-const neofetch: CommandHandler = (state, _) => {
+const neofetch: CommandHandler = (state, _params) => {
   const responseLines = [];
   responseLines.push(`${whoami(state, [])}@compsoc.io`);
   responseLines.push(
-    "-".repeat((responseLines.at(responseLines.length - 1) as string).length)
+    "-".repeat((responseLines.at(responseLines.length - 1) as string).length),
   );
   responseLines.push("OS: CompSocOS (Terminal Edition)");
   responseLines.push("Shell: holy-sea 0.0.1");
