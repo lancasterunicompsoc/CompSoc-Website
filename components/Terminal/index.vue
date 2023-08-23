@@ -33,12 +33,16 @@ const { focused } = useFocus(coderef, { initialValue: true });
 const commandState = ref<State>({ filesystem: { cwd: "/home/anonymous" } });
 
 function handleCommand(command: string): string | undefined {
-  let [cmd, ...params] = command.split(" ");
+  const [cmd, ...params] = command.split(" ");
 
-  if (!cmd) return ``;
+  if (!cmd) {
+    return "";
+  }
+
   const handler = get_command(cmd.toLowerCase());
-  if (handler === undefined)
+  if (handler === undefined) {
     return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`;
+  }
 
   return handler(commandState.value, params);
 }
@@ -56,7 +60,7 @@ function handleInput(event: KeyboardEvent) {
       // we dont wanna autocomplete when the user is supplying arguments or when there is no command
       return;
     }
-    const cmdStartsWith = cmds.filter((el) => el.startsWith(partialCmd));
+    const cmdStartsWith = cmds.filter(el => el.startsWith(partialCmd));
 
     // Doing autocomplete with several options is beyond our scope
     if (cmdStartsWith.length === 1) {
@@ -134,7 +138,7 @@ function handleInput(event: KeyboardEvent) {
   }
 
   if (key == "Escape") {
-    coderef.value?.blur()
+    coderef.value?.blur();
     return;
   }
 
@@ -199,16 +203,13 @@ register({
 
   color: #fff;
   background-color: #000;
-  box-shadow:
-    var(--red) 0 0 0 0,
-    var(--red) 0 0 0 0 inset;
+  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
 }
 
 .terminal:focus {
-  box-shadow:
-    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
   outline: none;
