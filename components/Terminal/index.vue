@@ -37,18 +37,13 @@ function handleCommand(command: string): string | undefined {
   return handler(commandState.value, params);
 }
 
-interface KeydownEvent extends Event {
-  key: string;
-}
-
-function handleInput(event: KeydownEvent) {
+function handleInput(event: KeyboardEvent) {
   const { key } = event;
-  console.log(`Main handler read: ${key}`)
 
-  if (key == "Tab") return;
+  if (key === "Tab") return;
   event.preventDefault();
 
-  if (key == "Enter") {
+  if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
     const pwd = cwd(commandState.value, []);
     let response;
@@ -63,14 +58,15 @@ function handleInput(event: KeydownEvent) {
 
     return;
   }
-  if (key == "Backspace") {
+  if (key === "Backspace") {
     if (inputBuffer.value === "") return;
     activeLineBuffer.value = activeLineBuffer.value.slice(0, -1);
     inputBuffer.value = activeLineBuffer.value;
     return;
   }
 
-  if (key == "ArrowUp") {
+  if (key === "ArrowUp") {
+    if (history.value.length === 0) return;
     historySelectionOffset.value++;
     if (historySelectionOffset.value >= history.value.length) {
       historySelectionOffset.value = history.value.length;
@@ -87,7 +83,7 @@ function handleInput(event: KeydownEvent) {
     return;
   }
 
-  if (key == "ArrowDown") {
+  if (key === "ArrowDown") {
     historySelectionOffset.value--;
 
     if (historySelectionOffset.value <= 0) {
@@ -102,6 +98,11 @@ function handleInput(event: KeydownEvent) {
     return;
   }
 
+  if (key === "l" && event.ctrlKey) {
+    clearScreen();
+    return;
+  }
+
   if (key.length > 1) {
     console.log(key);
     return;
@@ -111,31 +112,20 @@ function handleInput(event: KeydownEvent) {
   inputBuffer.value = activeLineBuffer.value;
 }
 
-function handleClear(event: KeydownEvent) {
-  event.preventDefault()
-  clearScreen()
-  // HACK
-  // Unfortunately the main keydown handler function `handleInput` also captures the `l` that was inputted and just displays it to the screen
-  // to get rid of the unnecessary `l`, we clear it shortly after it has been registered
-  setTimeout(() => {
-    activeLineBuffer.value = activeLineBuffer.value.slice(0, activeLineBuffer.value.length - 1)
-  }, 50);
-}
-
 function clearScreen() {
-  history.value = []
+  history.value = [];
 }
 
-register('clear', (state, params) => {
+register("clear", (state, params) => {
   // HACK
   // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
   setTimeout(clearScreen, 50);
-  return ''
-})
+  return "";
+});
 </script>
 
 <template>
-  <code class="terminal edit" @keydown.ctrl.l="handleClear" @keydown="handleInput" tabindex="0">
+  <code class="terminal edit" @keydown="handleInput" tabindex="0">
     <TerminalHistoryItem
       v-for="item in history"
       :input="item.input"
