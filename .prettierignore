@@ -1,0 +1,9 @@
+.hugo_build.lock
+node_modules
+dist
+.output
+.nuxt
+.env
+.tools/
+.idea/
+db.sqlite
