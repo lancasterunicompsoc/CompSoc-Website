@@ -18,8 +18,11 @@ interface HistoryItem {
 
 const inputBuffer = ref("");
 const history = ref<HistoryItem[]>([]);
+const commandHistory = ref<string[]>([]);
 const activeLineBuffer = ref("");
 const historySelectionOffset = ref(0);
+
+const coderef = ref<HTMLElement | null>(null);
 
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
@@ -51,11 +54,19 @@ function handleInput(event: KeyboardEvent) {
       response = handleCommand(command);
     }
     history.value.push({ input: command, output: response, cwd: pwd });
+    commandHistory.value.push(command);
 
     inputBuffer.value = "";
     activeLineBuffer.value = "";
     historySelectionOffset.value = 0;
 
+    // Autoscroll down to the output of the last run command
+    // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
+    nextTick(() => {
+      if (coderef.value) {
+        coderef.value.scrollTop = coderef.value.scrollHeight;
+      }
+    });
     return;
   }
   if (key === "Backspace") {
@@ -66,20 +77,20 @@ function handleInput(event: KeyboardEvent) {
   }
 
   if (key === "ArrowUp") {
-    if (history.value.length === 0) return;
+    if (commandHistory.value.length === 0) return;
     historySelectionOffset.value++;
-    if (historySelectionOffset.value >= history.value.length) {
-      historySelectionOffset.value = history.value.length;
+    if (historySelectionOffset.value >= commandHistory.value.length) {
+      historySelectionOffset.value = commandHistory.value.length;
     }
-    const historySelection = history.value.at(
+    const historySelection = commandHistory.value.at(
       -1 * historySelectionOffset.value
     );
     if (!historySelection) {
       console.error(
-        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${history.value.length}`
+        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`
       );
     }
-    activeLineBuffer.value = historySelection?.input ?? "";
+    activeLineBuffer.value = historySelection ?? "";
     return;
   }
 
@@ -90,10 +101,10 @@ function handleInput(event: KeyboardEvent) {
       historySelectionOffset.value = 0;
       activeLineBuffer.value = inputBuffer.value;
     } else {
-      const historySelection = history.value.at(
+      const historySelection = commandHistory.value.at(
         -1 * historySelectionOffset.value
       );
-      activeLineBuffer.value = historySelection?.input ?? "";
+      activeLineBuffer.value = historySelection ?? "";
     }
     return;
   }
@@ -129,7 +140,7 @@ register({
 </script>
 
 <template>
-  <code class="terminal edit" @keydown="handleInput" tabindex="0">
+  <code class="terminal edit" @keydown="handleInput" tabindex="0" ref="coderef">
     <TerminalHistoryItem
       v-for="item in history"
       :input="item.input"
@@ -161,6 +172,7 @@ register({
 
   font-family: monospace;
   white-space: pre-line;
+  overflow-y: scroll;
 
   color: #fff;
   background-color: #000;
