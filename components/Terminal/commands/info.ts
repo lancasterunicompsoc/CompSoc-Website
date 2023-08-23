@@ -6,7 +6,7 @@ const echo: CommandHandler = (_, params) => {
 };
 
 const info: CommandHandler = (_, params) => {
-  let target = params.join(" ");
+  const target = params.join(" ");
   switch (target.toLowerCase()) {
     case "compsoc":
     case "lucompsoc":

@@ -7,10 +7,10 @@ export type CommandHandler = (
 
 export const registry: { [key: string]: CommandHandler } = {};
 
-export default function register(name: string, handler: CommandHandler) {
+export default function register (name: string, handler: CommandHandler) {
   registry[name] = handler;
 }
 
-export function get_command(name: string) {
+export function get_command (name: string) {
   return registry[name];
 }
