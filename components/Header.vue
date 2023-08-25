@@ -1,7 +1,3 @@
-<script setup>
-import Logo from "./Logo";
-</script>
-
 <template>
   <header
     class="bg-#ddd dark:bg-lightgrey p-8 flex m-0 justify-between items-center"
@@ -16,8 +12,7 @@ import Logo from "./Logo";
       <a href="/about">About Us</a>
       <a href="/events">Events</a>
       <div class="sep"></div>
-      <a href="#">Sign Up</a>
-      <a href="#">Sign In</a>
+      <Login />
     </nav>
     <DarkToggle />
   </header>

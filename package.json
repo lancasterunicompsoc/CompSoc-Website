@@ -17,7 +17,7 @@
     "@nuxt/devtools": "^0.6.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@nuxtjs/tailwindcss": "^6.4.0",
-    "@sidebase/nuxt-auth": "^0.4.3",
+    "@sidebase/nuxt-auth": "^0.5.0",
     "@types/node": "^18.11.18",
     "@unocss/nuxt": "^0.53.4",
     "@unocss/preset-icons": "^0.53.4",
