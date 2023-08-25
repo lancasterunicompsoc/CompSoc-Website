@@ -195,7 +195,7 @@ register({
   --padding: 0.5rem;
   --border-scale: 0.25rem;
 
-        --red: #d12415;
+  --red: #d12415;
 
   display: block;
   width: calc(80ch + var(--padding));
