@@ -18,4 +18,7 @@
   margin: auto;
   padding: 1rem;
 }
+.info-line{
+  text-align: center;
+}
 </style>
