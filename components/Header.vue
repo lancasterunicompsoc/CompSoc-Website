@@ -50,9 +50,9 @@ import Logo from "./Logo";
     transition: background-color 250ms ease-in-out;
   }
 
-    .primary-navbar > :not(.sep):hover {
-        background-color: var(--highlight2Light);
-    }
+  .primary-navbar > :not(.sep):hover {
+      background-color: var(--highlight2Light);
+  }
 
   .primary-navbar > .sep {
     width: 2px;

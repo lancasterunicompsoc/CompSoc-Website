@@ -5,8 +5,8 @@
   </div>
 </template>
 <style scoped>
-img{
-  width:3rem;
-  height:3rem;
+img {
+  width: 3rem;
+  height: 3rem;
 }
 </style>

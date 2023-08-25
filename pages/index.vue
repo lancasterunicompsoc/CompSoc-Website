@@ -12,13 +12,13 @@
 </template>
 
 <style scoped>
-.button{
+.button {
   background-color: var(--highlight2Light);
-  width:fit-content;
+  width: fit-content;
   margin: auto;
   padding: 1rem;
 }
-.info-line{
+.info-line {
   text-align: center;
 }
 </style>
