@@ -42,12 +42,13 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     colors: {
-      darkgrey: "#181818",
+      darkgrey: "#333",
       lightgrey: "#222",
       textcolour: "#e8ebeb",
-      highlight: "#14a6db",
-      highlight2: "#53b2cc",
-      highlight3: "#a9d9e5",
+      highlight1Dark: "#ec5042",
+      highlight2Dark: "#d14537",
+      highlight1Light: "#d12415",
+      highlight2Light: "#ae3428",
     },
   },
 });

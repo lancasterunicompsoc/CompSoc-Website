@@ -51,7 +51,7 @@ import Logo from "./Logo";
   }
 
   .primary-navbar > :not(.sep):hover {
-    background-color: #990022;
+      background-color: var(--highlight2Light);
   }
 
   .primary-navbar > .sep {

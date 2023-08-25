@@ -195,7 +195,7 @@ register({
   --padding: 0.5rem;
   --border-scale: 0.25rem;
 
-  --red: #e20025;
+  --red: #d12415;
 
   display: block;
   width: calc(80ch + var(--padding));
@@ -213,6 +213,8 @@ register({
   box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
+  
+  cursor: text;
 }
 
 .terminal:focus {
