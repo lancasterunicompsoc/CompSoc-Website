@@ -1,18 +1,29 @@
 <template>
   <main class="main-container">
-    <p class="info-line">
-      Lancaster University Computer Science Society exists to promote interest
-      in computing and technology among students and wider society.
-    </p>
+    <Card id="society">
+      <h2>The Society</h2>
+      <p>
+        Lancaster University Computer Science Society exists to promote interest
+        in computing and technology among students and wider society.
+      </p>
+    </Card>
 
-    <a href="#" class="button"> Join the society </a>
+    <Card id="exec">
+      <h2>The Executive Committee</h2>
+      <p>
+        The Executive Committee (or the Exec, for short) is responsible for the running of the Society.
+        They plan and coordinate events and projects, acquire funding, and generally make the Society function.
+      </p>
+    </Card>
+
+    <a href="#" class="btn"> Join the society </a>
   </main>
 </template>
 
 <style scoped>
 .main-container {
   margin: auto;
-  padding-top: 60px;
+  /* padding-top: 60px; */
 }
 
 /* CARDS */
@@ -23,6 +34,7 @@
   margin-top: 30px;
 }
 
+/*
 .card {
   padding: 20px;
   width: 100%;
@@ -34,4 +46,5 @@
   transition: all 0.2s;
   cursor: default;
 }
+*/
 </style>

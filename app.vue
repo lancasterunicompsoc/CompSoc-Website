@@ -15,9 +15,9 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -39,8 +39,8 @@ main {
   line-height: 1.75;
 }
 
-main * {
-  margin-bottom: 1em;
+main > * {
+  margin-bottom: 2.75em;
 }
 
 @media (min-width: 30rem) {
