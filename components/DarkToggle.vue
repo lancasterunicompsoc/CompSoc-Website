@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const color = useColorMode({ initialValue: "dark" });
 
 useHead({
@@ -7,6 +8,12 @@ useHead({
       id: "theme-color",
       name: "theme-color",
       content: () => (color.value === "dark" ? "#222222" : "#ffffff"),
+    },
+  ],
+  link: [
+    {
+      rel: "icon",
+      href: () => (color.value === "dark" ? "/dark-favicon/favicon.ico" : "/favicon.ico"),
     },
   ],
 });
