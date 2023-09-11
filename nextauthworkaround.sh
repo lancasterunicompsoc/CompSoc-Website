@@ -1,3 +1,4 @@
+#!/bin/sh
 # Currently next-auth is not working due to an issue with next-auth and nuxt-auth not interacting properly
 # The current solution is to manually patch the package.json of next-auth
 # https://github.com/sidebase/nuxt-auth/issues/518#issuecomment-1683642304

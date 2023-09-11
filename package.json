@@ -5,7 +5,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "prisma generate && nuxt prepare",
+    "postinstall": "sh nextauthworkaround.sh && prisma generate && nuxt prepare",
     "lint:code": "eslint --max-warnings 0 .",
     "lint:style": "prettier --check .",
     "lint:fix": "prettier --write --list-different . && eslint --max-warnings 0 --fix .",

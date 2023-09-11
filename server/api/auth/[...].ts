@@ -46,6 +46,6 @@ if (!useMockAuth) {
 export default NuxtAuthHandler({
   // TODO: SET A STRONG SECRET, SEE https://sidebase.io/nuxt-auth/configuration/nuxt-auth-handler#secret
   secret: config.secret,
-  adapter: PrismaAdapter(prisma),
+  adapter: useMockAuth ? undefined : PrismaAdapter(prisma),
   providers,
 });
