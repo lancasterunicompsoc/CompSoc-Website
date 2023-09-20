@@ -27,6 +27,10 @@ export default defineConfig({
       "card",
       "px-4 py-4 bg-#ddd dark:bg-lightgrey shadow-highlight2Light dark:shadow-highlight2Dark hover:shadow-highlight1Light hover:dark:shadow-highlight1Dark",
     ],
+    [
+      "centered",
+      "mx-auto"
+    ],
   ],
   presets: [
     presetUno(),

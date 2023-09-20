@@ -5,6 +5,9 @@
       <p>
         Lancaster University Computer Science Society exists to promote interest
         in computing and technology among students and wider society.
+        Social and educational events are run every week, with beginner and
+        advanced topics to cover a wide variety of interests.
+        See our <a href="/events">events</a> for more information.
       </p>
     </Card>
 
@@ -13,17 +16,18 @@
       <p>
         The Executive Committee (or the Exec, for short) is responsible for the running of the Society.
         They plan and coordinate events and projects, acquire funding, and generally make the Society function.
+        The Exec is voted for by the members, and each role is typically held for a year.
+        More information about the Exec can be found in the <a href="constitution">Constitution</a>.
       </p>
     </Card>
 
-    <a href="#" class="btn"> Join the society </a>
+    <a href="/join" class="btn centered"> Join the society </a>
   </main>
 </template>
 
 <style scoped>
 .main-container {
   margin: auto;
-  /* padding-top: 60px; */
 }
 
 /* CARDS */
@@ -34,17 +38,4 @@
   margin-top: 30px;
 }
 
-/*
-.card {
-  padding: 20px;
-  width: 100%;
-  min-height: 200px;
-  display: grid;
-  grid-template-rows: 20px 50px 1fr 50px;
-  border-radius: 10px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-  transition: all 0.2s;
-  cursor: default;
-}
-*/
 </style>

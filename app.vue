@@ -43,6 +43,14 @@ main > * {
   margin-bottom: 2.75em;
 }
 
+main a:not([class]) {
+  color: var(--highlight1Light);
+}
+
+.dark main a:not([class]) {
+  color: var(--highlight1Dark);
+}
+
 @media (min-width: 30rem) {
   main {
     padding-inline: 0;
