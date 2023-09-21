@@ -1,22 +1,6 @@
 <script setup lang="ts">
-import { ref, onBeforeMounted } from "vue"
-let all_events = ref([]);
-
-onMounted(() => {
-fetch("/api/events/all")
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  })
-  .then(data => {
-    all_events.value= data;
-  })
-  .catch(error => {
-    console.error("There was a problem with the fetch operation:", error);
-  });
-})
+import {all_events, getAllEvents} from "./All"
+getAllEvents()
 </script>
 
 <template>
@@ -25,9 +9,21 @@ fetch("/api/events/all")
     <ul>
       <li v-for="(event, index) in all_events" :key="index">
         <h3>{{ event.name }}</h3>
-        <p><strong>Location:</strong> {{ event.location }}</p>
-        <p><strong>Summary:</strong> {{ event.summary }}</p>
+        <p>{{ new Date(event.start_time).toLocaleDateString()}} in {{event.location}}</p>
+        <p>{{event.summary}}</p>
       </li>
     </ul>
   </div>
 </template>
+
+<style scoped>
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+h3{
+font-size:1.3rem;
+font-weight: 600;
+}
+</style>

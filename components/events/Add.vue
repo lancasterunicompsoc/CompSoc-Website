@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
+import { all_events } from "./All";
 const showModal = ref(false)
 let formData = {
   name: "",
@@ -24,8 +25,17 @@ async function addEvent() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(`Event added with ID: ${data.id}`);
-      console.log(data)
+      all_events.value.push({
+        id: data.id,
+        name: formData.name,
+        location: formData.location,
+        summary: formData.summary,
+        description: formData.description,
+        slides: formData.slides,
+        organizer: formData.organizer,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+      })
       formData = {
         name: "",
         location: "",
@@ -48,6 +58,9 @@ async function addEvent() {
 }
 </script>
 <template>
+  <div>
+    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal=true">Add Event</button>
+  </div>
   <div v-if="showModal" class="modal-shade"></div>
   <div v-if="showModal" class="modal dark:bg-darkgrey bg-#e7e7e7">
     <div class="flex flex-justify-between flex-items-center">
@@ -97,7 +110,7 @@ async function addEvent() {
 <style scoped>
 .modal {
   position: absolute;
-  top: 5rem;
+  top: 2rem;
   left: 25vw;
   width: 50vw;
   padding: 1rem;
@@ -112,6 +125,8 @@ async function addEvent() {
   background-color: #00000099;
   width: 100%;
   height: 100%;
+  top:0;
+  left:0;
 }
 
 input,

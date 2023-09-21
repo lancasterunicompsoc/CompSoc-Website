@@ -3,7 +3,9 @@ import All from "../components/events/All.vue"
 import Add from "../components/events/Add.vue"
 </script>
 <template>
-  <All />
-  <Add />
+  <main class="main-container">
+    <Add />
+    <All />
+  </main>
 </template>
 <style scoped></style>
