@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { all_events } from "./All";
+import { all_events, Event } from "./utils";
 const showModal = ref(false)
 let formData = {
   name: "",

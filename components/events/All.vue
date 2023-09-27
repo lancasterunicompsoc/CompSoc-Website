@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {all_events, getAllEvents} from "./All"
+import {all_events, getAllEvents, Event} from "./utils"
 getAllEvents()
 </script>
 
@@ -8,9 +8,9 @@ getAllEvents()
     <h2>All Events</h2>
     <ul>
       <li v-for="(event, index) in all_events" :key="index">
-        <h3>{{ event.name }}</h3>
-        <p>{{ new Date(event.start_time).toLocaleDateString()}} in {{event.location}}</p>
-        <p>{{event.summary}}</p>
+        <h3>{{ (event as Event).name }}</h3>
+        <p>{{ new Date((event as Event).startTime).toLocaleDateString()}} in {{(event as Event).location}}</p>
+        <p>{{(event as Event).summary}}</p>
       </li>
     </ul>
   </div>

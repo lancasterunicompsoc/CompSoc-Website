@@ -1,6 +1,20 @@
 
 import { ref  } from "vue"
-export let all_events = ref([]);
+
+export interface Event {
+  id: number; // Assuming id is a number
+  name: string;
+  location: string;
+  summary: string;
+  description: string;
+  slides: string;
+  organizer: string;
+  startTime: string; // You might want to use a Date type here if startTime is a date
+  endTime: string;   // You might want to use a Date type here if endTime is a date
+}
+
+export let all_events: Ref<Event[]> = ref([]);
+
 
 export function getAllEvents(){
   fetch("/api/events/all")
