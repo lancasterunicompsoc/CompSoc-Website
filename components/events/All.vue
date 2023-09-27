@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import {all_events, getAllEvents, Event} from "./utils"
+import IconDelete from "./IconDelete.vue"
+import IconEdit from "./IconEdit.vue"
+import IconLocation from "./IconLocation.vue"
+import IconSpeaker from "./IconSpeaker.vue"
+import IconTime from "./IconTime.vue"
+import { all_events, getAllEvents, Event } from "./utils"
 getAllEvents()
 </script>
 
@@ -7,10 +12,40 @@ getAllEvents()
   <div>
     <h2>All Events</h2>
     <ul>
-      <li v-for="(event, index) in all_events" :key="index">
+      <li class="card" v-for="(event, index) in all_events" :key="index">
         <h3>{{ (event as Event).name }}</h3>
-        <p>{{ new Date((event as Event).startTime).toLocaleDateString()}} in {{(event as Event).location}}</p>
-        <p>{{(event as Event).summary}}</p>
+        <div class="flex info-line">
+          <IconTime />
+          <p>
+            {{
+              new Date((event as Event).startTime).toLocaleString('en-GB', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: false,
+              })
+            }}
+            to
+            {{
+              new Date((event as Event).endTime).toLocaleString('en-GB', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: false,
+              })
+            }}
+          </p>
+          <IconLocation/>
+          <p>{{ (event as Event).location }}</p>
+          <IconSpeaker />
+          <p>{{ (event as Event).organizer }}</p>
+        </div>
+        <p>{{ (event as Event).summary }}</p>
+        <div class="info-more">
+          <p>{{ (event as Event).description }}</p>
+          <a :href="(event as Event).slides">View Slides</a>
+        </div>
       </li>
     </ul>
   </div>
@@ -22,8 +57,40 @@ h2 {
   font-weight: 600;
 }
 
-h3{
-font-size:1.3rem;
-font-weight: 600;
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+ul {
+  width: 100%;
+}
+
+.card {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+}
+
+.card:hover {
+  filter: brightness(1.3);
+}
+
+.info-line p {
+  margin-right: 1rem;
+}
+
+.info-more {
+  display: none;
+}
+
+.card:hover .info-more {
+  display: block;
+}
+
+.card:nth-child(2n)> :is(h1, h2, h3, h4, h5, h6) {
+  text-align: unset;
 }
 </style>
