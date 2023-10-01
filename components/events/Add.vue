@@ -59,7 +59,7 @@ async function addEvent() {
 </script>
 <template>
   <div>
-    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal=true">Add Event</button>
+    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal = true">Add Event</button>
   </div>
   <div v-if="showModal" class="modal-shade"></div>
   <div v-if="showModal" class="modal dark:bg-darkgrey bg-#e7e7e7">
@@ -114,6 +114,7 @@ async function addEvent() {
   left: 25vw;
   width: 50vw;
   padding: 1rem;
+  z-index: 999;
 }
 
 .modal div {
@@ -125,8 +126,8 @@ async function addEvent() {
   background-color: #00000099;
   width: 100%;
   height: 100%;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
 }
 
 input,
