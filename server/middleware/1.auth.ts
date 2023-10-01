@@ -1,5 +1,4 @@
-import { jwtVerify as joseJwtVerify, errors as joseErrors } from "jose";
-import type { JOSEError } from "jose/dist/types/util/errors";
+import { jwtVerify as joseJwtVerify, errors as joseErrors, decodeJwt } from "jose";
 
 const { secret } = useRuntimeConfig();
 const encodedSecret = new TextEncoder().encode(secret);
@@ -27,9 +26,10 @@ async function verifyJWT(jwt: string): Promise<jwtDecodedType> {
   const { payload } = await joseJwtVerify(jwt, encodedSecret);
   return payload as unknown as jwtDecodedType;
 }
+
 export default eventHandler(async event => {
-  const url = getRequestURL(event);
-  const jwt = url.searchParams.get("jwt");
+  const jwt = getRequestHeader(event, "Bearer");
+  console.log(`request with jwt bearer coming in. jwt: ${jwt}`);
   if (!jwt) {
     return;
   }
@@ -40,10 +40,12 @@ export default eventHandler(async event => {
   } catch (e) {
     // funny thing here... ISS has a service that issues JWTs for us, unfortunately they expire after 5s
     // soooo, because we don't want to set up our own auth, we're just gonna ignore whether a JWT is expired...
+    // TODO: much better idea: when we see a request with a JWT with a 5s exipiration time coming in, we can just issue a new one thats valid for longer
     if (e instanceof joseErrors.JWTExpired) {
       console.log("encountered expired JWT, will just accept it");
-    } else {
-      throw e;
+
+      const payload = decodeJwt(jwt) as unknown as jwtDecodedType;
+      event.context.auth = { jwt, decoded: payload };
     }
   }
 });
