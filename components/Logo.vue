@@ -1,5 +1,12 @@
 <template>
-  <span class="dark:text-highlight text-sky-700">LU</span>
-  <span class="dark:text-highlight2 text-sky-600">Comp</span>
-  <span class="dark:text-highlight3 text-sky-500">Soc</span>
+  <div style="display:flex;">
+    <img src="/img/logo/light.svg" alt="CompSoc Logo"/>
+    LUCompSoc
+  </div>
 </template>
+<style scoped>
+img {
+  width: 3rem;
+  height: 3rem;
+}
+</style>

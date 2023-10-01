@@ -7,6 +7,13 @@
 </template>
 
 <style>
+:root{
+  --highlight1Dark: #ec5042;
+  --highlight2Dark: #d14537;
+  --highlight1Light: #d12415;
+  --highlight2Light: #ae3428;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -32,8 +39,16 @@ main {
   line-height: 1.75;
 }
 
-main * {
-  margin-bottom: 1em;
+main > * {
+  margin-bottom: 2.75em;
+}
+
+main a:not([class]) {
+  color: var(--highlight1Light);
+}
+
+.dark main a:not([class]) {
+  color: var(--highlight1Dark);
 }
 
 @media (min-width: 30rem) {
