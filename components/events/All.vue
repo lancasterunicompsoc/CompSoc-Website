@@ -1,28 +1,12 @@
 <script setup lang="ts">
-import IconDelete from "./IconDelete.vue"
-import IconEdit from "./IconEdit.vue"
 import IconLocation from "./IconLocation.vue"
 import IconSpeaker from "./IconSpeaker.vue"
 import IconTime from "./IconTime.vue"
-import { all_events, getAllEvents, deletePost, Event } from "./utils"
+import { all_events, getAllEvents, Event } from "./utils"
 
 getAllEvents()
 //TODO only get events between today and a year in the future, sort from today to future, do all of this based on startDate
 
-function deleteEvent(index: number, id: number) {
-  const confirmed = window.confirm("Are you sure you want to delete this event?");
-  if (confirmed) {
-    deletePost(id)
-    all_events.value.splice(index, 1)
-  } else {
-    console.log("Event not deleted.");
-  }
-
-}
-
-function editEvent(index: number, id: number) {
-  console.log(id)
-}
 </script>
 
 <template>
@@ -30,6 +14,7 @@ function editEvent(index: number, id: number) {
     <h2>All Events</h2>
     <ul>
       <li class="card" v-for="(event, index) in all_events" :key="index">
+        <NuxtLink :to="`/events/${(event as Event).id}`">
         <h3>{{ (event as Event).name }}</h3>
         <div class="flex info-line">
           <IconTime />
@@ -59,19 +44,8 @@ function editEvent(index: number, id: number) {
           <p>{{ (event as Event).organizer }}</p>
         </div>
         <p>{{ (event as Event).summary }}</p>
-        <div class="info-more">
-          <p>{{ (event as Event).description }}</p>
-          <a :href="(event as Event).slides">View Slides</a>
-          <div class="flex">
-            <button @click="editEvent(index, (event as Event).id)">
-              <IconEdit />
-            </button>
-            <button @click="deleteEvent(index, (event as Event).id)">
-              <IconDelete />
-            </button>
-          </div>
-        </div>
-      </li>
+        </NuxtLink>
+     </li>
     </ul>
   </div>
 </template>
@@ -107,15 +81,8 @@ ul {
   margin-right: 1rem;
 }
 
-.info-more {
-  display: none;
-}
-
-.card:hover .info-more {
-  display: block;
-}
-
 .card:nth-child(2n)> :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
 }
+
 </style>
