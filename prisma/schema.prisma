@@ -30,3 +30,15 @@ model User {
 
   @@index([id, username])
 }
+
+model Event {
+  id        Int       @id @default(autoincrement())
+  name      String
+  location  String
+  summary   String
+  description String
+  slides String
+  organizer String
+  startTime DateTime
+  endTime   DateTime
+}
