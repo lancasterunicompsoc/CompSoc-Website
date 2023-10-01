@@ -1,19 +1,16 @@
 <script setup lang="ts">
-const { status, signIn, signOut } = useAuth();
-
-async function toggleAuthStatus() {
-  switch (status.value) {
-    case "authenticated":
-      await signOut();
-      break;
-    case "unauthenticated":
-      await signIn();
-  }
-}
+const { isLoggedIn, logOut } = useAuth();
 </script>
 
 <template>
-  <a @click="toggleAuthStatus" class="pointer-cursor">{{
-    status === "authenticated" ? "Sign out" : "Sign in"
-  }}</a>
+  <ClientOnly>
+    <a
+      v-if="!isLoggedIn"
+      class="pointer-cursor"
+      href="https://weblogin.lancs.ac.uk/jwt/compsoctestdev"
+    >
+      Log In
+    </a>
+    <a v-else href="#" class="pointer-cursor" @click="logOut">Log Out</a>
+  </ClientOnly>
 </template>

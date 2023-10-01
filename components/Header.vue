@@ -11,7 +11,6 @@
     <nav class="primary-navbar">
       <a href="/about">About Us</a>
       <a href="/events">Events</a>
-      <div class="sep"></div>
       <Login />
     </nav>
     <DarkToggle />
@@ -49,12 +48,6 @@
     background-color: #990022;
   }
 
-  .primary-navbar > .sep {
-    width: 2px;
-    padding-inline: 0;
-
-    background-color: currentColor;
-  }
 }
 
 @media (min-width: 60rem) {
