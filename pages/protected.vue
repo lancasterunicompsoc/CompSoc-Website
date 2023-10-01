@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div>I'm protected! Session data: {{ data }}</div>
-    <button class="rounded-xl shadow-xl p-2 m-2" @click="signOut()">
-      sign out
-    </button>
+    <div>I'm protected! Session data: {{ decoded }}</div>
+    <div>jwt: {{ jwt }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: "auth" });
+definePageMeta({ middleware: "auth-protected" });
 
-const { data, signOut } = useSession();
+const { jwt, decoded } = useAuth();
 </script>
