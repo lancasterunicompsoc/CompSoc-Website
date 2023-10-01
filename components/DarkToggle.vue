@@ -17,14 +17,16 @@ function toggleDark() {
 </script>
 
 <template>
-  <Switch
-    class="SwitchAppearance"
-    aria-label="toggle dark mode"
-    @click="toggleDark"
-  >
-    <IconSun class="sun" />
-    <IconMoon class="moon" />
-  </Switch>
+  <div>
+    <Switch
+      class="SwitchAppearance"
+      aria-label="toggle dark mode"
+      @click="toggleDark"
+    >
+      <IconSun class="sun" />
+      <IconMoon class="moon" />
+    </Switch>
+  </div>
 </template>
 
 <style scoped>

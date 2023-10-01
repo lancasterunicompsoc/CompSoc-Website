@@ -1,4 +1,8 @@
-import { jwtVerify as joseJwtVerify, errors as joseErrors, decodeJwt } from "jose";
+import {
+  jwtVerify as joseJwtVerify,
+  errors as joseErrors,
+  decodeJwt,
+} from "jose";
 
 const { secret } = useRuntimeConfig();
 const encodedSecret = new TextEncoder().encode(secret);
@@ -30,7 +34,7 @@ async function verifyJWT(jwt: string): Promise<jwtDecodedType> {
 export default eventHandler(async event => {
   const jwt = getRequestHeader(event, "Bearer");
   console.log(`request with jwt bearer coming in. jwt: ${jwt}`);
-  if (!jwt) {
+  if (!jwt || jwt === "undefined") {
     return;
   }
 

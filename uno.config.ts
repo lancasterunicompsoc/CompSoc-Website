@@ -48,6 +48,7 @@ export default defineConfig({
       highlight: "#14a6db",
       highlight2: "#53b2cc",
       highlight3: "#a9d9e5",
+      darkred: "#990022",
     },
   },
 });
