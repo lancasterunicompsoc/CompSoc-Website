@@ -4,22 +4,24 @@ import IconEdit from "./IconEdit.vue"
 import IconLocation from "./IconLocation.vue"
 import IconSpeaker from "./IconSpeaker.vue"
 import IconTime from "./IconTime.vue"
-import { all_events, getAllEvents, Event } from "./utils"
-
-const deleteName = ref("")
-const canDelete = ref(false)
+import { all_events, getAllEvents, deletePost, Event } from "./utils"
 
 getAllEvents()
 //TODO only get events between today and a year in the future, sort from today to future, do all of this based on startDate
 
-function deleteEvent(id:number){
-  if (canDelete.value){
-
+function deleteEvent(index: number, id: number) {
+  const confirmed = window.confirm("Are you sure you want to delete this event?");
+  if (confirmed) {
+    deletePost(id)
+    all_events.value.splice(index, 1)
+  } else {
+    console.log("Event not deleted.");
   }
+
 }
 
-function editEvent(id:number){
-
+function editEvent(index: number, id: number) {
+  console.log(id)
 }
 </script>
 
@@ -51,7 +53,7 @@ function editEvent(id:number){
               })
             }}
           </p>
-          <IconLocation/>
+          <IconLocation />
           <p>{{ (event as Event).location }}</p>
           <IconSpeaker />
           <p>{{ (event as Event).organizer }}</p>
@@ -61,14 +63,12 @@ function editEvent(id:number){
           <p>{{ (event as Event).description }}</p>
           <a :href="(event as Event).slides">View Slides</a>
           <div class="flex">
-            <button @click="editEvent((event as Event).id)"><IconEdit/></button>
-            <button @click="eventDelete = true"><IconDelete/></button>
-            <div class="deleteModal" v-if="eventDelete">
-              <h2>Danger: delete event '{{(event as Event).name}}'</h2>
-              <p>To confirm that you want to do this type the name of this event in the box below.</p>
-              <input ref="deleteName" type="text" @input="canDelete = deleteName == (event as Event).name">
-              <button :class="{allowAction: canDelete}" class="confirm" @click="deleteEvent((event as Event).id)">Confirm</button>
-            </div>
+            <button @click="editEvent(index, (event as Event).id)">
+              <IconEdit />
+            </button>
+            <button @click="deleteEvent(index, (event as Event).id)">
+              <IconDelete />
+            </button>
           </div>
         </div>
       </li>

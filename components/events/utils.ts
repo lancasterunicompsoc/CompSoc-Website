@@ -1,34 +1,50 @@
-
-import { ref  } from "vue"
+import { ref } from "vue";
 
 export interface Event {
-  id: number; // Assuming id is a number
+  id: number;
   name: string;
   location: string;
   summary: string;
   description: string;
   slides: string;
   organizer: string;
-  startTime: string; // You might want to use a Date type here if startTime is a date
-  endTime: string;   // You might want to use a Date type here if endTime is a date
+  startTime: string;
+  endTime: string;
 }
 
 export let all_events: Ref<Event[]> = ref([]);
 
-
-export function getAllEvents(){
+export function getAllEvents() {
   fetch("/api/events/all")
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(data => {
+      all_events.value = data;
+      console.log(all_events.value[0]);
+    })
+    .catch(error => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
+
+export function deletePost(id: number) {
+  $fetch("/api/events/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: id }),
   })
-  .then(data => {
-    all_events.value= data;
-      console.log(all_events.value[0])
-  })
-  .catch(error => {
-    console.error("There was a problem with the fetch operation:", error);
-  });
+    .then(response => {
+      if (!response.ok) {
+        console.error("Failed to delete event.");
+      }
+    })
+    .catch(error => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
 }
