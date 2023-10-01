@@ -5,7 +5,22 @@ import IconLocation from "./IconLocation.vue"
 import IconSpeaker from "./IconSpeaker.vue"
 import IconTime from "./IconTime.vue"
 import { all_events, getAllEvents, Event } from "./utils"
+
+const deleteName = ref("")
+const canDelete = ref(false)
+
 getAllEvents()
+//TODO only get events between today and a year in the future, sort from today to future, do all of this based on startDate
+
+function deleteEvent(id:number){
+  if (canDelete.value){
+
+  }
+}
+
+function editEvent(id:number){
+
+}
 </script>
 
 <template>
@@ -45,6 +60,16 @@ getAllEvents()
         <div class="info-more">
           <p>{{ (event as Event).description }}</p>
           <a :href="(event as Event).slides">View Slides</a>
+          <div class="flex">
+            <button @click="editEvent((event as Event).id)"><IconEdit/></button>
+            <button @click="eventDelete = true"><IconDelete/></button>
+            <div class="deleteModal" v-if="eventDelete">
+              <h2>Danger: delete event '{{(event as Event).name}}'</h2>
+              <p>To confirm that you want to do this type the name of this event in the box below.</p>
+              <input ref="deleteName" type="text" @input="canDelete = deleteName == (event as Event).name">
+              <button :class="{allowAction: canDelete}" class="confirm" @click="deleteEvent((event as Event).id)">Confirm</button>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
