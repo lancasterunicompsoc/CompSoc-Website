@@ -23,14 +23,13 @@ export default defineEventHandler(async event => {
         organizer,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
-        difficulty, 
+        difficulty,
       },
     });
-
     // Send the ID of the newly created event in the response
     return { id: newEvent.id };
   } catch (error) {
     console.error("Error adding event:", error);
-    return "";
+    return { ok: false, error };
   }
 });

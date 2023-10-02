@@ -1,23 +1,30 @@
 import { decodeJwt } from "jose";
-import type { jwtDecodedType } from "~/server/middleware/1.auth";
+
+type jwtPayloadType = {
+  username: string;
+  banned: boolean;
+  role: "USER" | "PRIVILEGED" | "ADMIN";
+  displayName: string
+  mail: string
+  iat: number;
+  exp: number;
+  iss: "compsoc";
+};
 
 export const useAuth = () => {
-  const jwt = useLocalStorage<string | undefined>("jwt", undefined);
+  const jwt = useLocalStorage<string | null>("jwt", null);
   const decoded = computed(() => {
     if (jwt.value) {
-      const payload = decodeJwt(jwt.value) as unknown as jwtDecodedType;
+      const payload = decodeJwt(jwt.value) as unknown as jwtPayloadType;
       return payload;
     }
     return undefined;
   });
 
-  // Due to ISS issueing JWTs valid for only 5 seconds, we have decided to just ignore the expiration date...
-  const isLoggedIn = computed(() => !!jwt.value);
+  const isLoggedIn = computed(() => jwt.value && jwt.value.length > 50);
 
   const logOut = () => {
-    if (!process.server) {
-      jwt.value = undefined;
-    }
+    jwt.value = null;
   };
 
   return { jwt, decoded, isLoggedIn, logOut };
