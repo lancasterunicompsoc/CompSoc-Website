@@ -6,6 +6,8 @@ import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { getEvent, deletePost, EventDifficulty } from "./utils";
 import type { Event } from "./utils";
+
+const router = useRouter();
 const p = defineProps<{ id: string }>();
 
 const thisEvent = ref<Event>({
@@ -34,7 +36,7 @@ function deleteEvent(id: number) {
   );
   if (confirmed) {
     deletePost(id);
-    window.history.back();
+    router.back();
   } else {
     console.log("Event not deleted.");
   }
