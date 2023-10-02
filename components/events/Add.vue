@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { allEvents, EventDifficulty } from "./utils";
+import { getAllEvents, EventDifficulty } from "./utils";
+import type { Event } from "./utils";
 const showModal = ref(false);
 
-let formData = {
+const formData = ref<Omit<Event, "id">>({
   name: "",
   location: "",
   summary: "",
@@ -11,13 +12,27 @@ let formData = {
   organizer: "",
   startTime: "",
   endTime: "",
-  difficulty: "", // Add the difficulty field to formData
+  difficulty: EventDifficulty.EASY, // Add the difficulty field to formData
+});
+
+const resetFormData = () => {
+  formData.value = {
+    name: "",
+    location: "",
+    summary: "",
+    description: "",
+    slides: "",
+    organizer: "",
+    startTime: "",
+    endTime: "",
+    difficulty: EventDifficulty.EASY,
+  };
 };
 
 async function addEvent() {
   try {
     let difficulty: EventDifficulty;
-    switch (formData.difficulty) {
+    switch (formData.value.difficulty) {
       case "SOCIAL":
         difficulty = EventDifficulty.SOCIAL;
         break;
@@ -32,35 +47,16 @@ async function addEvent() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Bearer: localStorage.getItem("jwt") as unknown as string,
       },
       body: JSON.stringify(formData),
     });
 
     if (response.ok) {
       const data = await response.json();
-      allEvents.value.push({
-        id: data.id,
-        name: formData.name,
-        location: formData.location,
-        summary: formData.summary,
-        description: formData.description,
-        slides: formData.slides,
-        organizer: formData.organizer,
-        startTime: formData.startTime,
-        endTime: formData.endTime,
-        difficulty: difficulty,
-      });
-      formData = {
-        name: "",
-        location: "",
-        summary: "",
-        description: "",
-        slides: "",
-        organizer: "",
-        startTime: "",
-        endTime: "",
-        difficulty: "", // Reset the difficulty field
-      };
+      console.log(data);
+      getAllEvents();
+      resetFormData();
       showModal.value = false;
     } else {
       const errorData = await response.json();

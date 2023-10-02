@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+  ssr: false,
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
     github_client_id: "", // same here

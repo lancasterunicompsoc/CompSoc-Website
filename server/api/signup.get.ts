@@ -1,28 +1,43 @@
+import { createError as createServerError } from "h3";
+import { verifyIssJwt, createJWT } from "~/utils/jwt";
+
 export default defineEventHandler(async event => {
-  if (!event.context.auth) {
-    return;
+  const query = getQuery(event);
+  const jwt = query.jwt;
+
+  if (typeof jwt !== "string") {
+    throw createServerError("sign up without jwt from ISS");
   }
 
-  const { username, displayName, mail } = event.context.auth.decoded;
+  try {
+    const verified = await verifyIssJwt(jwt);
+    console.log("iss token was verified");
+    const { username, displayName, mail } = verified;
 
-  const user = await event.context.prisma.user.findFirst({
-    where: {
-      username,
-    },
-  });
+    const user = await event.context.prisma.user.findFirst({
+      where: {
+        username,
+      },
+    });
+    console.log("got user");
 
-  if (user !== null) {
-    console.log(`user ${username} already exists, this request was just a token refresh`);
-    return;
+    // If this is the first time logging, we need to register the user
+    let isFirstTime = false;
+    if (user === null) {
+      isFirstTime = true;
+      await event.context.prisma.user.create({
+        data: {
+          username,
+          displayName,
+          mail,
+        },
+      });
+    }
+
+    const createdToken = await createJWT(verified, event.context.prisma);
+    return { jwt: createdToken, ok: true, isFirstTime };
+  } catch (e) {
+    console.log(`entered catch, ${e}`);
+    throw createServerError((e as Error).name);
   }
-
-  await event.context.prisma.user.create({
-    data: {
-      username,
-      displayName,
-      mail,
-    },
-  });
-
-  console.log(`new user signed up with username: ${username}`);
 });
