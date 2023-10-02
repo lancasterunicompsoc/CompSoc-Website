@@ -1,13 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-
-export default defineEventHandler(async event => {
-  const query = getQuery(event)
-  const prisma = new PrismaClient();
-  const records = await prisma.event.findUnique({
-    where:{
+export default defineEventHandler(event => {
+  const query = getQuery(event);
+  return event.context.prisma.event.findUnique({
+    where: {
       id: Number(query.id),
-  },
+    },
   });
-  prisma.$disconnect();
-  return records;
 });

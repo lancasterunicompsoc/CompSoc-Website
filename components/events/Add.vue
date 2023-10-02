@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { all_events, Event, EventDifficulty } from "./utils";
-const showModal = ref(false)
+import { allEvents } from "./utils";
+import type { Event, EventDifficulty } from "./utils";
+const showModal = ref(false);
+
 let formData = {
   name: "",
   location: "",
@@ -39,7 +40,7 @@ async function addEvent() {
 
     if (response.ok) {
       const data = await response.json();
-      all_events.value.push({
+      allEvents.value.push({
         id: data.id,
         name: formData.name,
         location: formData.location,
@@ -75,7 +76,9 @@ async function addEvent() {
 </script>
 <template>
   <div>
-    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal = true">Add Event</button>
+    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal = true">
+      Add Event
+    </button>
   </div>
   <div v-if="showModal" class="modal-shade"></div>
   <div v-if="showModal" class="modal dark:bg-darkgrey bg-#e7e7e7">
@@ -86,38 +89,83 @@ async function addEvent() {
     <form @submit.prevent="addEvent">
       <div>
         <label for="name">Name:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="name" v-model="formData.name" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="name"
+          v-model="formData.name"
+          required
+        />
       </div>
       <div>
         <label for="location">Location:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="location" v-model="formData.location" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="location"
+          v-model="formData.location"
+          required
+        />
       </div>
       <div>
         <label for="summary">Summary:</label>
-        <textarea class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="summary" v-model="formData.summary"
-          required></textarea>
+        <textarea
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="summary"
+          v-model="formData.summary"
+          required
+        ></textarea>
       </div>
       <div>
         <label for="description">Description:</label>
-        <textarea class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="description" v-model="formData.description"
-          required></textarea>
+        <textarea
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="description"
+          v-model="formData.description"
+          required
+        ></textarea>
       </div>
       <div>
         <label for="slides">Slides:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="slides" v-model="formData.slides" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="slides"
+          v-model="formData.slides"
+          required
+        />
       </div>
       <div>
         <label for="organizer">Organizer:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="organizer" v-model="formData.organizer" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="organizer"
+          v-model="formData.organizer"
+          required
+        />
       </div>
       <div>
         <label for="startTime">Start Time:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="startTime" v-model="formData.startTime"
-          required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="startTime"
+          v-model="formData.startTime"
+          required
+        />
       </div>
       <div>
         <label for="endTime">End Time:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="endTime" v-model="formData.endTime" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="endTime"
+          v-model="formData.endTime"
+          required
+        />
       </div>
       <div>
         <label>Difficulty:</label>

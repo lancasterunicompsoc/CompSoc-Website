@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import IconLocation from "./IconLocation.vue"
-import IconSpeaker from "./IconSpeaker.vue"
-import IconTime from "./IconTime.vue"
-import { all_events, getAllEvents, Event } from "./utils"
+import IconLocation from "./IconLocation.vue";
+import IconSpeaker from "./IconSpeaker.vue";
+import IconTime from "./IconTime.vue";
+import { allEvents, getAllEvents, Event } from "./utils";
+
 
 getAllEvents()
 
@@ -12,27 +13,27 @@ getAllEvents()
   <div>
     <h2>All Events</h2>
     <ul>
-      <li class="card" v-for="(event, index) in all_events" :key="index">
+      <li class="card" v-for="(event, index) in allEvents" :key="index">
         <NuxtLink :to="`/events/${(event as Event).id}`">
           <h3>{{ (event as Event).name }}</h3>
           <div class="flex info-line">
             <IconTime />
             <p>
               {{
-                new Date((event as Event).startTime).toLocaleString('en-GB', {
-                  weekday: 'long',
-                  day: 'numeric',
-                  month: 'long',
-                  hour: 'numeric',
-                  minute: 'numeric',
+                new Date((event as Event).startTime).toLocaleString("en-GB", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  hour: "numeric",
+                  minute: "numeric",
                   hour12: false,
                 })
               }}
               to
               {{
-                new Date((event as Event).endTime).toLocaleString('en-GB', {
-                  hour: 'numeric',
-                  minute: 'numeric',
+                new Date((event as Event).endTime).toLocaleString("en-GB", {
+                  hour: "numeric",
+                  minute: "numeric",
                   hour12: false,
                 })
               }}
@@ -81,7 +82,7 @@ ul {
   margin-right: 1rem;
 }
 
-.card:nth-child(2n)> :is(h1, h2, h3, h4, h5, h6) {
+.card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
 }
 
