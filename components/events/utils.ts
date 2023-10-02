@@ -12,7 +12,7 @@ export interface Event {
   endTime: string;
 }
 
-export let all_events: Ref<Event[]> = ref([]);
+export const all_events: Ref<Event[]> = ref([]);
 
 export function getAllEvents() {
   fetch("/api/events/all")
@@ -30,8 +30,10 @@ export function getAllEvents() {
     });
 }
 
-
-export function getEvent(id: string, callback: (data: Event | null, error: Error | null) => void) {
+export function getEvent(
+  id: string,
+  callback: (data: Event | null, error: Error | null) => void,
+) {
   fetch(`/api/events/event?id=${id}`)
     .then(response => {
       if (!response.ok) {
