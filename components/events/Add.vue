@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { allEvents } from "./utils";
-import type { Event, EventDifficulty } from "./utils";
+import { allEvents, EventDifficulty } from "./utils";
 const showModal = ref(false);
 
 let formData = {
@@ -17,18 +16,17 @@ let formData = {
 
 async function addEvent() {
   try {
-    let difficulty: EventDifficulty
+    let difficulty: EventDifficulty;
     switch (formData.difficulty) {
       case "SOCIAL":
-        difficulty = EventDifficulty.SOCIAL
+        difficulty = EventDifficulty.SOCIAL;
         break;
       case "HARD":
-        difficulty = EventDifficulty.HARD
+        difficulty = EventDifficulty.HARD;
         break;
       default:
-        difficulty = EventDifficulty.EASY
+        difficulty = EventDifficulty.EASY;
         break;
-
     }
     const response = await fetch("/api/events/add", {
       method: "POST",
@@ -170,19 +168,42 @@ async function addEvent() {
       <div>
         <label>Difficulty:</label>
         <div>
-          <input type="radio" id="easy" name="difficulty" value="EASY" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="easy"
+            name="difficulty"
+            value="EASY"
+            v-model="formData.difficulty"
+          />
           <label for="easy">Easy</label>
         </div>
         <div>
-          <input type="radio" id="hard" name="difficulty" value="HARD" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="hard"
+            name="difficulty"
+            value="HARD"
+            v-model="formData.difficulty"
+          />
           <label for="hard">Hard</label>
         </div>
         <div>
-          <input type="radio" id="social" name="difficulty" value="SOCIAL" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="social"
+            name="difficulty"
+            value="SOCIAL"
+            v-model="formData.difficulty"
+          />
           <label for="social">Social</label>
         </div>
       </div>
-      <button class="submit bg-#ddd dark:bg-lightgrey float-right" type="submit">Add Event</button>
+      <button
+        class="submit bg-#ddd dark:bg-lightgrey float-right"
+        type="submit"
+      >
+        Add Event
+      </button>
     </form>
   </div>
 </template>

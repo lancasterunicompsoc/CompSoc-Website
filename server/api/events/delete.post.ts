@@ -9,7 +9,7 @@ export default defineEventHandler(async event => {
     // Send the ID of the newly created event in the response
     return { ok: true };
   } catch (error) {
-    console.error("Error adding event:", error);
+    console.error("Error deleting event:", error);
     return { ok: false };
   }
 });
