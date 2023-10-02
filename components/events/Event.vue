@@ -4,7 +4,8 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
-import { getEvent, deletePost, Event } from "./utils"; const p = defineProps<{ id: string }>();
+import { getEvent, deletePost, Event } from "./utils";
+const p = defineProps<{ id: string }>();
 
 const thisEvent: Ref<Event> = ref({
   id: 0,
