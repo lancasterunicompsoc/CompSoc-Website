@@ -9,6 +9,7 @@ export default defineEventHandler(async event => {
       organizer,
       startTime,
       endTime,
+      difficulty,
     } = await readBody(event);
 
     // Use Prisma to create a new event
@@ -22,6 +23,7 @@ export default defineEventHandler(async event => {
         organizer,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
+        difficulty, 
       },
     });
 

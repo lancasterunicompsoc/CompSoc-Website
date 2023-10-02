@@ -4,10 +4,11 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
-import { getEvent, deletePost, Event } from "./utils";
+import { getEvent, deletePost } from "./utils";
+import type { Event, EventDifficulty } from "./utils";
 const p = defineProps<{ id: string }>();
 
-const thisEvent: Ref<Event> = ref({
+const thisEvent = ref<Event>({
   id: 0,
   name: "",
   location: "",
@@ -17,6 +18,7 @@ const thisEvent: Ref<Event> = ref({
   organizer: "",
   startTime: "",
   endTime: "",
+  difficulty: EventDifficulty.EASY,
 });
 
 getEvent(p.id, (data, err) => {
@@ -71,6 +73,7 @@ function editEvent(id: number) {
     <p>{{ thisEvent.location }}</p>
     <IconSpeaker />
     <p>{{ thisEvent.organizer }}</p>
+    <p class="tag">{{thisEvent.difficulty}}</p>
   </div>
   <p>{{ thisEvent.summary }}</p>
   <p>{{ thisEvent.description }}</p>
@@ -118,5 +121,11 @@ ul {
 
 .card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
+}
+
+.tag{
+  background-color: var(--highlight2Light);
+  color: white;
+  padding:0.3rem;
 }
 </style>

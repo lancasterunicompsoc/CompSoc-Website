@@ -8,6 +8,13 @@ export interface Event {
   organizer: string;
   startTime: string;
   endTime: string;
+  difficulty: EventDifficulty;
+}
+
+export enum EventDifficulty {
+  EASY = "EASY",
+  HARD = "HARD",
+  SOCIAL = "SOCIAL",
 }
 
 export const allEvents = ref<Event[]>([]);

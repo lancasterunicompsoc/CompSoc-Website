@@ -42,6 +42,7 @@ getAllEvents()
             <p>{{ (event as Event).location }}</p>
             <IconSpeaker />
             <p>{{ (event as Event).organizer }}</p>
+            <p class="tag">{{ (event as Event).difficulty }}</p>
           </div>
           <p>{{ (event as Event).summary }}</p>
         </NuxtLink>
@@ -83,5 +84,11 @@ ul {
 
 .card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
+}
+
+.tag {
+  background-color: var(--highlight2Light);
+  color: white;
+  padding: 0.3rem;
 }
 </style>
