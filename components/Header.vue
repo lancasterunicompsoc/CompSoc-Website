@@ -19,6 +19,7 @@
     >
       <a class="hover:bg-darkred" href="/about">About Us</a>
       <a class="hover:bg-darkred" href="/events">Events</a>
+      <a class="hover:bg-darkred" href="https://slides.compsoc.io/">Slides</a>
       <Login class="hover:bg-darkred" />
       <DarkToggle />
     </nav>
