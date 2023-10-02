@@ -15,6 +15,7 @@ import Logo from "./Logo";
     <nav class="primary-navbar">
       <a href="/about">About Us</a>
       <a href="/events">Events</a>
+      <a href="https://slides.compsoc.io">Slides</a>
       <div class="sep"></div>
       <a href="#">Sign Up</a>
       <a href="#">Sign In</a>
