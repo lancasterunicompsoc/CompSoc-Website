@@ -1,13 +1,19 @@
-import { PrismaClient } from "@prisma/client";
-
 export default defineEventHandler(async event => {
   try {
-    const prisma = new PrismaClient();
-    const { name, location, summary, description, slides, organizer, startTime, endTime } =
-      await readBody(event);
+    const {
+      name,
+      location,
+      summary,
+      description,
+      slides,
+      organizer,
+      startTime,
+      endTime,
+      difficulty,
+    } = await readBody(event);
 
     // Use Prisma to create a new event
-    const newEvent = await prisma.event.create({
+    const newEvent = await event.context.prisma.event.create({
       data: {
         name,
         location,
@@ -17,9 +23,9 @@ export default defineEventHandler(async event => {
         organizer,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
+        difficulty, 
       },
     });
-    prisma.$disconnect()
 
     // Send the ID of the newly created event in the response
     return { id: newEvent.id };

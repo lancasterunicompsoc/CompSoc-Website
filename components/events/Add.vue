@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { all_events, Event } from "./utils";
+import { all_events, Event, EventDifficulty } from "./utils";
 const showModal = ref(false)
 let formData = {
   name: "",
@@ -11,10 +11,24 @@ let formData = {
   organizer: "",
   startTime: "",
   endTime: "",
-}
+  difficulty: "", // Add the difficulty field to formData
+};
 
 async function addEvent() {
   try {
+    let difficulty: EventDifficulty
+    switch (formData.difficulty) {
+      case "SOCIAL":
+        difficulty = EventDifficulty.SOCIAL
+        break;
+      case "HARD":
+        difficulty = EventDifficulty.HARD
+        break;
+      default:
+        difficulty = EventDifficulty.EASY
+        break;
+
+    }
     const response = await fetch("/api/events/add", {
       method: "POST",
       headers: {
@@ -35,7 +49,8 @@ async function addEvent() {
         organizer: formData.organizer,
         startTime: formData.startTime,
         endTime: formData.endTime,
-      })
+        difficulty: difficulty,
+      });
       formData = {
         name: "",
         location: "",
@@ -45,8 +60,9 @@ async function addEvent() {
         organizer: "",
         startTime: "",
         endTime: "",
+        difficulty: "", // Reset the difficulty field
       };
-      showModal.value = false
+      showModal.value = false;
     } else {
       const errorData = await response.json();
       console.log(`Error adding event: ${errorData.error}`);
@@ -102,6 +118,21 @@ async function addEvent() {
       <div>
         <label for="endTime">End Time:</label>
         <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="endTime" v-model="formData.endTime" required />
+      </div>
+      <div>
+        <label>Difficulty:</label>
+        <div>
+          <input type="radio" id="easy" name="difficulty" value="EASY" v-model="formData.difficulty" />
+          <label for="easy">Easy</label>
+        </div>
+        <div>
+          <input type="radio" id="hard" name="difficulty" value="HARD" v-model="formData.difficulty" />
+          <label for="hard">Hard</label>
+        </div>
+        <div>
+          <input type="radio" id="social" name="difficulty" value="SOCIAL" v-model="formData.difficulty" />
+          <label for="social">Social</label>
+        </div>
       </div>
       <button class="submit bg-#ddd dark:bg-lightgrey float-right" type="submit">Add Event</button>
     </form>
