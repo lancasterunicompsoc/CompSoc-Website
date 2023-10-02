@@ -4,8 +4,9 @@ import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { allEvents, getAllEvents, Event } from "./utils";
 
-getAllEvents();
-//TODO only get events between today and a year in the future, sort from today to future, do all of this based on startDate
+
+getAllEvents()
+
 </script>
 
 <template>
