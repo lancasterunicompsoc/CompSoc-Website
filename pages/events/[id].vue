@@ -1,15 +1,8 @@
 <script setup lang="ts">
+import Event from "~/components/events/Event.vue";
 
-import Event from "~/components/events/Event.vue"
-
-const route = useRoute()
-let id: string;
-
-if (route.params.id == undefined) {
-  throw console.error("Failed to get param.")
-} else {
-  id = route.params.id as string
-}
+const route = useRoute();
+const id = route.params.id as unknown as string;
 </script>
 
 <template>
