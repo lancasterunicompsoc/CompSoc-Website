@@ -1,9 +1,8 @@
-export default defineEventHandler(async event => {
+export default defineEventHandler(event => {
   const query = getQuery(event);
-  const records = await event.context.prisma.event.findUnique({
+  return event.context.prisma.event.findUnique({
     where: {
       id: Number(query.id),
     },
   });
-  return records;
 });
