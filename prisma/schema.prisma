@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider     = "mysql"
+
   url          = env("NUXT_DATABASE_URL")
   relationMode = "prisma"
 }
@@ -13,7 +14,7 @@ model User {
   banned      Boolean   @default(false)
   displayName String
   mail        String
-  role        User_role @default(USER)
+  role        Role      @default(USER)
   username    String    @unique
 
   @@index([id, username])
@@ -38,7 +39,7 @@ enum EventDifficulty {
   SOCIAL
 }
 
-enum User_role {
+enum Role {
   USER
   PRIVILEGED
   ADMIN

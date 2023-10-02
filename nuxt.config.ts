@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    "@sidebase/nuxt-auth",
     "@nuxt/devtools",
     "@vueuse/nuxt",
     "@nuxt/content",
@@ -22,5 +21,8 @@ export default defineNuxtConfig({
     database_url: "", // same here
     discord_client_secret: "",
     discord_client_id: "",
+    public: {
+      loginUrl: "",
+    },
   },
 });
