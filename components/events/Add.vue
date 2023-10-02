@@ -47,6 +47,7 @@ async function addEvent() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Bearer: localStorage.getItem("jwt") as unknown as string,
       },
       body: JSON.stringify(formData),
     });

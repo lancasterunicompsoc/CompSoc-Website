@@ -57,8 +57,11 @@ export function getEvent(
 }
 
 export function deletePost(id: number) {
-  $fetch<{ok: boolean}>("/api/events/delete", {
+  $fetch<{ ok: boolean }>("/api/events/delete", {
     method: "POST",
+    headers: {
+      Bearer: localStorage.getItem("jwt") as unknown as string,
+    },
     body: { id },
   })
     .then(response => {
