@@ -7,6 +7,11 @@ import IconTime from "./IconTime.vue";
 import { getEvent, deletePost, EventDifficulty } from "./utils";
 import type { Event } from "./utils";
 
+const { decoded } = useAuth();
+const isAdmin = computed(
+  () => decoded.value && decoded.value?.role === "ADMIN",
+);
+
 const router = useRouter();
 const p = defineProps<{ id: string }>();
 
@@ -80,7 +85,7 @@ function editEvent(id: number) {
   <p>{{ thisEvent.summary }}</p>
   <p>{{ thisEvent.description }}</p>
   <a :href="thisEvent.slides">View Slides</a>
-  <div class="flex">
+  <div class="flex" v-if="isAdmin">
     <button @click="editEvent(thisEvent.id)">
       <IconEdit />
     </button>
