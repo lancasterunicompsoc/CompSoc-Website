@@ -50,7 +50,7 @@ export function getEvent(
 }
 
 export function deletePost(id: number) {
-  $fetch<{ ok: boolean }>("/api/events/delete", {
+  $fetch<{ok: boolean}>("/api/events/delete", {
     method: "POST",
     body: { id },
   })
