@@ -1,5 +1,3 @@
-import { ref } from "vue";
-
 export interface Event {
   id: number;
   name: string;
@@ -12,7 +10,7 @@ export interface Event {
   endTime: string;
 }
 
-export const all_events: Ref<Event[]> = ref([]);
+export const allEvents = ref<Event[]>([]);
 
 export function getAllEvents() {
   fetch("/api/events/all")
@@ -23,7 +21,7 @@ export function getAllEvents() {
       return response.json();
     })
     .then(data => {
-      all_events.value = data;
+      allEvents.value = data;
     })
     .catch(error => {
       console.error("There was a problem with the fetch operation:", error);
@@ -52,12 +50,9 @@ export function getEvent(
 }
 
 export function deletePost(id: number) {
-  $fetch("/api/events/delete", {
+  $fetch<{ ok: boolean }>("/api/events/delete", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: id }),
+    body: { id },
   })
     .then(response => {
       if (!response.ok) {
