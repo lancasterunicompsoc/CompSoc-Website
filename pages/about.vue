@@ -21,11 +21,19 @@
       </p>
     </Card>
 
-    <a href="/join" class="btn centered"> Join the society </a>
+    <a href="https://lancastersu.co.uk/groups/compsoc-2be7/join" class="button btn centered"> Join the society </a>
   </main>
 </template>
 
 <style scoped>
+.button {
+  background-color: var(--highlight2Light);
+  width: fit-content;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 0;
+}
+
 .main-container {
   margin: auto;
 }

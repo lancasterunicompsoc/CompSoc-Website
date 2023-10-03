@@ -57,7 +57,7 @@ export default defineConfig({
       highlight2Dark: "#d14537",
       highlight1Light: "#d12415",
       highlight2Light: "#ae3428",
-      darkred: "#990022",
+      darkred: "#d14537",
     },
     boxShadow: {
       br: " 0px 0px 1px 0 #000,  1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff)",
