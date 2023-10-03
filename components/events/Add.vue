@@ -49,7 +49,7 @@ async function addEvent() {
         "Content-Type": "application/json",
         Bearer: localStorage.getItem("jwt") as unknown as string,
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formData.value),
     });
 
     if (response.ok) {
