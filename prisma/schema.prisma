@@ -3,30 +3,30 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider = "mysql"
 
   url          = env("NUXT_DATABASE_URL")
   relationMode = "prisma"
 }
 
 model User {
-  id          String    @id @default(cuid())
-  banned      Boolean   @default(false)
+  id          String  @id @default(cuid())
+  banned      Boolean @default(false)
   displayName String
   mail        String
-  role        Role      @default(USER)
-  username    String    @unique
+  role        Role    @default(USER)
+  username    String  @unique
 
   @@index([id, username])
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
-  name        String
-  location    String
-  summary     String
-  description String
-  slides      String
+  id          Int             @id @default(autoincrement())
+  name        String          @db.LongText
+  location    String          @db.LongText
+  summary     String          @db.LongText
+  description String          @db.LongText
+  slides      String          @db.LongText
   organizer   String
   startTime   DateTime
   endTime     DateTime
