@@ -7,8 +7,10 @@ export const whoami: CommandHandler = (_state, _params): string => {
 };
 
 const join: CommandHandler = (_state, _params) => {
-  // TODO: perform redirect
-  return "Redirecting to join page...";
+  navigateTo("https://lancastersu.co.uk/groups/compsoc-2be7/join", {
+    external: true,
+  });
+  return ""
 };
 
 register({

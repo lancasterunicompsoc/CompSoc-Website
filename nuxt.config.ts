@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    "@sidebase/nuxt-auth",
     "@nuxt/devtools",
     "@vueuse/nuxt",
     "@nuxt/content",
@@ -15,6 +14,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+  ssr: false,
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
     github_client_id: "", // same here
@@ -22,5 +22,8 @@ export default defineNuxtConfig({
     database_url: "", // same here
     discord_client_secret: "",
     discord_client_id: "",
+    public: {
+      loginUrl: "",
+    },
   },
 });

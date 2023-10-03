@@ -5,6 +5,7 @@ import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
+import "./commands/";
 
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
