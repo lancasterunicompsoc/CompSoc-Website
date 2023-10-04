@@ -17,22 +17,8 @@ export enum EventDifficulty {
   SOCIAL = "SOCIAL",
 }
 
-export const allEvents = ref<Event[]>([]);
-
 export function getAllEvents() {
-  fetch("/api/events/all")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then(data => {
-      allEvents.value = data;
-    })
-    .catch(error => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
+  return $fetch<Event[]>("/api/events/all");
 }
 
 export function getEvent(

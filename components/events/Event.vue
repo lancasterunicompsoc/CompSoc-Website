@@ -4,7 +4,7 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
-import { getEvent, deletePost, EventDifficulty } from "./utils";
+import { deletePost } from "./utils";
 import type { Event } from "./utils";
 
 const { decoded } = useAuth();
@@ -13,27 +13,7 @@ const isAdmin = computed(
 );
 
 const router = useRouter();
-const p = defineProps<{ id: string }>();
-
-const thisEvent = ref<Event>({
-  id: 0,
-  name: "",
-  location: "",
-  summary: "",
-  description: "",
-  slides: "",
-  organizer: "",
-  startTime: "",
-  endTime: "",
-  difficulty: EventDifficulty.EASY,
-});
-
-getEvent(p.id, (data, err) => {
-  if (err || data === null) {
-    throw console.error("Failed", err);
-  }
-  thisEvent.value = data;
-});
+const p = defineProps<{ event: Event; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
   const confirmed = window.confirm(
@@ -53,46 +33,60 @@ function editEvent(id: number) {
 </script>
 
 <template>
-  <h3>{{ thisEvent.name }}</h3>
-  <div class="flex info-line">
-    <IconTime />
-    <p>
-      {{
-        new Date(thisEvent.startTime).toLocaleString("en-GB", {
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          hour: "numeric",
-          minute: "numeric",
-          hour12: false,
-        })
-      }}
-      to
-      {{
-        new Date(thisEvent.endTime).toLocaleString("en-GB", {
-          hour: "numeric",
-          minute: "numeric",
-          hour12: false,
-        })
-      }}
-    </p>
-    <IconLocation />
-    <p>{{ thisEvent.location }}</p>
-    <IconSpeaker />
-    <p>{{ thisEvent.organizer }}</p>
-    <p class="tag">{{thisEvent.difficulty}}</p>
+  <h3>{{ event.name }}</h3>
+  <div class="flex info-line items-center flex-wrap">
+    <figure class="flex">
+      <figcaption>
+        <IconTime />
+      </figcaption>
+      <p>
+        {{
+          new Date(event.startTime).toLocaleString("en-GB", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: false,
+          })
+        }}
+        to
+        {{
+          new Date(event.endTime).toLocaleString("en-GB", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: false,
+          })
+        }}
+      </p>
+    </figure>
+    <figure class="flex">
+      <figcaption>
+        <IconLocation />
+      </figcaption>
+      <p>{{ event.location }}</p>
+    </figure>
+    <figure class="flex">
+      <figcaption>
+        <IconSpeaker />
+      </figcaption>
+      <p>{{ event.organizer }}</p>
+    </figure>
+    <span class="tag sm:ml-auto">{{ event.difficulty }}</span>
   </div>
-  <p>{{ thisEvent.summary }}</p>
-  <p>{{ thisEvent.description }}</p>
-  <a :href="thisEvent.slides">View Slides</a>
-  <div class="flex" v-if="isAdmin">
-    <button @click="editEvent(thisEvent.id)">
-      <IconEdit />
-    </button>
-    <button @click="deleteEvent(thisEvent.id)">
-      <IconDelete />
-    </button>
-  </div>
+  <p>{{ event.summary }}</p>
+  <template v-if="isFullSize">
+    <p>{{ event.description }}</p>
+    <a :href="event.slides" v-if="event.slides">View Slides</a>
+    <div class="flex" v-if="isAdmin">
+      <button @click="editEvent(event.id)">
+        <IconEdit />
+      </button>
+      <button @click="deleteEvent(event.id)">
+        <IconDelete />
+      </button>
+    </div>
+  </template>
 </template>
 
 <style scoped>
@@ -130,9 +124,10 @@ ul {
   text-align: unset;
 }
 
-.tag{
+.tag {
   background-color: var(--highlight2Light);
   color: white;
-  padding:0.3rem;
+  padding: 0.25rem 0.5rem;
+  height: max-content;
 }
 </style>

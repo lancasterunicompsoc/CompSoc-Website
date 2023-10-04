@@ -1,7 +1,9 @@
 <template>
   <div class="page">
     <Header />
-    <slot />
+    <div class="py-4">
+      <slot />
+    </div>
     <Footer />
   </div>
 </template>
