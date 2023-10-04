@@ -1,6 +1,10 @@
+import { useAuthStore } from "~/stores/auth";
+
 export default defineNuxtRouteMiddleware(async to => {
   const jwt = to.query.jwt;
+  const authstore = useAuthStore();
 
+  // After logging in from weblogin.lancs.ac.uk, they set the ?jwt=... url query
   // This only happens right after logging in
   if (typeof jwt === "string" && jwt.length > 0) {
     if (!process.server) {
@@ -13,7 +17,7 @@ export default defineNuxtRouteMiddleware(async to => {
         if (!result.ok) {
           console.error(`Error while signup: ${result}`);
         }
-        localStorage.setItem("jwt", result.jwt);
+        authstore.setJWT(result.jwt);
       } catch (e) {
         console.error(e);
       }

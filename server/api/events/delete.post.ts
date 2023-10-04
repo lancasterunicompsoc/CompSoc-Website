@@ -1,5 +1,4 @@
 export default defineEventHandler(async event => {
-  console.log(event.context.auth?.decoded)
   if (event.context.auth?.decoded?.role !== "ADMIN") {
     throw new Error("you do not belong here");
   }

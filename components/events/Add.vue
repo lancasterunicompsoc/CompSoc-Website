@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { getAllEvents, EventDifficulty } from "./utils";
 import type { Event } from "./utils";
+import { useAuthStore } from "~/stores/auth";
 const showModal = ref(false);
+const { jwt, isLoggedIn } = useAuthStore();
 
 const formData = ref<Omit<Event, "id">>({
   name: "",
@@ -30,6 +32,9 @@ const resetFormData = () => {
 };
 
 async function addEvent() {
+  if (!isLoggedIn) {
+    return;
+  }
   try {
     let difficulty: EventDifficulty;
     switch (formData.value.difficulty) {
@@ -43,11 +48,12 @@ async function addEvent() {
         difficulty = EventDifficulty.EASY;
         break;
     }
+
     const response = await fetch("/api/events/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Bearer: localStorage.getItem("jwt") as unknown as string,
+        Bearer: jwt as string,
       },
       body: JSON.stringify(formData.value),
     });

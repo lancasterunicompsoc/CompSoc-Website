@@ -17,6 +17,7 @@
     "@nuxt/devtools": "^0.6.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@nuxtjs/tailwindcss": "^6.4.0",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.2",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^18.11.18",
     "@unocss/nuxt": "^0.55.3",
@@ -34,6 +35,7 @@
   "dependencies": {
     "@nuxt/content": "^2.7.0",
     "@nuxtjs/color-mode": "^3.3.0",
+    "@pinia/nuxt": "^0.4.11",
     "@prisma/client": "^4.11.0",
     "@trpc/client": "^10.12.0",
     "@trpc/server": "^10.12.0",

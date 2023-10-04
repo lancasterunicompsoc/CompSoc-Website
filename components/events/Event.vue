@@ -6,21 +6,22 @@ import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { deletePost } from "./utils";
 import type { Event } from "./utils";
+import { useAuthStore } from "~/stores/auth";
 
-const { decoded } = useAuth();
-const isAdmin = computed(
-  () => decoded.value && decoded.value?.role === "ADMIN",
-);
+const { isAdmin, jwt, isLoggedIn } = useAuthStore();
 
 const router = useRouter();
 const p = defineProps<{ event: Event; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
+  if (!isLoggedIn) {
+    return;
+  }
   const confirmed = window.confirm(
     "Are you sure you want to delete this event?",
   );
   if (confirmed) {
-    deletePost(id);
+    deletePost(id, jwt);
     router.back();
   } else {
     console.log("Event not deleted.");

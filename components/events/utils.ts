@@ -42,11 +42,11 @@ export function getEvent(
     });
 }
 
-export function deletePost(id: number) {
+export function deletePost(id: number, jwt: string) {
   $fetch<{ ok: boolean }>("/api/events/delete", {
     method: "POST",
     headers: {
-      Bearer: localStorage.getItem("jwt") as unknown as string,
+      Bearer: jwt,
     },
     body: { id },
   })

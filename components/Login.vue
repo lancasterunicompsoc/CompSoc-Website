@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { isLoggedIn, logOut } = useAuth();
+import { useAuthStore } from "~/stores/auth";
+
+const { isLoggedIn, logOut } = useAuthStore();
 const config = useRuntimeConfig();
 const { loginUrl } = config.public;
 </script>
