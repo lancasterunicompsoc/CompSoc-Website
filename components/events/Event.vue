@@ -34,60 +34,62 @@ function editEvent(id: number) {
 </script>
 
 <template>
-  <h3>{{ event.name }}</h3>
-  <div class="flex info-line items-center flex-wrap">
-    <figure class="flex">
-      <figcaption>
-        <IconTime />
-      </figcaption>
-      <p>
-        {{
-          new Date(event.startTime).toLocaleString("en-GB", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: false,
-          })
-        }}
-        to
-        {{
-          new Date(event.endTime).toLocaleString("en-GB", {
-            hour: "numeric",
-            minute: "numeric",
-            hour12: false,
-          })
-        }}
-      </p>
-    </figure>
-    <figure class="flex">
-      <figcaption>
-        <IconLocation />
-      </figcaption>
-      <p>{{ event.location }}</p>
-    </figure>
-    <figure class="flex">
-      <figcaption>
-        <IconSpeaker />
-      </figcaption>
-      <p>{{ event.organizer }}</p>
-    </figure>
-    <span class="tag sm:ml-auto">{{ event.difficulty }}</span>
-  </div>
-  <p>{{ event.summary }}</p>
-  <template v-if="isFullSize">
-    <p>{{ event.description }}</p>
-    <a :href="event.slides" v-if="event.slides">View Slides</a>
-    <div class="flex" v-if="isAdmin">
-      <button @click="editEvent(event.id)">
-        <IconEdit />
-      </button>
-      <button @click="deleteEvent(event.id)">
-        <IconDelete />
-      </button>
+  <div :class="{ wrapper: isFullSize }" class="bg-#ddd dark:bg-lightgrey">
+    <h3>{{ event.name }}</h3>
+    <div class="flex info-line items-center flex-wrap">
+      <figure class="flex">
+        <figcaption>
+          <IconTime />
+        </figcaption>
+        <p>
+          {{
+            new Date(event.startTime).toLocaleString("en-GB", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: false,
+            })
+          }}
+          to
+          {{
+            new Date(event.endTime).toLocaleString("en-GB", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: false,
+            })
+          }}
+        </p>
+      </figure>
+      <figure class="flex">
+        <figcaption>
+          <IconLocation />
+        </figcaption>
+        <p>{{ event.location }}</p>
+      </figure>
+      <figure class="flex">
+        <figcaption>
+          <IconSpeaker />
+        </figcaption>
+        <p>{{ event.organizer }}</p>
+      </figure>
+      <span class="tag sm:ml-auto">{{ event.difficulty }}</span>
     </div>
-  </template>
+    <p :class="{ compressedSummary: !isFullSize }">{{ event.summary }}</p>
+    <template v-if="isFullSize">
+      <p>{{ event.description }}</p>
+      <a :href="event.slides" v-if="event.slides">View Slides</a>
+      <div class="flex" v-if="isAdmin">
+        <button @click="editEvent(event.id)">
+          <IconEdit />
+        </button>
+        <button @click="deleteEvent(event.id)">
+          <IconDelete />
+        </button>
+      </div>
+    </template>
+  </div>
 </template>
 
 <style scoped>
@@ -105,24 +107,8 @@ ul {
   width: 100%;
 }
 
-.card {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  width: 100%;
-  display: block;
-  cursor: pointer;
-}
-
-.card:hover {
-  filter: brightness(1.3);
-}
-
 .info-line p {
   margin-right: 1rem;
-}
-
-.card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
-  text-align: unset;
 }
 
 .tag {
@@ -131,4 +117,22 @@ ul {
   padding: 0.25rem 0.5rem;
   height: max-content;
 }
+
+.compressedSummary {
+  display: block;
+  display: -webkit-box;
+  width: 100%;
+  max-height: calc(1rem * 3* 1.4);
+  font-size: 1rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.7rem;
+}
+
+.wrapper {
+  margin: 1em 0;
+  padding: 1em 1.5em;
+}
+
 </style>
