@@ -1,8 +1,12 @@
+import { useAuthStore } from "~/stores/auth";
+
 export default defineNuxtRouteMiddleware(to => {
-  if (!process.server) {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt === null) {
-      return abortNavigation("Please log in first");
-    }
+  const authstore = useAuthStore();
+  const {
+    public: { loginUrl },
+  } = useRuntimeConfig();
+
+  if (authstore.isExpired) {
+    return navigateTo(loginUrl, { external: true });
   }
 });

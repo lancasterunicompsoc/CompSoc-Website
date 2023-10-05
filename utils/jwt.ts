@@ -27,7 +27,10 @@ export async function verifyIssJwt(jwt: string): Promise<jwtDecodedType> {
 }
 
 export async function verifyJWT(token: string) {
-  return jwt.verify(token, secret) as (jwtPayloadType & {iat: number, exp: number});
+  return jwt.verify(token, secret) as jwtPayloadType & {
+    iat: number;
+    exp: number;
+  };
 }
 
 export async function createJWT(

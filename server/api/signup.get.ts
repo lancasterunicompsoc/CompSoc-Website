@@ -19,7 +19,6 @@ export default defineEventHandler(async event => {
         username,
       },
     });
-    console.log("got user");
 
     // If this is the first time logging, we need to register the user
     let isFirstTime = false;

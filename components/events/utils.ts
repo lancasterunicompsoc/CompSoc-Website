@@ -17,22 +17,8 @@ export enum EventDifficulty {
   SOCIAL = "SOCIAL",
 }
 
-export const allEvents = ref<Event[]>([]);
-
 export function getAllEvents() {
-  fetch("/api/events/all")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then(data => {
-      allEvents.value = data;
-    })
-    .catch(error => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
+  return $fetch<Event[]>("/api/events/all");
 }
 
 export function getEvent(
@@ -56,11 +42,11 @@ export function getEvent(
     });
 }
 
-export function deletePost(id: number) {
+export function deletePost(id: number, jwt: string) {
   $fetch<{ ok: boolean }>("/api/events/delete", {
     method: "POST",
     headers: {
-      Bearer: localStorage.getItem("jwt") as unknown as string,
+      Bearer: jwt,
     },
     body: { id },
   })
