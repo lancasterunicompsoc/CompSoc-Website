@@ -97,7 +97,7 @@ export const useAuthStore = defineStore("auth", {
     logOut() {
       this.jwt = null;
       this.payload = null;
-    }
+    },
   },
   persist: {
     storage: persistedState.localStorage,

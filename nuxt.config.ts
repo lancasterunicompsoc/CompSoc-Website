@@ -28,4 +28,9 @@ export default defineNuxtConfig({
       loginUrl: "",
     },
   },
+  app: {
+    head: {
+      title: "LUCompSoc"
+    }
+  }
 });

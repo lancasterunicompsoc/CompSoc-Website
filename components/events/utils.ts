@@ -5,6 +5,7 @@ export interface Event {
   summary: string;
   description: string;
   slides: string;
+  image: string;
   organizer: string;
   startTime: string;
   endTime: string;
