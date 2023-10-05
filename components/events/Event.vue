@@ -122,7 +122,7 @@ ul {
   display: block;
   display: -webkit-box;
   width: 100%;
-  max-height: calc(1rem * 3* 1.4);
+  max-height: calc(1rem * 3 * 1.4);
   font-size: 1rem;
   line-height: 1.3;
   overflow: hidden;
@@ -134,5 +134,4 @@ ul {
   margin: 1em 0;
   padding: 1em 1.5em;
 }
-
 </style>
