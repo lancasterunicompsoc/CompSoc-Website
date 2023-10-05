@@ -11,6 +11,7 @@ const formData = ref<Omit<Event, "id">>({
   summary: "",
   description: "",
   slides: "",
+  image: "",
   organizer: "",
   startTime: "",
   endTime: "",
@@ -24,6 +25,7 @@ const resetFormData = () => {
     summary: "",
     description: "",
     slides: "",
+    image: "",
     organizer: "",
     startTime: "",
     endTime: "",
@@ -91,6 +93,10 @@ async function addEvent() {
         <label for="description">Description:</label>
         <textarea class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="description" v-model="formData.description"
           required></textarea>
+      </div>
+      <div>
+        <label for="image">Image:</label>
+        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="image" v-model="formData.slides" />
       </div>
       <div>
         <label for="slides">Slides:</label>
