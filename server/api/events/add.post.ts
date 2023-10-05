@@ -1,3 +1,4 @@
+import { useValidatedBody, z } from "h3-zod";
 export default defineEventHandler(async event => {
   if (event.context.auth?.decoded?.role !== "ADMIN") {
     throw new Error("you do not belong here");
@@ -13,7 +14,22 @@ export default defineEventHandler(async event => {
       startTime,
       endTime,
       difficulty,
-    } = await readBody(event);
+    } = await useValidatedBody(
+      event,
+      z.object({
+        name: z.string(),
+        location: z.string(),
+        summary: z.string(),
+        description: z.string(),
+        slides: z
+          .string()
+          .refine(value => value.startsWith("https://slides.compsoc.io/") || value == ""),
+        organizer: z.string(),
+        startTime: z.coerce.date(),
+        endTime: z.coerce.date(),
+        difficulty: z.enum(["EASY", "HARD", "SOCIAL"]),
+      }),
+    );
 
     // Use Prisma to create a new event
     const newEvent = await event.context.prisma.event.create({
@@ -24,8 +40,8 @@ export default defineEventHandler(async event => {
         description,
         slides,
         organizer,
-        startTime: new Date(startTime),
-        endTime: new Date(endTime),
+        startTime,
+        endTime,
         difficulty,
       },
     });
