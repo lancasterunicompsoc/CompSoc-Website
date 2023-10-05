@@ -4724,6 +4724,11 @@ gzip-size@^7.0.0:
   dependencies:
     duplexer "^0.1.2"
 
+h3-zod@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/h3-zod/-/h3-zod-0.5.1.tgz#4f1585730c454fc7216cdc5cc66b81e0172626a0"
+  integrity sha512-hltUPbYv7XYAzZJIvA2lTfRBO9QyDXhALmalfRaVdjSeuCV4vLi7hULaA+n+orGR68rRLFZ2Gc9hbfQ756GZpg==
+
 h3@^1.5.0, h3@^1.6.6, h3@^1.7.1, h3@^1.8.1:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/h3/-/h3-1.8.2.tgz#69ea8ca0285c1bb268cd08b9a7017e02939f88b7"
