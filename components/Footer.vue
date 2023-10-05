@@ -4,7 +4,6 @@ import Github from "./SVG/Github.vue";
 import Instagram from "./SVG/Instagram.vue";
 import Twitter from "./SVG/Twitter.vue";
 import Facebook from "./SVG/Facebook.vue";
-import Twitch from "./SVG/Twitch.vue";
 </script>
 <template>
   <footer
@@ -32,13 +31,6 @@ import Twitch from "./SVG/Twitch.vue";
       class="social-icon"
     >
       <Facebook />
-    </a>
-    <a
-      href="https://www.twitch.tv/lu_compsoc"
-      target="_blank"
-      class="social-icon"
-    >
-      <Twitch />
     </a>
   </footer>
 </template>
