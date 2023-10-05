@@ -51,7 +51,7 @@ ul {
   filter: brightness(1.3);
 }
 
-.card:nth-child(2n)> :is(h1, h2, h3, h4, h5, h6) {
+.card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
 }
 </style>
