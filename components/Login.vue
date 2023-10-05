@@ -9,7 +9,7 @@ const { loginUrl } = config.public;
 <template>
   <ClientOnly>
     <div v-bind="$attrs">
-      <a v-if="!isLoggedIn" class="pointer-cursor" :href="loginUrl"> Log In </a>
+      <a v-if="!isLoggedIn" class="pointer-cursor" :href="loginUrl">Log In</a>
       <a v-else href="#" class="pointer-cursor" @click="logOut">Log Out</a>
     </div>
   </ClientOnly>
