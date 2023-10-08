@@ -116,6 +116,8 @@ ul {
   color: white;
   padding: 0.25rem 0.5rem;
   height: max-content;
+  width: 8ch;
+  text-align: center;
 }
 
 .compressedSummary {
