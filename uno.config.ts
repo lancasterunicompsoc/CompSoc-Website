@@ -31,6 +31,10 @@ export default defineConfig({
       "centered",
       "mx-auto"
     ],
+    [
+      "row",
+      "flex flex-row justify-evenly"
+    ]
   ],
   presets: [
     presetUno(),

@@ -6,7 +6,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "prisma generate && nuxt prepare",
-    "lint:code": "eslint --max-warnings 0 .",
+    "lint:code": "eslint --max-warnings 0",
     "lint:style": "prettier --check .",
     "lint:fix": "prettier --write --list-different . && eslint --max-warnings 0 --fix .",
     "typecheck": "nuxt typecheck",
@@ -43,6 +43,7 @@
     "jsonwebtoken": "^9.0.2",
     "superjson": "^1.12.2",
     "trpc-nuxt": "^0.7.0",
+    "xp.css": "^0.2.6",
     "zod": "^3.21.2"
   }
 }
