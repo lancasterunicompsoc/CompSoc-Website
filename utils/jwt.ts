@@ -1,4 +1,4 @@
-import type { PrismaClient, Role } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { jwtVerify as joseJwtVerify } from "jose";
 
@@ -13,6 +13,7 @@ export type jwtDecodedType = {
   mail: string;
 };
 
+export type Role = "USER" | "PRIVILEGED" | "ADMIN";
 export type jwtPayloadType = {
   username: string;
   displayName: string;
@@ -27,7 +28,10 @@ export async function verifyIssJwt(jwt: string): Promise<jwtDecodedType> {
 }
 
 export async function verifyJWT(token: string) {
-  return jwt.verify(token, secret) as (jwtPayloadType & {iat: number, exp: number});
+  return jwt.verify(token, secret) as jwtPayloadType & {
+    iat: number;
+    exp: number;
+  };
 }
 
 export async function createJWT(

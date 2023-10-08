@@ -1,6 +1,6 @@
 <template>
   <header
-    class="bg-#ddd dark:bg-lightgrey p-8 flex flex-col sm:flex-row m-0 justify-between items-center"
+    class="bg-#ddd dark:bg-lightgrey px-8 py-4 flex flex-col sm:flex-row m-0 justify-between items-center"
   >
     <div class="flex items-center justify-between w-full">
       <a href="/">
@@ -8,7 +8,11 @@
           <Logo />
         </h1>
       </a>
-      <div class="cursor-pointer flex transition-all" v-show="isMobile" @click="toggleMenu">
+      <div
+        class="cursor-pointer flex transition-all"
+        v-show="isMobile"
+        @click="toggleMenu"
+      >
         <span class="i-carbon-menu" v-show="!isMenuOpen"></span>
         <span class="i-carbon-close" v-show="isMenuOpen"></span>
       </div>

@@ -27,6 +27,7 @@ model Event {
   summary     String          @db.LongText
   description String          @db.LongText
   slides      String          @db.LongText
+  image       String?         @db.LongText
   organizer   String
   startTime   DateTime
   endTime     DateTime

@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@unocss/nuxt",
     "nuxt-icon",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
   ],
   build: {
     transpile: ["trpc-nuxt"],
@@ -26,4 +28,9 @@ export default defineNuxtConfig({
       loginUrl: "",
     },
   },
+  app: {
+    head: {
+      title: "LUCompSoc"
+    }
+  }
 });

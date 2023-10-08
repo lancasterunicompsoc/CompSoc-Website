@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="prose">
     <h1 id="preface">Preface</h1>
     <h2 id="preface--format">Format</h2>
     <p>All sections of this document are to be considered normative unless
