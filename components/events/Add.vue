@@ -96,7 +96,7 @@ async function addEvent() {
       </div>
       <div>
         <label for="image">Image:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="image" v-model="formData.slides" />
+        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="image" v-model="formData.image" />
       </div>
       <div>
         <label for="slides">Slides:</label>
