@@ -3,8 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-
+  provider     = "mysql"
   url          = env("NUXT_DATABASE_URL")
   relationMode = "prisma"
 }
@@ -27,11 +26,18 @@ model Event {
   summary     String          @db.LongText
   description String          @db.LongText
   slides      String          @db.LongText
-  image       String?         @db.LongText
   organizer   String
   startTime   DateTime
   endTime     DateTime
   difficulty  EventDifficulty
+  image       String?         @db.LongText
+}
+
+model Announcement {
+  id       Int     @id @default(autoincrement())
+  eventId  Int     @unique
+  reminder Boolean
+  released Boolean
 }
 
 enum EventDifficulty {
