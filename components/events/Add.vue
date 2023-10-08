@@ -106,6 +106,7 @@ async function addEvent() {
         <label for="organizer">Organizer:</label>
         <input class="bg-#ddd dark:bg-lightgrey" type="text" id="organizer" v-model="formData.organizer" required />
       </div>
+      <span>All times should be entered in the time that they will run. Do not adujust for time zones.</span>
       <div>
         <label for="startTime">Start Time:</label>
         <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="startTime" v-model="formData.startTime"
