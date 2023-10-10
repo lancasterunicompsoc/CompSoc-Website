@@ -14,7 +14,7 @@ export default defineEventHandler(event => {
   if (years + months + weeks + days === 0)
     years = 1;
 
-  // Calculate the current date and a year in the future
+  // Calculate the current date and the end of the desired offset
   const currentDate = new Date();
   const futureDate = new Date();
   futureDate.setFullYear(currentDate.getFullYear() + years);
