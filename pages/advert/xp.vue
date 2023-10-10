@@ -42,7 +42,7 @@ function padSlides() {
 }
 
 async function loadSlides(): Promise<SlideType[]> {
-  return await getAllEvents({
+  return getAllEvents({
     weeks: 2
   }).then(
     events => events.map(
