@@ -9,8 +9,8 @@ type StateType = keyof typeof State;
 
 const TRANSITIONS = {
   [State.window]: {
-    [State.window]:     0.80,
-    [State.bounce]:     0.18,
+    [State.window]:     0.73,
+    [State.bounce]:     0.25,
     [State.bluescreen]: 0.02,
   },
   [State.bounce]: {

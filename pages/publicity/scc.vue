@@ -4,7 +4,7 @@ import { getAllEvents } from '~/components/events/utils';
 import { SlideLayout, SlideType } from '~/components/Advert';
 import StateMachine, { State } from '~/utils/advert';
 
-const MIN_WINDOW_LENGTH = 5000;
+const MIN_WINDOW_LENGTH = 10000;
 const POST_WINDOW_DELAY = MIN_WINDOW_LENGTH / 5;
 
 const MINIMUM_SLIDES = 5;
@@ -21,7 +21,7 @@ const placeholderSlides = [
 
 const BOUNCE_SLIDE = {
   layout: SlideLayout.bounce,
-  millis: 5000,
+  millis: 7500,
   data: '/img/logo/bounce.webp',
 };
 
@@ -119,6 +119,7 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
   height: 100vh;
 
   position: relative;
+  overflow: hidden;
 
   font-size: 48px;
 
