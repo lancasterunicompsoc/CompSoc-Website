@@ -3,7 +3,7 @@ node_modules
 dist
 .output
 .nuxt
-.env
+*.env
 .tools/
 .idea/
 db.sqlite

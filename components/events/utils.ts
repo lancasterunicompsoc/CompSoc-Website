@@ -1,3 +1,5 @@
+import { DateOffset } from '~/utils/time.js';
+
 export interface Event {
   id: number;
   name: string;
@@ -18,8 +20,9 @@ export enum EventDifficulty {
   SOCIAL = "SOCIAL",
 }
 
-export function getAllEvents() {
-  return $fetch<Event[]>("/api/events/all");
+export function getAllEvents(offset?: DateOffset) {
+  const { years, months, weeks, days } = offset ?? { years: 0, months: 0, weeks: 0, days: 0 };
+  return $fetch<Event[]>(`/api/events/all?years=${years ?? 0}&months=${months ?? 0}&weeks=${weeks ?? 0}&days=${days ?? 0}`);
 }
 
 export function getEvent(
