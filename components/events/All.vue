@@ -21,7 +21,7 @@ getAllEvents()
     </div>
     <ul v-if="allEvents">
       <li class="card" v-for="(event, index) in allEvents" :key="index">
-        <NuxtLink :to="`/events/${(event).id}`">
+        <NuxtLink :to="`/events/${event.id}`">
           <Event :event="event" :is-full-size="false" />
         </NuxtLink>
       </li>

@@ -23,7 +23,10 @@ export default defineEventHandler(async event => {
         description: z.string(),
         slides: z
           .string()
-          .refine(value => value.startsWith("https://slides.compsoc.io/") || value == ""),
+          .refine(
+            value =>
+              value.startsWith("https://slides.compsoc.io/") || value == "",
+          ),
         organizer: z.string(),
         startTime: z.coerce.date(),
         endTime: z.coerce.date(),

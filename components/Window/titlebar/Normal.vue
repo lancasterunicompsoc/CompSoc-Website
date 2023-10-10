@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import "xp.css/dist/XP.css"
+import "xp.css/dist/XP.css";
 </script>
 
 <template>
@@ -13,12 +13,10 @@ import "xp.css/dist/XP.css"
   </div>
 </template>
 
-
 <style scoped>
 .title-bar {
   height: 1.3125em;
   font-size: 0.8125em;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: "Pixelated MS Sans Serif";
 }
 </style>
-

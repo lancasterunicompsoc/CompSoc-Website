@@ -3,9 +3,13 @@
     <div>I'm protected! Session data: {{ payload }}</div>
     <div>jwt: {{ jwt }}</div>
     <div>isExpired: {{ isExpired }}</div>
-    <button class="btn" @click="callAPI">Call API</button>
+    <button class="btn" @click="callAPI">
+      Call API
+    </button>
   </div>
-  <div v-else>Currently not logged in</div>
+  <div v-else>
+    Currently not logged in
+  </div>
 </template>
 
 <script setup lang="ts">

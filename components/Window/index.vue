@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import "xp.css/dist/XP.css"
+import "xp.css/dist/XP.css";
 </script>
 
 <template>
@@ -16,7 +16,6 @@ import "xp.css/dist/XP.css"
 
 .window {
   font-size: 0.6875em;
-  font-family: 'Tahoma', sans-serif;
+  font-family: "Tahoma", sans-serif;
 }
 </style>
-

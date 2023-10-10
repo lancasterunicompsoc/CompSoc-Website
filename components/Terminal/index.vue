@@ -23,15 +23,15 @@ The programs included with ${systemInfo.os.name} are free software.
 ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
 
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
-`.trim()
+`.trim();
 
 const history = ref<HistoryItem[]>([
   {
     input: undefined,
     output: MOTD,
-    cwd: '',
+    cwd: "",
     timestamp: 0,
-  }
+  },
 ]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
@@ -130,11 +130,11 @@ function handleInput(event: KeyboardEvent) {
       historySelectionOffset.value = commandHistory.value.length;
     }
     const historySelection = commandHistory.value.at(
-      -1 * historySelectionOffset.value
+      -1 * historySelectionOffset.value,
     );
     if (!historySelection) {
       console.error(
-        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`
+        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`,
       );
     }
     activeLineBuffer.value = historySelection ?? "";
@@ -149,7 +149,7 @@ function handleInput(event: KeyboardEvent) {
       activeLineBuffer.value = inputBuffer.value;
     } else {
       const historySelection = commandHistory.value.at(
-        -1 * historySelectionOffset.value
+        -1 * historySelectionOffset.value,
       );
       activeLineBuffer.value = historySelection ?? "";
     }
@@ -226,15 +226,18 @@ register({
 
   color: #fff;
   background-color: #000;
-  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
+  box-shadow:
+    var(--red) 0 0 0 0,
+    var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
-  
+
   cursor: text;
 }
 
 .terminal:focus {
-  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow:
+    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
   outline: none;

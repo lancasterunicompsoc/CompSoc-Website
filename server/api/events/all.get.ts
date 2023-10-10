@@ -1,18 +1,17 @@
 interface OffsetData {
-  years?: string,
-  months?: string,
-  weeks?: string,
-  days?: string,
+  years?: string;
+  months?: string;
+  weeks?: string;
+  days?: string;
 }
 
 export default defineEventHandler(event => {
   const offsetData = getQuery<OffsetData>(event);
-  let years = parseInt(offsetData.years ?? '0');
-  const months = parseInt(offsetData.months ?? '0');
-  const weeks = parseInt(offsetData.weeks ?? '0');
-  const days = parseInt(offsetData.days ?? '0');
-  if (years + months + weeks + days === 0)
-    years = 1;
+  let years = parseInt(offsetData.years ?? "0");
+  const months = parseInt(offsetData.months ?? "0");
+  const weeks = parseInt(offsetData.weeks ?? "0");
+  const days = parseInt(offsetData.days ?? "0");
+  if (years + months + weeks + days === 0) { years = 1; }
 
   // Calculate the current date and the end of the desired offset
   const currentDate = new Date();
@@ -25,12 +24,12 @@ export default defineEventHandler(event => {
   return event.context.prisma.event.findMany({
     where: {
       startTime: {
-        gte: currentDate,  // Greater than or equal to today
-        lte: futureDate    // Less than or equal to a year from now
-      }
+        gte: currentDate, // Greater than or equal to today
+        lte: futureDate, // Less than or equal to a year from now
+      },
     },
     orderBy: {
-      startTime: 'asc'  // Sorting by startTime in ascending order
-    }
+      startTime: "asc", // Sorting by startTime in ascending order
+    },
   });
 });

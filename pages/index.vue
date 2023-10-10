@@ -7,7 +7,12 @@
       in computing and technology among students and wider society.
     </p>
 
-    <a href="https://lancastersu.co.uk/groups/compsoc-2be7/join" class="button block"> Join the society </a>
+    <a
+      href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
+      class="button block"
+    >
+      Join the society
+    </a>
   </main>
 </template>
 

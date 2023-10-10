@@ -2,7 +2,7 @@ export type State = { filesystem: { cwd: string } };
 export type Params = string[];
 export type CommandHandler = (
   state: State,
-  params: Params
+  params: Params,
 ) => string | undefined;
 type Command = { fn: CommandHandler; help?: string };
 export const registry: Record<string, Command> = {};

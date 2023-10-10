@@ -1,8 +1,8 @@
 <script lang="ts">
 export type CardData = {
-  title: string,
-  body: string,
-  image: string
+  title: string;
+  body: string;
+  image: string;
 };
 </script>
 
@@ -30,9 +30,8 @@ const { data } = defineProps<{ data: CardData }>();
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 90%;
   grid-template-areas:
-    'title img'
-    'body  img'
-    ;
+    "title img"
+    "body  img";
 }
 
 .title {
@@ -50,4 +49,3 @@ img {
   margin-block: auto;
 }
 </style>
-

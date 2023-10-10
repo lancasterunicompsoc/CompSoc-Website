@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import "xp.css/dist/XP.css"
-import { Event as EventType } from '~/components/events/utils';
-import Window from '../Window';
-import Iconified from '../Window/Iconified';
-import WindowBody from '../Window/Body';
-import Titlebar from '../Window/titlebar/Normal';
+import "xp.css/dist/XP.css";
+import { Event as EventType } from "~/components/events/utils";
+import Window from "../Window";
+import Iconified from "../Window/Iconified";
+import WindowBody from "../Window/Body";
+import Titlebar from "../Window/titlebar/Normal";
 
 const { event } = defineProps<{ event: EventType }>();
 
-const blurb = ref<HTMLInputElement | null>(null)
+const blurb = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
   const element = blurb.value;
-  if (element === null)
-    return;
+  if (element === null) return;
   const isOverflown = element.scrollHeight > element.clientHeight;
-  if (!isOverflown)
-    return;
-  element.classList.add('scroll');
-  element.style.setProperty('--height', `${element.scrollHeight * 0.80}px`);
-})
+  if (!isOverflown) return;
+  element.classList.add("scroll");
+  element.style.setProperty("--height", `${element.scrollHeight * 0.8}px`);
+});
 </script>
 
 <template>
@@ -31,24 +29,24 @@ onMounted(() => {
           <h1 class="title mb-2">{{ event.name }}</h1>
         </Iconified>
         <Iconified src="/img/windows/calendar.png">
-            {{
-              new Date(event.startTime).toLocaleString("en-GB", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                hour: "numeric",
-                minute: "numeric",
-                hour12: false,
-              })
-            }}
-            to
-            {{
-              new Date(event.endTime).toLocaleString("en-GB", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: false,
-              })
-            }}
+          {{
+            new Date(event.startTime).toLocaleString("en-GB", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: false,
+            })
+          }}
+          to
+          {{
+            new Date(event.endTime).toLocaleString("en-GB", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: false,
+            })
+          }}
         </Iconified>
         <div class="row">
           <Iconified src="/img/windows/location.png">
@@ -113,4 +111,3 @@ onMounted(() => {
   }
 }
 </style>
-

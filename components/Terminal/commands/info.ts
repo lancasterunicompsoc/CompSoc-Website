@@ -1,7 +1,7 @@
+import systemInfo from "../systemInfo";
 import type { CommandHandler } from "./registry";
 import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
-import systemInfo from "../systemInfo";
 
 const echo: CommandHandler = (_state, params) => {
   return params.join(" ");
@@ -29,10 +29,12 @@ const neofetch: CommandHandler = (state, _params) => {
   const responseLines = [];
   responseLines.push(`${whoami(state, [])}@compsoc.io`);
   responseLines.push(
-    "-".repeat((responseLines.at(responseLines.length - 1) as string).length)
+    "-".repeat((responseLines.at(responseLines.length - 1) as string).length),
   );
   responseLines.push(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
-  responseLines.push(`Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`);
+  responseLines.push(
+    `Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`,
+  );
   responseLines.push(`Resolution: ${systemInfo.resolution}`);
   responseLines.push(`Theme: ${systemInfo.theme}`);
   responseLines.push(`Terminal: ${systemInfo.terminal}`);

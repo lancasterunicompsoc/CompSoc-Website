@@ -9,7 +9,6 @@ const { src } = defineProps<{ src: string }>();
   </div>
 </template>
 
-
 <style scoped>
 .iconified {
   display: grid;
@@ -34,4 +33,3 @@ img {
   grid-template-columns: 40% auto;
 }
 </style>
-
