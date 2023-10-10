@@ -29,8 +29,8 @@ model Event {
   organizer     String
   startTime     DateTime?
   endTime       DateTime?
-  unixStartTime BigInt?
-  unixEndTime   BigInt?
+  unixStartTime Int?
+  unixEndTime   Int?
   difficulty    EventDifficulty
   image         String?         @db.LongText
 }
