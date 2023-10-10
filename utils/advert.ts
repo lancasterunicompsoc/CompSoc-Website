@@ -7,6 +7,7 @@ export const State = {
 type StateType = keyof typeof State;
 
 
+// chance of transitioning from outer to innner
 const TRANSITIONS = {
   [State.window]: {
     [State.window]:     0.73,
