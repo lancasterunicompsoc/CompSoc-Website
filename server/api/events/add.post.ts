@@ -10,6 +10,7 @@ export default defineEventHandler(async event => {
       summary,
       description,
       slides,
+      image,
       organizer,
       startTime,
       endTime,
@@ -27,6 +28,7 @@ export default defineEventHandler(async event => {
             value =>
               value.startsWith("https://slides.compsoc.io/") || value == "",
           ),
+        image: z.string().url(),
         organizer: z.string(),
         startTime: z.coerce.date(),
         endTime: z.coerce.date(),
@@ -42,6 +44,7 @@ export default defineEventHandler(async event => {
         summary,
         description,
         slides,
+        image,
         organizer,
         startTime,
         endTime,

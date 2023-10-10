@@ -20,17 +20,19 @@ model User {
 }
 
 model Event {
-  id          Int             @id @default(autoincrement())
-  name        String          @db.LongText
-  location    String          @db.LongText
-  summary     String          @db.LongText
-  description String          @db.LongText
-  slides      String          @db.LongText
-  organizer   String
-  startTime   DateTime
-  endTime     DateTime
-  difficulty  EventDifficulty
-  image       String?         @db.LongText
+  id            Int             @id @default(autoincrement())
+  name          String          @db.LongText
+  location      String          @db.LongText
+  summary       String          @db.LongText
+  description   String          @db.LongText
+  slides        String          @db.LongText
+  organizer     String
+  startTime     DateTime?
+  endTime       DateTime?
+  unixStartTime BigInt?
+  unixEndTime   BigInt?
+  difficulty    EventDifficulty
+  image         String?         @db.LongText
 }
 
 model Announcement {
