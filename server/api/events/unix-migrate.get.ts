@@ -9,8 +9,8 @@ interface Event {
   slides: string;
   image: string;
   organizer: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   difficulty: EventDifficulty;
 }
 
@@ -27,14 +27,17 @@ export default defineEventHandler(async event => {
   const all_events = (await event.context.prisma.event.findMany()) as Event[];
   const out = [];
   for (const e of all_events) {
+    if(e.startTime == null){
+      continue
+    }
     out.push(
       event.context.prisma.event.update({
         where: {
           id: e.id,
         },
         data: {
-          unixStartTime: dateToUnix(e.startTime),
-          unixEndTime: dateToUnix(e.endTime),
+          unixStartTime: dateToUnix(new Date(e.startTime)),
+          unixEndTime: dateToUnix(new Date(e.endTime)),
         },
       }),
     );
