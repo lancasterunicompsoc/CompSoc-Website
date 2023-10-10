@@ -5,6 +5,7 @@ import Window from "../Window";
 import Iconified from "../Window/Iconified";
 import WindowBody from "../Window/Body";
 import Titlebar from "../Window/titlebar/Normal";
+import { unixAnySpan } from "#imports";
 
 const { event } = defineProps<{ event: EventType }>();
 
@@ -29,24 +30,7 @@ onMounted(() => {
           <h1 class="title mb-2">{{ event.name }}</h1>
         </Iconified>
         <Iconified src="/img/windows/calendar.png">
-          {{
-            new Date(event.startTime).toLocaleString("en-GB", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
-          to
-          {{
-            new Date(event.endTime).toLocaleString("en-GB", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
+          {{unixAnySpan(event.unixStartTime,event.unixEndTime)}}
         </Iconified>
         <div class="row">
           <Iconified src="/img/windows/location.png">
