@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { src, visible } = defineProps<{ src: string, visible: boolean }>();
+const { src, visible } = defineProps<{ src: string; visible: boolean }>();
 </script>
 
 <template>
@@ -42,8 +42,9 @@ img {
 
   opacity: 0;
 
-  animation: moveX 7.68s linear infinite alternate,
-             moveY 4.32s linear infinite alternate;
+  animation:
+    moveX 7.68s linear infinite alternate,
+    moveY 4.32s linear infinite alternate;
 }
 
 .slide.visible img {
@@ -71,4 +72,3 @@ img {
   }
 }
 </style>
-

@@ -4,7 +4,6 @@ import Add from "~/components/events/Add.vue";
 import { useAuthStore } from "~/stores/auth";
 
 const { isAdmin } = useAuthStore();
-
 </script>
 <template>
   <main class="main-container">

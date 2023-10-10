@@ -1,41 +1,38 @@
-
 export const State = {
-  window: 'window',
-  bounce: 'bounce',
-  bluescreen: 'bluescreen',
+  window: "window",
+  bounce: "bounce",
+  bluescreen: "bluescreen",
 };
 type StateType = keyof typeof State;
-
 
 // chance of transitioning from outer to innner
 const TRANSITIONS = {
   [State.window]: {
-    [State.window]:     0.73,
-    [State.bounce]:     0.25,
+    [State.window]: 0.73,
+    [State.bounce]: 0.25,
     [State.bluescreen]: 0.02,
   },
   [State.bounce]: {
-    [State.window]: 0.70,
-    [State.bounce]: 0.30,
+    [State.window]: 0.7,
+    [State.bounce]: 0.3,
   },
   [State.bluescreen]: {
     [State.window]: 1.0,
   },
-}
-
+};
 
 export default class StateMachine {
   private state: StateType;
 
   public constructor() {
-    this.state = 'bounce';
+    this.state = "bounce";
   }
 
   public next(): StateType {
     const threshold = Math.random();
     const transitions = TRANSITIONS[this.state];
     if (transitions === undefined) {
-      throw new Error('transitions was undefined')
+      throw new Error("transitions was undefined");
     }
     let baseline = 0;
     let key: keyof typeof State;
@@ -50,4 +47,3 @@ export default class StateMachine {
     return this.state;
   }
 }
-

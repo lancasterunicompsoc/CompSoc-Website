@@ -7,7 +7,7 @@
 </template>
 
 <style>
-:root{
+:root {
   --highlight1Dark: #ec5042;
   --highlight2Dark: #d14537;
   --highlight1Light: #d12415;

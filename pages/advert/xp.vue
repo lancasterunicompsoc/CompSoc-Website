@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import '~/utils/array';
-import { getAllEvents } from '~/components/events/utils';
-import { SlideLayout, SlideType } from '~/components/Advert';
-import StateMachine, { State } from '~/utils/advert';
+import "~/utils/array";
+import { getAllEvents } from "~/components/events/utils";
+import { SlideLayout, SlideType } from "~/components/Advert";
+import StateMachine, { State } from "~/utils/advert";
 
 const MIN_WINDOW_LENGTH = 10000;
 const POST_WINDOW_DELAY = MIN_WINDOW_LENGTH / 5;
@@ -13,8 +13,8 @@ const placeholderSlides = [
     layout: SlideLayout.card,
     millis: 100,
     data: {
-      title: 'Placeholder',
-      image: 'https://placehold.co/1000x1000',
+      title: "Placeholder",
+      image: "https://placehold.co/1000x1000",
     },
   },
 ];
@@ -22,41 +22,45 @@ const placeholderSlides = [
 const BOUNCE_SLIDE = {
   layout: SlideLayout.bounce,
   millis: 7500,
-  data: '/img/logo/bounce.webp',
+  data: "/img/logo/bounce.webp",
 };
 
 definePageMeta({
-  layout: 'advert',
+  layout: "advert",
 });
 
 function padSlides() {
   if (slides.length < MINIMUM_SLIDES) {
     const toInsert = MINIMUM_SLIDES - slides.length;
     for (let i = 0; i < toInsert; i++) {
-      console.log('Pushing placeholder', i, i % placeholderSlides.length)
+      console.log("Pushing placeholder", i, i % placeholderSlides.length);
       slides.push(
-        placeholderSlides[i % placeholderSlides.length] as undefined as SlideType
-      )
+        placeholderSlides[
+          i % placeholderSlides.length
+        ] as undefined as SlideType,
+      );
     }
   }
 }
 
 async function loadSlides(): Promise<SlideType[]> {
   return getAllEvents({
-    weeks: 2
-  }).then(
-    events => events.map(
-      event => ({ data: event, layout: SlideLayout.event, millis: MIN_WINDOW_LENGTH + POST_WINDOW_DELAY })
-    )
-  )
+    weeks: 2,
+  }).then(events =>
+    events.map(event => ({
+      data: event,
+      layout: SlideLayout.event,
+      millis: MIN_WINDOW_LENGTH + POST_WINDOW_DELAY,
+    })),
+  );
 }
 
 let slides = await loadSlides();
 padSlides();
 
-const currentTime = useDateFormat(useNow(), 'hh:mm A');
+const currentTime = useDateFormat(useNow(), "hh:mm A");
 
-const slideIndex = ref<number>(0)
+const slideIndex = ref<number>(0);
 const currentSlide = ref<SlideType | null>(null);
 const displaySlide = ref<SlideType | null>(null);
 
@@ -67,12 +71,12 @@ function updateSlide() {
 
   switch (state) {
     case State.bounce:
-      console.log('bounce')
+      console.log("bounce");
       currentSlide.value = BOUNCE_SLIDE;
       break;
 
     case State.bluescreen:
-      console.log('bluescreen')
+      console.log("bluescreen");
       currentSlide.value = null;
       break;
 
@@ -80,12 +84,14 @@ function updateSlide() {
       slideIndex.value++;
       if (slideIndex.value >= slides.length) {
         slideIndex.value = 0;
-        loadSlides().then(s => slides = s).then(padSlides);
+        loadSlides()
+          .then(s => (slides = s))
+          .then(padSlides);
       }
       currentSlide.value = slides[slideIndex.value] as unknown as SlideType;
       useTimeoutFn(
-        () => displaySlide.value = null,
-        Math.max(currentSlide.value?.millis - POST_WINDOW_DELAY ?? 0, 0)
+        () => (displaySlide.value = null),
+        Math.max(currentSlide.value?.millis - POST_WINDOW_DELAY ?? 0, 0),
       );
       break;
   }
@@ -104,10 +110,11 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
     <Advert :slide="displaySlide" />
     <div class="taskbar">
       <img src="/img/windows/start.png" />
-      <div class="launchers">
-      </div>
+      <div class="launchers"></div>
       <div class="status a">
-        <p class="clock">{{ currentTime }}</p>
+        <p class="clock">
+          {{ currentTime }}
+        </p>
       </div>
     </div>
   </div>
@@ -140,10 +147,14 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
 
   background-image: linear-gradient(
     180deg,
-    #0997ff, #0053ee 8%,
-    #0050ee 40%, #06f 88%,
-    #06f 93%, #005bff 95%,
-    #003dd7 96%, #003dd7
+    #0997ff,
+    #0053ee 8%,
+    #0050ee 40%,
+    #06f 88%,
+    #06f 93%,
+    #005bff 95%,
+    #003dd7 96%,
+    #003dd7
   );
 }
 
@@ -169,12 +180,15 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
   border-left: 2px solid #0003;
 
   background: linear-gradient(
-    to bottom,
-    #1297ed 0%,  #1cc8f7 9%,
-    #1297ed 18%, #1582da 85%,
-    #095bc9 100%
-  ) center/cover no-repeat;
-  box-shadow: 0px 5px 10px #14A5F0 inset;
+      to bottom,
+      #1297ed 0%,
+      #1cc8f7 9%,
+      #1297ed 18%,
+      #1582da 85%,
+      #095bc9 100%
+    )
+    center/cover no-repeat;
+  box-shadow: 0px 5px 10px #14a5f0 inset;
 }
 
 .taskbar .status > * {
@@ -185,7 +199,6 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
   color: #fff;
   font-size: 12px;
   margin-block: auto;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: "Pixelated MS Sans Serif";
 }
 </style>
-

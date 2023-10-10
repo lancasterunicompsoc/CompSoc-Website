@@ -44,7 +44,7 @@ function editEvent(id: number) {
         <p>
           {{
             new Date(event.startTime).toLocaleString("en-GB", {
-              timeZone:"utc",
+              timeZone: "utc",
               weekday: "long",
               day: "numeric",
               month: "long",
@@ -56,7 +56,7 @@ function editEvent(id: number) {
           to
           {{
             new Date(event.endTime).toLocaleString("en-GB", {
-              timeZone:"utc",
+              timeZone: "utc",
               hour: "numeric",
               minute: "numeric",
               hour12: false,
