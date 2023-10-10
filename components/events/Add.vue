@@ -5,8 +5,8 @@ import { useAuthStore } from "~/stores/auth";
 const showModal = ref(false);
 const { jwt, isLoggedIn } = useAuthStore();
 
-const inputStartTime = ref("")
-const inputEndTime = ref("")
+const inputStartTime = ref("");
+const inputEndTime = ref("");
 
 const formData = ref<Omit<Event, "id">>({
   name: "",
@@ -20,7 +20,6 @@ const formData = ref<Omit<Event, "id">>({
   unixEndTime: 0,
   difficulty: EventDifficulty.EASY, // Add the difficulty field to formData
 });
-
 
 const resetFormData = () => {
   formData.value = {
@@ -42,9 +41,9 @@ async function addEvent() {
     return;
   }
   try {
-    formData.value.unixStartTime = inputToUnix(inputStartTime.value)
-    formData.value.unixEndTime = inputToUnix(inputEndTime.value)
-    console.log(formData.value.unixStartTime)
+    formData.value.unixStartTime = inputToUnix(inputStartTime.value);
+    formData.value.unixEndTime = inputToUnix(inputEndTime.value);
+    console.log(formData.value.unixStartTime);
 
     const response = await fetch("/api/events/add", {
       method: "POST",
@@ -86,61 +85,133 @@ async function addEvent() {
     <form @submit.prevent="addEvent">
       <div>
         <label for="name">Name:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="name" v-model="formData.name" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="name"
+          v-model="formData.name"
+          required
+        />
       </div>
       <div>
         <label for="location">Location:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="location" v-model="formData.location" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="location"
+          v-model="formData.location"
+          required
+        />
       </div>
       <div>
         <label for="summary">Summary:</label>
-        <textarea class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="summary" v-model="formData.summary"
-          required></textarea>
+        <textarea
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="summary"
+          v-model="formData.summary"
+          required
+        ></textarea>
       </div>
       <div>
         <label for="description">Description:</label>
-        <textarea class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="description" v-model="formData.description"
-          required></textarea>
+        <textarea
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="description"
+          v-model="formData.description"
+          required
+        ></textarea>
       </div>
       <div>
         <label for="image">Image:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="image" v-model="formData.image" />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="image"
+          v-model="formData.image"
+        />
       </div>
       <div>
         <label for="slides">Slides:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="slides" v-model="formData.slides" />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="slides"
+          v-model="formData.slides"
+        />
       </div>
       <div>
         <label for="organizer">Organizer:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="text" id="organizer" v-model="formData.organizer" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="organizer"
+          v-model="formData.organizer"
+          required
+        />
       </div>
-      <span>All times should be entered in the time that they will run. Do not
-        adujust for time zones.</span>
+      <span
+        >All times should be entered in the time that they will run. Do not
+        adujust for time zones.</span
+      >
       <div>
         <label for="unixStartTime">Start Time:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="unixStartTime" v-model="inputStartTime"
-          required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="unixStartTime"
+          v-model="inputStartTime"
+          required
+        />
       </div>
       <div>
         <label for="unixEndTime">End Time:</label>
-        <input class="bg-#ddd dark:bg-lightgrey" type="datetime-local" id="unixEndTime" v-model="inputEndTime" required />
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
+          id="unixEndTime"
+          v-model="inputEndTime"
+          required
+        />
       </div>
       <div>
         <label>Difficulty:</label>
         <div>
-          <input type="radio" id="easy" name="difficulty" value="EASY" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="easy"
+            name="difficulty"
+            value="EASY"
+            v-model="formData.difficulty"
+          />
           <label for="easy">Easy</label>
         </div>
         <div>
-          <input type="radio" id="hard" name="difficulty" value="HARD" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="hard"
+            name="difficulty"
+            value="HARD"
+            v-model="formData.difficulty"
+          />
           <label for="hard">Hard</label>
         </div>
         <div>
-          <input type="radio" id="social" name="difficulty" value="SOCIAL" v-model="formData.difficulty" />
+          <input
+            type="radio"
+            id="social"
+            name="difficulty"
+            value="SOCIAL"
+            v-model="formData.difficulty"
+          />
           <label for="social">Social</label>
         </div>
       </div>
-      <button class="submit bg-#ddd dark:bg-lightgrey float-right" type="submit">
+      <button
+        class="submit bg-#ddd dark:bg-lightgrey float-right"
+        type="submit"
+      >
         Add Event
       </button>
     </form>

@@ -24,7 +24,10 @@ export default defineEventHandler(async event => {
         description: z.string(),
         slides: z
           .string()
-          .refine(value => value.startsWith("https://slides.compsoc.io/") || value == ""),
+          .refine(
+            value =>
+              value.startsWith("https://slides.compsoc.io/") || value == "",
+          ),
         image: z.string(),
         organizer: z.string(),
         unixStartTime: z.number(),

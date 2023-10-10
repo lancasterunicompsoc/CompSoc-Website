@@ -43,7 +43,7 @@ function editEvent(id: number) {
           <IconTime />
         </figcaption>
         <p>
-          {{unixAnySpan(event.unixStartTime,event.unixEndTime)}}
+          {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </p>
       </figure>
       <figure class="flex">

@@ -50,13 +50,12 @@ export function unixToDatespan(start: number, end: number): string {
   return `${fullDate(startDate)} to ${fullDate(endDate)}`;
 }
 
-export function unixAnySpan(start: number, end:number):string{
-   const startDate = unixToDate(start).toDateString();
+export function unixAnySpan(start: number, end: number): string {
+  const startDate = unixToDate(start).toDateString();
   const endDate = unixToDate(end).toDateString();
- if (startDate==endDate){
-    return unixToTimespan(start,end)
-  } 
-  else{
-return unixToDatespan(start,end)
+  if (startDate == endDate) {
+    return unixToTimespan(start, end);
+  } else {
+    return unixToDatespan(start, end);
   }
 }

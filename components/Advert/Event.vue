@@ -30,7 +30,7 @@ onMounted(() => {
           <h1 class="title mb-2">{{ event.name }}</h1>
         </Iconified>
         <Iconified src="/img/windows/calendar.png">
-          {{unixAnySpan(event.unixStartTime,event.unixEndTime)}}
+          {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </Iconified>
         <div class="row">
           <Iconified src="/img/windows/location.png">
