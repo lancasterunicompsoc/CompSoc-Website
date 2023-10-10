@@ -33,7 +33,6 @@ function padSlides() {
   if (slides.length < MINIMUM_SLIDES) {
     const toInsert = MINIMUM_SLIDES - slides.length;
     for (let i = 0; i < toInsert; i++) {
-      console.log("Pushing placeholder", i, i % placeholderSlides.length);
       slides.push(
         placeholderSlides[
           i % placeholderSlides.length
@@ -71,12 +70,10 @@ function updateSlide() {
 
   switch (state) {
     case State.bounce:
-      console.log("bounce");
       currentSlide.value = BOUNCE_SLIDE;
       break;
 
     case State.bluescreen:
-      console.log("bluescreen");
       currentSlide.value = null;
       break;
 
