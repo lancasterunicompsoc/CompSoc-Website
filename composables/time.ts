@@ -7,7 +7,7 @@ function unixToDate(date: number): Date {
 }
 
 export function inputToUnix(date: string): number {
-  return dateToUnix(new Date(date));
+  return dateToUnix(new Date(date + "Z"));
 }
 
 function fullDate(date: Date): string {

@@ -12,8 +12,8 @@ export default defineEventHandler(async event => {
       slides,
       image,
       organizer,
-      startTime,
-      endTime,
+      unixStartTime,
+      unixEndTime,
       difficulty,
     } = await useValidatedBody(
       event,
@@ -24,14 +24,11 @@ export default defineEventHandler(async event => {
         description: z.string(),
         slides: z
           .string()
-          .refine(
-            value =>
-              value.startsWith("https://slides.compsoc.io/") || value == "",
-          ),
-        image: z.string().url(),
+          .refine(value => value.startsWith("https://slides.compsoc.io/") || value == ""),
+        image: z.string(),
         organizer: z.string(),
-        startTime: z.coerce.date(),
-        endTime: z.coerce.date(),
+        unixStartTime: z.number(),
+        unixEndTime: z.number(),
         difficulty: z.enum(["EASY", "HARD", "SOCIAL"]),
       }),
     );
@@ -46,8 +43,8 @@ export default defineEventHandler(async event => {
         slides,
         image,
         organizer,
-        startTime,
-        endTime,
+        unixStartTime,
+        unixEndTime,
         difficulty,
       },
     });

@@ -9,8 +9,8 @@ export interface Event {
   slides: string;
   image: string;
   organizer: string;
-  startTime: string;
-  endTime: string;
+  unixStartTime: number;
+  unixEndTime: number;
   difficulty: EventDifficulty;
 }
 
