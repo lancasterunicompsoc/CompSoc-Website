@@ -6,7 +6,7 @@ const props = defineProps<HistoryItem>();
 </script>
 
 <template>
-  <TerminalMarker :cwd="props.cwd" />
-  {{ props.input }} <br />
+  <TerminalMarker :cwd="props.cwd" v-if="props.cwd" />
+  {{ props.input }} <br v-if="props.input" />
   {{ props.output }} <br v-if="props.output" />
 </template>

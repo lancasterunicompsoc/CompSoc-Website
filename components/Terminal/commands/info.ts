@@ -1,6 +1,7 @@
 import type { CommandHandler } from "./registry";
 import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
+import systemInfo from "../systemInfo";
 
 const echo: CommandHandler = (_state, params) => {
   return params.join(" ");
@@ -30,12 +31,12 @@ const neofetch: CommandHandler = (state, _params) => {
   responseLines.push(
     "-".repeat((responseLines.at(responseLines.length - 1) as string).length)
   );
-  responseLines.push("OS: CompSocOS (Terminal Edition)");
-  responseLines.push("Shell: holy-sea 0.0.1");
-  responseLines.push("Resolution: 80x25");
-  responseLines.push("Theme: Matrix-red");
-  responseLines.push("Terminal: megantereon");
-  responseLines.push("Processor: unknown");
+  responseLines.push(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
+  responseLines.push(`Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`);
+  responseLines.push(`Resolution: ${systemInfo.resolution}`);
+  responseLines.push(`Theme: ${systemInfo.theme}`);
+  responseLines.push(`Terminal: ${systemInfo.terminal}`);
+  responseLines.push(`Processor: ${systemInfo.processor}`);
   return responseLines.join("\n");
 };
 
@@ -50,7 +51,7 @@ const man: CommandHandler = (_state, params) => {
     }
     return helptext;
   }
-  const commandStrings = getAllCommands().join("\n");
+  const commandStrings = getAllCommands().sort().join("\n");
   return `Help:\nThe following commands are available:\n${commandStrings}\nFor more information, run \`man PROGRAMNAME\``;
 };
 

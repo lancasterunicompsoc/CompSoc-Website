@@ -5,19 +5,34 @@ import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
+import systemInfo from "./systemInfo";
 import "./commands/";
 
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
 
 export interface HistoryItem {
-  input: string;
+  input: string | undefined;
   output: string | undefined;
   cwd: string;
   timestamp: number; // mainly used for a unique key for v-for
 }
 
-const history = ref<HistoryItem[]>([]);
+const MOTD = `
+The programs included with ${systemInfo.os.name} are free software.
+${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
+
+To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
+`.trim()
+
+const history = ref<HistoryItem[]>([
+  {
+    input: undefined,
+    output: MOTD,
+    cwd: '',
+    timestamp: 0,
+  }
+]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
