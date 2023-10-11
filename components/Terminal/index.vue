@@ -51,10 +51,11 @@ const username = authStore.payload?.username ?? "anonymous";
 // but the issue is that it depends on this variable, hence introducing a circular dependency
 const commandState = ref<State>({
   filesystem: {
-    cwd: `/home/${username}`
+    cwd: `/home/${username}`,
+    previous_cwd: `/home/${username}`,
   },
   session: {
-    username, 
+    username,
   }
 });
 

@@ -39,7 +39,7 @@ const fileTree: Entry = {
   ],
 };
 
-const userHome = (state: State) => `/home/${whoami(state, [])}`;
+const userHome = (state: State) => `/home/${whoami(state, []) ?? "anonymous"}`;
 
 function normalizePath(state: State, path: string): string {
   const parts = path.split("/");
@@ -54,7 +54,7 @@ function normalizePath(state: State, path: string): string {
         normalizedParts.pop();
         break;
       case "~":
-        normalizedParts = ["/home", whoami(state, [])];
+        normalizedParts = ["/home", whoami(state, []) ?? "anonymous"];
         break;
       default:
         normalizedParts.push(part);
@@ -116,11 +116,23 @@ export const cwd = (state: State, _: Params) => {
 };
 
 const cd: CommandHandler = (state, params) => {
+  if (params.length === 0) {
+    state.filesystem.previous_cwd = state.filesystem.cwd;
+    state.filesystem.cwd = userHome(state);
+    return;
+  }
+  if (params[0] === "-") {
+    const current = state.filesystem.cwd;
+    state.filesystem.cwd = state.filesystem.previous_cwd;
+    state.filesystem.previous_cwd = current;
+    return;
+  }
   const path = resolvePath(state, params[0]);
   if (!exists(state, path)) {
     return `Cannot cd to ${path}: directory does not exist`;
   }
 
+  state.filesystem.previous_cwd = state.filesystem.cwd;
   state.filesystem.cwd = path;
 };
 
