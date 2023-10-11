@@ -1,4 +1,4 @@
-export type State = { filesystem: { cwd: string } };
+export type State = { filesystem: { cwd: string }, session: { username: string } };
 export type Params = string[];
 export type CommandHandler = (
   state: State,

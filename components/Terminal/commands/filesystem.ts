@@ -28,7 +28,7 @@ const fileTree: Entry = {
     {
       name: "home",
       children: (state: State) => {
-        const iAm = whoami(state, []);
+        const iAm = whoami(state, []) ?? 'anonymous';
         const children = [makeHomeDir(iAm)];
         if (iAm !== "anonymous") {
           children.push(makeHomeDir("anonymous"));

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
 import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
@@ -42,10 +43,20 @@ const coderef = ref<HTMLElement | null>(null);
 
 const { focused } = useFocus(coderef, { initialValue: true });
 
+const authStore = useAuthStore();
+const username = authStore.payload?.username ?? "anonymous";
+
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
 // but the issue is that it depends on this variable, hence introducing a circular dependency
-const commandState = ref<State>({ filesystem: { cwd: "/home/anonymous" } });
+const commandState = ref<State>({
+  filesystem: {
+    cwd: `/home/${username}`
+  },
+  session: {
+    username, 
+  }
+});
 
 function handleCommand(command: string): string | undefined {
   const [cmd, ...params] = command.split(" ");
