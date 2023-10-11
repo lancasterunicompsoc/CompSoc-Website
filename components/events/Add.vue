@@ -5,6 +5,9 @@ import { useAuthStore } from "~/stores/auth";
 const showModal = ref(false);
 const { jwt, isLoggedIn } = useAuthStore();
 
+const inputStartTime = ref("");
+const inputEndTime = ref("");
+
 const formData = ref<Omit<Event, "id">>({
   name: "",
   location: "",
@@ -13,8 +16,8 @@ const formData = ref<Omit<Event, "id">>({
   slides: "",
   image: "",
   organizer: "",
-  startTime: "",
-  endTime: "",
+  unixStartTime: 0,
+  unixEndTime: 0,
   difficulty: EventDifficulty.EASY, // Add the difficulty field to formData
 });
 
@@ -27,8 +30,8 @@ const resetFormData = () => {
     slides: "",
     image: "",
     organizer: "",
-    startTime: "",
-    endTime: "",
+    unixStartTime: 0,
+    unixEndTime: 0,
     difficulty: EventDifficulty.EASY,
   };
 };
@@ -38,6 +41,10 @@ async function addEvent() {
     return;
   }
   try {
+    formData.value.unixStartTime = inputToUnix(inputStartTime.value);
+    formData.value.unixEndTime = inputToUnix(inputEndTime.value);
+    console.log(formData.value.unixStartTime);
+
     const response = await fetch("/api/events/add", {
       method: "POST",
       headers: {
@@ -149,22 +156,22 @@ async function addEvent() {
         adujust for time zones.</span
       >
       <div>
-        <label for="startTime">Start Time:</label>
+        <label for="unixStartTime">Start Time:</label>
         <input
           class="bg-#ddd dark:bg-lightgrey"
           type="datetime-local"
-          id="startTime"
-          v-model="formData.startTime"
+          id="unixStartTime"
+          v-model="inputStartTime"
           required
         />
       </div>
       <div>
-        <label for="endTime">End Time:</label>
+        <label for="unixEndTime">End Time:</label>
         <input
           class="bg-#ddd dark:bg-lightgrey"
           type="datetime-local"
-          id="endTime"
-          v-model="formData.endTime"
+          id="unixEndTime"
+          v-model="inputEndTime"
           required
         />
       </div>
