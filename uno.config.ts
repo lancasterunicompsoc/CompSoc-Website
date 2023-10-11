@@ -28,7 +28,7 @@ export default defineConfig({
       "px-4 py-4 bg-#ddd dark:bg-lightgrey shadow-highlight2Light dark:shadow-highlight2Dark hover:shadow-highlight1Light hover:dark:shadow-highlight1Dark",
     ],
     ["centered", "mx-auto"],
-    ["row", "flex flex-row justify-evenly"],
+    ["row", "flex flex-row justify-evenly align-stretch"],
   ],
   presets: [
     presetUno(),

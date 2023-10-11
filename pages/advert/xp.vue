@@ -22,7 +22,7 @@ const placeholderSlides = [
 const BOUNCE_SLIDE = {
   layout: SlideLayout.bounce,
   millis: 7500,
-  data: "/img/logo/bounce.webp",
+  data: "/img/windows/compsoc.webp",
 };
 
 definePageMeta({
