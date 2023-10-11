@@ -73,6 +73,9 @@ export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({ jwt: null, payload: null }),
   getters: {
     isLoggedIn() {
+      if (!this.jwt || !this.payload) {
+        return false;
+      }
       if (!this.isExpired) {
         return true;
       }

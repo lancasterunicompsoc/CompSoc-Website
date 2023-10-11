@@ -5,26 +5,26 @@ definePageMeta({
   middleware: ["auth-admin"],
 });
 
-const { jwt } = useAuthStore();
+const authStore = useAuthStore();
 const { pending, data, status, refresh } = useFetch("/api/users", {
-  headers: { Bearer: jwt },
+  headers: { Bearer: authStore.jwt as unknown as string },
 });
 
 function toggleBan(id: string) {
-  if (!jwt) {
+  if (!authStore.jwt) {
     return;
   }
   $fetch("/api/users/ban", {
     method: "POST",
     body: { id },
-    headers: { Bearer: jwt },
+    headers: { Bearer: authStore.jwt as unknown as string },
   })
     .then(() => refresh())
     .catch(console.error);
 }
 
 function changeRole(event: Event) {
-  if (!jwt) {
+  if (!authStore.jwt) {
     return;
   }
   const el = event.target as HTMLSelectElement;
@@ -32,7 +32,7 @@ function changeRole(event: Event) {
   $fetch("/api/users/role", {
     method: "POST",
     body: { id, role },
-    headers: { Bearer: jwt },
+    headers: { Bearer: authStore.jwt },
   })
     .then(() => refresh())
     .catch(console.error);

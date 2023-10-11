@@ -1,7 +1,8 @@
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
 
 export default defineNuxtRouteMiddleware(to => {
-  const { isExpired, isAdmin } = useAuthStore();
+  const { isExpired, isAdmin } = storeToRefs(useAuthStore());
   const {
     public: { loginUrl },
   } = useRuntimeConfig();
