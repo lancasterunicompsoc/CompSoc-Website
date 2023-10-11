@@ -43,6 +43,8 @@ export function getEvent(
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      if (response.status == 204)
+        window.location.assign("/events")
       return response.json();
     })
     .then(data => {
