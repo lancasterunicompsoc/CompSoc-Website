@@ -26,13 +26,15 @@ onMounted(() => {
     <Window>
       <Titlebar>Event!</Titlebar>
       <WindowBody>
-        <Iconified src="/img/windows/compsoc.png">
-          <h1 class="title mb-2">{{ event.name }}</h1>
-        </Iconified>
+        <h1 class="title mb-2">
+          <Iconified src="/img/windows/compsoc.webp">
+            {{ event.name }}
+          </Iconified>
+        </h1>
         <Iconified src="/img/windows/calendar.png">
           {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </Iconified>
-        <div class="row">
+        <div class="info flex flex-row items-stretch mb-4">
           <Iconified src="/img/windows/location.png">
             {{ event.location }}
           </Iconified>

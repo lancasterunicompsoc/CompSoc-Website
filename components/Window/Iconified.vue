@@ -3,33 +3,20 @@ const { src } = defineProps<{ src: string }>();
 </script>
 
 <template>
-  <div class="iconified">
-    <img :src="src" alt="" />
-    <span><slot /></span>
+  <div>
+    <div class="iconified flex flex-row mr-4 w-max items-center justify-center">
+      <img :src="src" alt="" class="mx-4" />
+      <span>
+        <slot />
+      </span>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.iconified {
-  display: grid;
-  grid-template-columns: 10% auto;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.iconified > * {
-  display: block;
-}
-
 img {
-  height: 80%;
+  height: 1em;
   aspect-ratio: 1 / 1;
-  margin-inline: auto;
-}
-</style>
-
-<style>
-.row > .iconified {
-  grid-template-columns: 40% auto;
+  display: inline-block;
 }
 </style>
