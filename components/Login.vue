@@ -2,6 +2,7 @@
 import { useAuthStore } from "~/stores/auth";
 
 const authStore = useAuthStore();
+
 const config = useRuntimeConfig();
 const { loginUrl } = config.public;
 </script>

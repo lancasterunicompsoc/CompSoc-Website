@@ -1,8 +1,5 @@
 <script setup lang="ts">
-await navigateTo(
-  'https://github.com/LUCompSoc',
-  {
-    external: true
-  }
-)
+await navigateTo("https://github.com/LUCompSoc", {
+  external: true,
+});
 </script>

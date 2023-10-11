@@ -10,7 +10,7 @@ const join: CommandHandler = (_state, _params) => {
   navigateTo("https://lancastersu.co.uk/groups/compsoc-2be7/join", {
     external: true,
   });
-  return ""
+  return "";
 };
 
 register({

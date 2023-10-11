@@ -7,6 +7,7 @@ import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { deletePost } from "./utils";
 import type { Event } from "./utils";
+import { unixAnySpan } from "~/utils/time";
 import { useAuthStore } from "~/stores/auth";
 
 const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
@@ -43,24 +44,7 @@ function editEvent(id: number) {
           <IconTime />
         </figcaption>
         <p>
-          {{
-            new Date(event.startTime).toLocaleString("en-GB", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
-          to
-          {{
-            new Date(event.endTime).toLocaleString("en-GB", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
+          {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </p>
       </figure>
       <figure class="flex">
@@ -117,6 +101,8 @@ ul {
   color: white;
   padding: 0.25rem 0.5rem;
   height: max-content;
+  width: 8ch;
+  text-align: center;
 }
 
 .compressedSummary {
