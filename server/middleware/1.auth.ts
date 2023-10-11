@@ -14,7 +14,6 @@ declare module "h3" {
 
 export default eventHandler(async event => {
   const jwt = getRequestHeader(event, "Bearer");
-  console.log(`request with jwt bearer coming in. jwt: ${jwt}`);
   if (!jwt || jwt === "undefined") {
     return;
   }

@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { getAllEvents, EventDifficulty } from "./utils";
 import type { Event } from "./utils";
 import { useAuthStore } from "~/stores/auth";
+
 const showModal = ref(false);
-const { jwt, isLoggedIn } = useAuthStore();
+
+const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
 
 const inputStartTime = ref("");
 const inputEndTime = ref("");
@@ -49,7 +52,7 @@ async function addEvent() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Bearer: jwt as string,
+        Bearer: jwt.value as string,
       },
       body: JSON.stringify(formData.value),
     });

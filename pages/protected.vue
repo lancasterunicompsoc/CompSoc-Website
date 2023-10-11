@@ -13,11 +13,13 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
 
-const { jwt, payload, isLoggedIn, isExpired } = useAuthStore();
+const authStore = useAuthStore();
+const { jwt, payload, isLoggedIn, isExpired } = storeToRefs(authStore);
 
 const callAPI = () => {
-  $fetch("/api/protected", { headers: { Bearer: jwt as string } });
+  $fetch("/api/protected", { headers: { Bearer: jwt as unknown as string } });
 };
 </script>

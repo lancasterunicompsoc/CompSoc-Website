@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import IconDelete from "./IconDelete.vue";
 import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
@@ -9,20 +10,20 @@ import type { Event } from "./utils";
 import { unixAnySpan } from "~/utils/time";
 import { useAuthStore } from "~/stores/auth";
 
-const { isAdmin, jwt, isLoggedIn } = useAuthStore();
+const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
 
 const router = useRouter();
 const p = defineProps<{ event: Event; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
-  if (!isLoggedIn) {
+  if (!isLoggedIn.value) {
     return;
   }
   const confirmed = window.confirm(
     "Are you sure you want to delete this event?",
   );
   if (confirmed) {
-    deletePost(id, jwt);
+    deletePost(id, jwt.value as unknown as string);
     router.back();
   } else {
     console.log("Event not deleted.");
