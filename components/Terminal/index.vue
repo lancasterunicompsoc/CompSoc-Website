@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
 import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
@@ -18,12 +19,11 @@ export interface HistoryItem {
   timestamp: number; // mainly used for a unique key for v-for
 }
 
-const MOTD = `
-The programs included with ${systemInfo.os.name} are free software.
+const MOTD = `The programs included with ${systemInfo.os.name} are free software.
 ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
 
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
-`.trim();
+`;
 
 const history = ref<HistoryItem[]>([
   {
@@ -42,10 +42,21 @@ const coderef = ref<HTMLElement | null>(null);
 
 const { focused } = useFocus(coderef, { initialValue: true });
 
+const authStore = useAuthStore();
+const username = authStore.payload?.username ?? "anonymous";
+
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
 // but the issue is that it depends on this variable, hence introducing a circular dependency
-const commandState = ref<State>({ filesystem: { cwd: "/home/anonymous" } });
+const commandState = ref<State>({
+  filesystem: {
+    cwd: `/home/${username}`,
+    previous_cwd: `/home/${username}`,
+  },
+  session: {
+    username,
+  }
+});
 
 function handleCommand(command: string): string | undefined {
   const [cmd, ...params] = command.split(" ");
