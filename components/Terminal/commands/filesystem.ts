@@ -28,7 +28,7 @@ const fileTree: Entry = {
     {
       name: "home",
       children: (state: State) => {
-        const iAm = whoami(state, []) ?? 'anonymous';
+        const iAm = whoami(state, []);
         const children = [makeHomeDir(iAm)];
         if (iAm !== "anonymous") {
           children.push(makeHomeDir("anonymous"));
@@ -39,7 +39,7 @@ const fileTree: Entry = {
   ],
 };
 
-const userHome = (state: State) => `/home/${whoami(state, []) ?? "anonymous"}`;
+const userHome = (state: State) => `/home/${whoami(state, [])}`;
 
 function normalizePath(state: State, path: string): string {
   const parts = path.split("/");
@@ -54,7 +54,7 @@ function normalizePath(state: State, path: string): string {
         normalizedParts.pop();
         break;
       case "~":
-        normalizedParts = ["/home", whoami(state, []) ?? "anonymous"];
+        normalizedParts = ["/home", whoami(state, [])];
         break;
       default:
         normalizedParts.push(part);

@@ -1,10 +1,10 @@
-import type { CommandHandler } from "./registry";
+import type { CommandHandler, Params, State } from "./registry";
 import { register } from "./registry";
 
 
 
-export const whoami: CommandHandler = (state, _params): string => {
-  return state.session.username;
+export const whoami = (state: State, _params: Params): string => {
+  return state.session?.username ?? 'anonymous';
 };
 
 const join: CommandHandler = (_state, _params) => {
