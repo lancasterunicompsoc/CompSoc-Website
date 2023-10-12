@@ -7,11 +7,11 @@ export default defineNuxtRouteMiddleware(to => {
     public: { loginUrl },
   } = useRuntimeConfig();
 
-  if (isExpired) {
+  if (isExpired.value) {
     return navigateTo(loginUrl, { external: true });
   }
 
-  if (!isAdmin) {
+  if (!isAdmin.value) {
     return navigateTo("/");
   }
 });
