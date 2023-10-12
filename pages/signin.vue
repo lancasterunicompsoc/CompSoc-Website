@@ -30,3 +30,10 @@ onMounted(async () => {
   }
 });
 </script>
+
+<template>
+  <noscript>
+    This website only works if you enable Javascript in your browser, please
+    enable Javascript execution and reload the page.
+  </noscript>
+</template>
