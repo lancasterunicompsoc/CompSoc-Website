@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import Event from "./Event.vue";
+import Bounce from "./Bounce.vue";
+import Card from "./Card.vue";
+
 import type { SlideType, CardData } from "./types";
 import { SlideLayout } from "./types";
 import { EventType } from "~/components/events/utils";

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import "xp.css/dist/XP.css";
+import Iconified from "../Window/Iconified.vue";
+import WindowBody from "../Window/Body.vue";
+import Titlebar from "../Window/titlebar/Normal.vue";
 import { EventType } from "~/components/events/utils";
 import { unixAnySpan } from "~/utils/time";
 
