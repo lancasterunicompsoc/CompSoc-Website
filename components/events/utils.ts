@@ -43,7 +43,11 @@ export function getEvent(
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
+      if (response.status == 204) {
+        const router = useRouter();
+        router.replace("/events");
+        return response.json();
+      }
     })
     .then(data => {
       const event = data as Event;
