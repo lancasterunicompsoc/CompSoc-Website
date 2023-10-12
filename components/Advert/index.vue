@@ -13,7 +13,7 @@ export type SlideType = {
 </script>
 
 <script setup lang="ts">
-import { Event as EventType } from "~/components/events/utils";
+import { EventType } from "~/components/events/utils";
 import Event from "./Event";
 import Card, { CardData } from "./Card";
 import Bounce from "./Bounce";

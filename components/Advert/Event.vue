@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import "xp.css/dist/XP.css";
-import { Event as EventType } from "~/components/events/utils";
+import { EventType } from "~/components/events/utils";
 import Window from "../Window";
 import Iconified from "../Window/Iconified";
 import WindowBody from "../Window/Body";
