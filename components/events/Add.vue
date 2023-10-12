@@ -40,7 +40,7 @@ const resetFormData = () => {
 };
 
 async function addEvent() {
-  if (!isLoggedIn) {
+  if (!isLoggedIn.value) {
     return;
   }
   try {
