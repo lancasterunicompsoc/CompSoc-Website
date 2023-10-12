@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import "xp.css/dist/XP.css";
+import Iconified from "../Window/Iconified.vue";
+import WindowBody from "../Window/Body.vue";
+import Titlebar from "../Window/titlebar/Normal.vue";
 import { EventType } from "~/components/events/utils";
-import Window from "../Window";
-import Iconified from "../Window/Iconified";
-import WindowBody from "../Window/Body";
-import Titlebar from "../Window/titlebar/Normal";
-import { unixAnySpan } from "#imports";
+import { unixAnySpan } from "~/utils/time";
 
 const { event } = defineProps<{ event: EventType }>();
 
@@ -13,9 +12,13 @@ const blurb = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
   const element = blurb.value;
-  if (element === null) return;
+  if (element === null) {
+    return;
+  }
   const isOverflown = element.scrollHeight > element.clientHeight;
-  if (!isOverflown) return;
+  if (!isOverflown) {
+    return;
+  }
   element.classList.add("scroll");
   element.style.setProperty("--height", `${element.scrollHeight * 0.8}px`);
 });

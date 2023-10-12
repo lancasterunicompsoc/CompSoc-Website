@@ -17,6 +17,8 @@ const authStore = useAuthStore();
 const { jwt, payload, isLoggedIn, isExpired, isAdmin } = storeToRefs(authStore);
 
 const callAPI = () => {
-  $fetch("/api/protected", { headers: { Bearer: jwt.value as unknown as string } });
+  $fetch("/api/protected", {
+    headers: { Bearer: jwt.value as unknown as string },
+  });
 };
 </script>

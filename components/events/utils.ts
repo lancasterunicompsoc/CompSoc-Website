@@ -12,7 +12,7 @@ export type EventType = {
   unixStartTime: number;
   unixEndTime: number;
   difficulty: EventDifficulty;
-}
+};
 
 export enum EventDifficulty {
   EASY = "EASY",

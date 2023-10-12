@@ -1,18 +1,12 @@
 <template>
   <main class="prose">
-    <h1 id="preface">
-      Preface
-    </h1>
-    <h2 id="preface--format">
-      Format
-    </h2>
+    <h1 id="preface">Preface</h1>
+    <h2 id="preface--format">Format</h2>
     <p>
       All sections of this document are to be considered normative unless
       otherwise specified.
     </p>
-    <h2 id="preface--definition">
-      Definitions
-    </h2>
+    <h2 id="preface--definition">Definitions</h2>
     <p>This section is non-normative.</p>
     <ol>
       <li>
@@ -31,7 +25,8 @@
             href="#executive--impeachment"
             data-reference-type="ref"
             data-reference="executive--impeachment"
-          >5.3</a>).
+            >5.3</a
+          >).
         </p>
       </li>
       <li>
@@ -43,13 +38,17 @@
       <li>
         <p>
           "SCC":
-          <a href="https://www.lancaster.ac.uk/scc">Lancaster University School of Computing and Communications</a>.
+          <a href="https://www.lancaster.ac.uk/scc"
+            >Lancaster University School of Computing and Communications</a
+          >.
         </p>
       </li>
       <li>
         <p>
           The "SU", or the "Union":
-          <a href="https://www.lancastersu.co.uk">Lancaster University Student’s Union</a>.
+          <a href="https://www.lancastersu.co.uk"
+            >Lancaster University Student’s Union</a
+          >.
         </p>
       </li>
       <li>
@@ -59,12 +58,8 @@
         </p>
       </li>
     </ol>
-    <h1 id="documentation">
-      Documentation
-    </h1>
-    <h2 id="documentation--applicable-law">
-      Applicable Law
-    </h2>
+    <h1 id="documentation">Documentation</h1>
+    <h2 id="documentation--applicable-law">Applicable Law</h2>
     <ol>
       <li>
         <p>
@@ -87,9 +82,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="documentation--union">
-      Union Documentation
-    </h2>
+    <h2 id="documentation--union">Union Documentation</h2>
     <ol>
       <li>
         <p>
@@ -113,9 +106,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="documentation--scc">
-      SCC Documentation
-    </h2>
+    <h2 id="documentation--scc">SCC Documentation</h2>
     <ol>
       <li>
         <p>
@@ -143,9 +134,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="documentation--constitution">
-      The Constitution
-    </h2>
+    <h2 id="documentation--constitution">The Constitution</h2>
     <ol>
       <li>
         <p>
@@ -156,17 +145,20 @@
             href="#documentation--applicable-law"
             data-reference-type="ref"
             data-reference="documentation--applicable-law"
-          >2.1</a>,
+            >2.1</a
+          >,
           <a
             href="#documentation--union"
             data-reference-type="ref"
             data-reference="documentation--union"
-          >2.2</a>, and
+            >2.2</a
+          >, and
           <a
             href="#documentation--scc"
             data-reference-type="ref"
             data-reference="documentation--scc"
-          >2.3</a>.
+            >2.3</a
+          >.
         </p>
       </li>
       <li>
@@ -176,11 +168,13 @@
             href="#executive--cabinet--upper"
             data-reference-type="ref"
             data-reference="executive--cabinet--upper"
-          >5.2.1</a>). This resolution shall be published as a Presidential Decree (<a
+            >5.2.1</a
+          >). This resolution shall be published as a Presidential Decree (<a
             href="#documentation--presidential-decree"
             data-reference-type="ref"
             data-reference="documentation--presidential-decree"
-          >2.7</a>), and a constitutional amendment should be proposed at the next
+            >2.7</a
+          >), and a constitutional amendment should be proposed at the next
           opportunity.
         </p>
       </li>
@@ -192,7 +186,8 @@
             href="#gm--consitutional-amendment"
             data-reference-type="ref"
             data-reference="gm--consitutional-amendment"
-          >6.2</a>.
+            >6.2</a
+          >.
         </p>
       </li>
       <li>
@@ -203,13 +198,12 @@
             href="#executive--cabinet--lower"
             data-reference-type="ref"
             data-reference="executive--cabinet--lower"
-          >5.2.2</a>).
+            >5.2.2</a
+          >).
         </p>
       </li>
     </ol>
-    <h2 id="documentation--bye-law">
-      Bye-Laws
-    </h2>
+    <h2 id="documentation--bye-law">Bye-Laws</h2>
     <ol>
       <li>
         <p>
@@ -225,7 +219,8 @@
             href="#documentation--presidential-decree"
             data-reference-type="ref"
             data-reference="documentation--presidential-decree"
-          >2.7</a>), and an amendment to the applicable bye-laws should be proposed at
+            >2.7</a
+          >), and an amendment to the applicable bye-laws should be proposed at
           the next opportunity.
         </p>
       </li>
@@ -237,13 +232,12 @@
             href="#bye-election--bye-law-amendment"
             data-reference-type="ref"
             data-reference="bye-election--bye-law-amendment"
-          >7.2</a>.
+            >7.2</a
+          >.
         </p>
       </li>
     </ol>
-    <h2 id="documentation--directive">
-      Directives
-    </h2>
+    <h2 id="documentation--directive">Directives</h2>
     <ol>
       <li>
         <p>
@@ -273,9 +267,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="documentation--presidential-decree">
-      Presidential Decrees
-    </h2>
+    <h2 id="documentation--presidential-decree">Presidential Decrees</h2>
     <ol>
       <li>
         <p>
@@ -291,7 +283,8 @@
             href="#executive--impeachment"
             data-reference-type="ref"
             data-reference="executive--impeachment"
-          >5.3</a>), which take precedence.
+            >5.3</a
+          >), which take precedence.
         </p>
       </li>
       <li>
@@ -313,12 +306,8 @@
         </p>
       </li>
     </ol>
-    <h1 id="general">
-      General Status
-    </h1>
-    <h2 id="general--identification">
-      Identification
-    </h2>
+    <h1 id="general">General Status</h1>
+    <h2 id="general--identification">Identification</h2>
     <ol>
       <li>
         <p>
@@ -342,9 +331,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="general--governance">
-      Governance
-    </h2>
+    <h2 id="general--governance">Governance</h2>
     <ol>
       <li>
         <p>
@@ -353,16 +340,13 @@
             href="#executive"
             data-reference-type="ref"
             data-reference="executive"
-          >5</a>).
+            >5</a
+          >).
         </p>
       </li>
     </ol>
-    <h1 id="membership">
-      Membership
-    </h1>
-    <h2 id="membership--qualification">
-      Qualification
-    </h2>
+    <h1 id="membership">Membership</h1>
+    <h2 id="membership--qualification">Qualification</h2>
     <ol>
       <li>
         <p>
@@ -385,9 +369,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="membership--rights">
-      Rights
-    </h2>
+    <h2 id="membership--rights">Rights</h2>
     <ol>
       <li>
         <p>All members may attend and speak at general meetings.</p>
@@ -417,9 +399,7 @@
         <p>Honorary members share all the rights of Associate Members.</p>
       </li>
     </ol>
-    <h2 id="membership--exclusion">
-      Exclusion
-    </h2>
+    <h2 id="membership--exclusion">Exclusion</h2>
     <ol>
       <li>
         <p>
@@ -431,9 +411,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="membership--fees">
-      Fees
-    </h2>
+    <h2 id="membership--fees">Fees</h2>
     <ol>
       <li>
         <p>
@@ -450,16 +428,15 @@
             href="#gm--assembly"
             data-reference-type="ref"
             data-reference="gm--assembly"
-          >6.1</a>), shall each have the right to offer free or discounted membership
+            >6.1</a
+          >), shall each have the right to offer free or discounted membership
           for a period of no more than one year to any person as they see fit.
           There is no limit to the number of times to which an individual may be
           bestowed this honour.
         </p>
       </li>
     </ol>
-    <h1 id="executive">
-      The Executive Committee
-    </h1>
+    <h1 id="executive">The Executive Committee</h1>
     <ol>
       <li>
         <p>The Executive is the primary governing body of the Society.</p>
@@ -476,12 +453,8 @@
         </p>
       </li>
     </ol>
-    <h2 id="executive--positions">
-      Positions
-    </h2>
-    <h3 id="executive--positions--president">
-      President
-    </h3>
+    <h2 id="executive--positions">Positions</h2>
+    <h3 id="executive--positions--president">President</h3>
     <ol>
       <li>
         <p>
@@ -576,9 +549,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--vice-president">
-      Vice-President
-    </h3>
+    <h3 id="executive--positions--vice-president">Vice-President</h3>
     <ol>
       <li>
         <p>
@@ -620,9 +591,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--secretary">
-      Secretary
-    </h3>
+    <h3 id="executive--positions--secretary">Secretary</h3>
     <ol>
       <li>
         <p>
@@ -702,9 +671,7 @@
         <p>The Secretary shall have the right to vote in Executive Meetings.</p>
       </li>
     </ol>
-    <h3 id="executive--positions--treasurer">
-      Treasurer
-    </h3>
+    <h3 id="executive--positions--treasurer">Treasurer</h3>
     <ol>
       <li>
         <p>
@@ -802,9 +769,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--education-officer">
-      Education Officer
-    </h3>
+    <h3 id="executive--positions--education-officer">Education Officer</h3>
     <ol>
       <li>
         <p>
@@ -846,9 +811,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--events-officer">
-      Events Officer
-    </h3>
+    <h3 id="executive--positions--events-officer">Events Officer</h3>
     <ol>
       <li>
         <p>
@@ -881,9 +844,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--publicity-officer">
-      Publicity Officer
-    </h3>
+    <h3 id="executive--positions--publicity-officer">Publicity Officer</h3>
     <ol>
       <li>
         <p>
@@ -962,9 +923,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--socials-officer">
-      Socials Officer
-    </h3>
+    <h3 id="executive--positions--socials-officer">Socials Officer</h3>
     <ol>
       <li>
         <p>
@@ -1008,9 +967,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--technical-officer">
-      Technical Officer
-    </h3>
+    <h3 id="executive--positions--technical-officer">Technical Officer</h3>
     <ol>
       <li>
         <p>
@@ -1070,9 +1027,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--welfare-officer">
-      Welfare Officer
-    </h3>
+    <h3 id="executive--positions--welfare-officer">Welfare Officer</h3>
     <ol>
       <li>
         <p>
@@ -1115,9 +1070,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--education-director">
-      Education Director
-    </h3>
+    <h3 id="executive--positions--education-director">Education Director</h3>
     <ol>
       <li>
         <p>
@@ -1138,9 +1091,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--technical-director">
-      Technical Director
-    </h3>
+    <h3 id="executive--positions--technical-director">Technical Director</h3>
     <ol>
       <li>
         <p>
@@ -1161,9 +1112,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--welfare-director">
-      Welfare Director
-    </h3>
+    <h3 id="executive--positions--welfare-director">Welfare Director</h3>
     <ol>
       <li>
         <p>
@@ -1184,9 +1133,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--positions--advisor">
-      Executive Advisor
-    </h3>
+    <h3 id="executive--positions--advisor">Executive Advisor</h3>
     <ol>
       <li>
         <p>
@@ -1208,9 +1155,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="executive--cabinet">
-      The Cabinet
-    </h2>
+    <h2 id="executive--cabinet">The Cabinet</h2>
     <ol>
       <li>
         <p>
@@ -1232,9 +1177,7 @@
         </p>
       </li>
     </ol>
-    <h3 id="executive--cabinet--upper">
-      The Upper Cabinet
-    </h3>
+    <h3 id="executive--cabinet--upper">The Upper Cabinet</h3>
     <ol>
       <li>
         <p>The Upper Cabinet shall consist of</p>
@@ -1257,9 +1200,7 @@
         </ol>
       </li>
     </ol>
-    <h3 id="executive--cabinet--lower">
-      The Lower Cabinet
-    </h3>
+    <h3 id="executive--cabinet--lower">The Lower Cabinet</h3>
     <ol>
       <li>
         <p>The Lower Cabinet shall consist of</p>
@@ -1285,9 +1226,7 @@
         </ol>
       </li>
     </ol>
-    <h2 id="executive--impeachment">
-      Impeachment
-    </h2>
+    <h2 id="executive--impeachment">Impeachment</h2>
     <ol>
       <li>
         <p>Any member of the Executive may be impeached for</p>
@@ -1488,12 +1427,8 @@
         </p>
       </li>
     </ol>
-    <h1 id="gm">
-      General Meetings
-    </h1>
-    <h2 id="gm--assembly">
-      Assembly
-    </h2>
+    <h1 id="gm">General Meetings</h1>
+    <h2 id="gm--assembly">Assembly</h2>
     <ol>
       <li>
         <p>
@@ -1512,9 +1447,7 @@
         <p>Decisions made by the Assembly shall be binding to the Executive.</p>
       </li>
     </ol>
-    <h2 id="gm--consitutional-amendment">
-      Constitutional Amendments
-    </h2>
+    <h2 id="gm--consitutional-amendment">Constitutional Amendments</h2>
     <ol>
       <li>
         <p>
@@ -1535,9 +1468,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="gm--disolution">
-      Dissolution of the Society
-    </h2>
+    <h2 id="gm--disolution">Dissolution of the Society</h2>
     <ol>
       <li>
         <p>
@@ -1576,9 +1507,7 @@
         </ol>
       </li>
     </ol>
-    <h2 id="gm--agm">
-      The Annual General Meeting
-    </h2>
+    <h2 id="gm--agm">The Annual General Meeting</h2>
     <ol>
       <li>
         <p>
@@ -1653,7 +1582,8 @@
                 href="#bye-election--election-procedure"
                 data-reference-type="ref"
                 data-reference="bye-election--election-procedure"
-              >7.1</a>).
+                >7.1</a
+              >).
             </p>
           </li>
         </ol>
@@ -1667,9 +1597,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="gm--egm">
-      Extraordinary General Meetings
-    </h2>
+    <h2 id="gm--egm">Extraordinary General Meetings</h2>
     <ol>
       <li>
         <p>
@@ -1705,9 +1633,7 @@
         </p>
       </li>
     </ol>
-    <h1 id="bye-election">
-      Bye-Elections
-    </h1>
+    <h1 id="bye-election">Bye-Elections</h1>
     <ol>
       <li>
         <p>
@@ -1716,9 +1642,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="bye-election--election-procedure">
-      Election Procedure
-    </h2>
+    <h2 id="bye-election--election-procedure">Election Procedure</h2>
     <ol>
       <li>
         <p>
@@ -1792,9 +1716,7 @@
         </p>
       </li>
     </ol>
-    <h2 id="bye-election--bye-law-amendment">
-      Bye-Law Amendments
-    </h2>
+    <h2 id="bye-election--bye-law-amendment">Bye-Law Amendments</h2>
     <ol>
       <li>
         <p>
@@ -1815,9 +1737,7 @@
         </p>
       </li>
     </ol>
-    <h1 id="finance">
-      Finance
-    </h1>
+    <h1 id="finance">Finance</h1>
     <ol>
       <li>
         <p>
@@ -1867,9 +1787,7 @@
         </p>
       </li>
     </ol>
-    <h1 id="project">
-      Projects
-    </h1>
+    <h1 id="project">Projects</h1>
     <ol>
       <li>
         <p>
@@ -1902,9 +1820,7 @@
         </p>
       </li>
     </ol>
-    <h1 id="affiliation">
-      Affiliation and Sponsorship
-    </h1>
+    <h1 id="affiliation">Affiliation and Sponsorship</h1>
     <ol>
       <li>
         <p>
@@ -1912,7 +1828,8 @@
           Section of
           <a
             href="https://lancastersu.co.uk/resources/articles-of-association-2023/download_attachment"
-          >The Constitution of the Union, Article 47, Section 4</a>.
+            >The Constitution of the Union, Article 47, Section 4</a
+          >.
         </p>
       </li>
       <li>

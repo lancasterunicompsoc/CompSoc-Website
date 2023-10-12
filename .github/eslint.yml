@@ -1,0 +1,28 @@
+name: ESLint
+
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: ["main", "dev"]
+
+jobs:
+  eslint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ESLint
+        run: |
+          npm install -g yarn
+          yarn
+          yarn add @microsoft/eslint-formatter-sarif@2.1.7
+
+      - name: Run ESLint + Prettier
+        run: yarn run lint:ci

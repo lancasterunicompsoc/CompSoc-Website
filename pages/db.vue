@@ -7,9 +7,10 @@ definePageMeta({
 
 const { jwt } = useAuthStore();
 useFetch("/api/events/unix-migrate", {
-    headers: { Bearer: jwt },
-  })
+  headers: { Bearer: jwt },
+});
 </script>
 
 <template>
+  <p>db migration page</p>
 </template>

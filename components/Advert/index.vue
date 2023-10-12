@@ -1,22 +1,11 @@
-<script lang="ts">
-export enum SlideLayout {
-  event,
-  card,
-  bounce,
-}
-
-export type SlideType = {
-  data: EventType | CardData | string;
-  layout: SlideLayout;
-  millis: number;
-};
-</script>
-
 <script setup lang="ts">
+import Event from "./Event.vue";
+import Bounce from "./Bounce.vue";
+import Card from "./Card.vue";
+
+import type { SlideType, CardData } from "./types";
+import { SlideLayout } from "./types";
 import { EventType } from "~/components/events/utils";
-import Event from "./Event";
-import Card, { CardData } from "./Card";
-import Bounce from "./Bounce";
 
 const { slide } = defineProps<{ slide: SlideType }>();
 </script>

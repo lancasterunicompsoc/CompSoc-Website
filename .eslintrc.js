@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["@nuxtjs/eslint-config-typescript"],
+  extends: ["@nuxtjs/eslint-config-typescript", "plugin:vue/vue3-recommended"],
   env: {
     browser: true,
     node: true,

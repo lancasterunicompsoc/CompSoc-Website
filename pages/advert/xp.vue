@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "~/utils/array";
 import { getAllEvents } from "~/components/events/utils";
-import { SlideLayout, SlideType } from "~/components/Advert";
+import { SlideLayout, SlideType } from "~/components/Advert/types";
 import StateMachine, { State } from "~/utils/advert";
 
 const MIN_WINDOW_LENGTH = 10000;
@@ -34,9 +34,7 @@ function padSlides() {
     const toInsert = MINIMUM_SLIDES - slides.length;
     for (let i = 0; i < toInsert; i++) {
       slides.push(
-        placeholderSlides[
-          i % placeholderSlides.length
-        ] as undefined as SlideType,
+        placeholderSlides[i % placeholderSlides.length] as unknown as SlideType,
       );
     }
   }
@@ -104,7 +102,9 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
 
 <template>
   <div class="banner">
-    <Advert :slide="displaySlide" />
+    <template v-if="displaySlide">
+      <Advert :slide="displaySlide" />
+    </template>
     <div class="taskbar">
       <img src="/img/windows/start.png" />
       <div class="launchers"></div>
