@@ -26,7 +26,7 @@ export default defineEventHandler(async event => {
           .string()
           .refine(
             value =>
-              value.startsWith("https://slides.compsoc.io/") || value == "",
+              value.startsWith("https://slides.compsoc.io/") || value === "",
           ),
         image: z.string(),
         organizer: z.string(),
