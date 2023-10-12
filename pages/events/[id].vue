@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event as EventType } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 import { getEvent, EventDifficulty } from "~/components/events/utils";
 import Event from "~/components/events/Event.vue";
 

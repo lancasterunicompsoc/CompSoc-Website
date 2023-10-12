@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { getAllEvents, EventDifficulty } from "./utils";
-import type { Event } from "./utils";
+import type { EventType } from "./utils";
 import { useAuthStore } from "~/stores/auth";
 
 const showModal = ref(false);
@@ -11,7 +11,7 @@ const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
 const inputStartTime = ref("");
 const inputEndTime = ref("");
 
-const formData = ref<Omit<Event, "id">>({
+const formData = ref<Omit<EventType, "id">>({
   name: "",
   location: "",
   summary: "",

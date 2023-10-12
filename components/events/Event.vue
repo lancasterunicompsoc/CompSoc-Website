@@ -6,14 +6,14 @@ import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { deletePost } from "./utils";
-import type { Event } from "./utils";
+import type { EventType } from "./utils";
 import { unixAnySpan } from "~/utils/time";
 import { useAuthStore } from "~/stores/auth";
 
 const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
 
 const router = useRouter();
-const p = defineProps<{ event: Event; isFullSize: boolean }>();
+const p = defineProps<{ event: EventType; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
   if (!isLoggedIn.value) {

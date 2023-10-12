@@ -1,6 +1,6 @@
 import { DateOffset } from "~/utils/time.js";
 
-export interface Event {
+export type EventType = {
   id: number;
   name: string;
   location: string;
@@ -27,7 +27,7 @@ export function getAllEvents(offset?: DateOffset) {
     weeks: 0,
     days: 0,
   };
-  return $fetch<Event[]>(
+  return $fetch<EventType[]>(
     `/api/events/all?years=${years ?? 0}&months=${months ?? 0}&weeks=${
       weeks ?? 0
     }&days=${days ?? 0}`,
@@ -36,7 +36,7 @@ export function getAllEvents(offset?: DateOffset) {
 
 export function getEvent(
   id: string,
-  callback: (data: Event | null, error: Error | null) => void,
+  callback: (data: EventType | null, error: Error | null) => void,
 ) {
   fetch(`/api/events/event?id=${id}`)
     .then(response => {
@@ -50,7 +50,7 @@ export function getEvent(
       return response.json();
     })
     .then(data => {
-      const event = data as Event;
+      const event = data as EventType;
       callback(event, null);
     })
     .catch(error => {
