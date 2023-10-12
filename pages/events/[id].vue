@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { EventType } from "~/components/events/utils";
-import { getEvent, EventDifficulty } from "~/components/events/utils";
+import { getEvent } from "~/components/events/utils";
 import Event from "~/components/events/Event.vue";
 
 const route = useRoute();
@@ -18,6 +18,6 @@ getEvent(id, (data, err) => {
 
 <template>
   <main v-if="thisEvent">
-      <Event :event="thisEvent" :is-full-size="true" />
+    <Event :event="thisEvent" :is-full-size="true" />
   </main>
 </template>

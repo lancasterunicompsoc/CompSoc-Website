@@ -1,4 +1,5 @@
 import { dateToUnix } from "~/utils/time";
+import { EventDifficulty } from "~/components/events/utils";
 
 interface Event {
   id: number;
@@ -14,21 +15,15 @@ interface Event {
   difficulty: EventDifficulty;
 }
 
-enum EventDifficulty {
-  EASY = "EASY",
-  HARD = "HARD",
-  SOCIAL = "SOCIAL",
-}
-
 export default defineEventHandler(async event => {
   if (event.context.auth?.decoded?.role !== "ADMIN") {
     throw new Error("you do not belong here");
   }
-  const all_events = (await event.context.prisma.event.findMany()) as Event[];
+  const allEvents = await event.context.prisma.event.findMany();
   const out = [];
-  for (const e of all_events) {
-    if(e.startTime == null){
-      continue
+  for (const e of allEvents) {
+    if (e.startTime == null) {
+      continue;
     }
     out.push(
       event.context.prisma.event.update({
@@ -37,6 +32,7 @@ export default defineEventHandler(async event => {
         },
         data: {
           unixStartTime: dateToUnix(new Date(e.startTime)),
+          // @ts-ignore
           unixEndTime: dateToUnix(new Date(e.endTime)),
         },
       }),
