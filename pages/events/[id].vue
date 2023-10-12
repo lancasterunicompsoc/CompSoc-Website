@@ -6,18 +6,7 @@ import Event from "~/components/events/Event.vue";
 const route = useRoute();
 const id = route.params.id as unknown as string;
 
-const thisEvent = ref<EventType>({
-  id: 0,
-  name: "",
-  location: "",
-  summary: "",
-  description: "",
-  slides: "",
-  organizer: "",
-  startTime: "",
-  endTime: "",
-  difficulty: EventDifficulty.EASY,
-});
+const thisEvent = ref<EventType | null>(null);
 
 getEvent(id, (data, err) => {
   if (err || data === null) {
@@ -28,9 +17,7 @@ getEvent(id, (data, err) => {
 </script>
 
 <template>
-  <main>
-    <ClientOnly>
+  <main v-if="thisEvent">
       <Event :event="thisEvent" :is-full-size="true" />
-    </ClientOnly>
   </main>
 </template>
