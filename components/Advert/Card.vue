@@ -1,12 +1,5 @@
-<script lang="ts">
-export type CardData = {
-  title: string;
-  body: string;
-  image: string;
-};
-</script>
-
 <script setup lang="ts">
+import type { CardData } from "./types";
 const { data } = defineProps<{ data: CardData }>();
 </script>
 
