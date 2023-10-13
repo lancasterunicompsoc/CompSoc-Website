@@ -21,14 +21,14 @@ export type EventType = {
 };
 
 type getAllEventParams = { offset?: DateOffset; isXp?: Boolean };
-export function getAllEvents(options: getAllEventParams) {
-  const { years, months, weeks, days } = options.offset ?? {
+export function getAllEvents(options?: getAllEventParams) {
+  const { years, months, weeks, days } = options?.offset ?? {
     years: 0,
     months: 0,
     weeks: 0,
     days: 0,
   };
-  const headers = options.isXp
+  const headers = options?.isXp
     ? { "User-Agent": "xp-advert" }
     : { "User-Agent": window.navigator.userAgent };
   return $fetch<EventType[]>(

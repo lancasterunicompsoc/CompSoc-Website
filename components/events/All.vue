@@ -4,7 +4,7 @@ import Event from "~/components/events/Event.vue";
 
 const allEvents = ref<EventType[] | null>(null);
 const hasErrored = ref(false);
-getAllEvents({})
+getAllEvents()
   .then(events => {
     allEvents.value = events;
   })

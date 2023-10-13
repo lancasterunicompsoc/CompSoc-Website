@@ -60,7 +60,7 @@ async function addEvent() {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      getAllEvents({});
+      getAllEvents();
       resetFormData();
       showModal.value = false;
     } else {
