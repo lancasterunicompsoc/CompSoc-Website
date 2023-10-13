@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { getAllEvents, Event as EventType } from "./utils";
+import { getAllEvents, EventType } from "./utils";
 import Event from "~/components/events/Event.vue";
 
 const allEvents = ref<EventType[] | null>(null);
 const hasErrored = ref(false);
 getAllEvents()
-  .then(events => (allEvents.value = events))
+  .then(events => {
+    allEvents.value = events;
+  })
   .catch(err => {
     hasErrored.value = true;
     console.error(err);
@@ -21,7 +23,7 @@ getAllEvents()
     </div>
     <ul v-if="allEvents">
       <li class="card" v-for="(event, index) in allEvents" :key="index">
-        <NuxtLink :to="`/events/${(event).id}`">
+        <NuxtLink :to="`/events/${event.id}`">
           <Event :event="event" :is-full-size="false" />
         </NuxtLink>
       </li>

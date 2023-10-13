@@ -25,11 +25,14 @@
 }
 
 .card:nth-child(2n + 0) {
-  box-shadow: 0px 0px 1px 0 #000,  1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff);
+  box-shadow:
+    0px 0px 1px 0 #000,
+    1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff);
 }
 
 .card:nth-child(2n + 1) {
-  box-shadow: 0px 0px 1px 0 #000, -1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff);
+  box-shadow:
+    0px 0px 1px 0 #000,
+    -1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff);
 }
 </style>
-

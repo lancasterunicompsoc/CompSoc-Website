@@ -10,8 +10,12 @@ const { loginUrl } = config.public;
 <template>
   <ClientOnly>
     <div v-bind="$attrs">
-      <a v-if="!authStore.isLoggedIn" class="pointer-cursor" :href="loginUrl">Log In</a>
-      <a v-else href="#" class="pointer-cursor" @click="authStore.logOut">Log Out</a>
+      <a v-if="!authStore.isLoggedIn" class="pointer-cursor" :href="loginUrl"
+        >Log In</a
+      >
+      <a v-else href="#" class="pointer-cursor" @click="authStore.logOut"
+        >Log Out</a
+      >
     </div>
   </ClientOnly>
 </template>

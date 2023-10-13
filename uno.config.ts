@@ -27,10 +27,8 @@ export default defineConfig({
       "card",
       "px-4 py-4 bg-#ddd dark:bg-lightgrey shadow-highlight2Light dark:shadow-highlight2Dark hover:shadow-highlight1Light hover:dark:shadow-highlight1Dark",
     ],
-    [
-      "centered",
-      "mx-auto"
-    ],
+    ["centered", "mx-auto"],
+    ["row", "flex flex-row justify-evenly items-stretch"],
   ],
   presets: [
     presetUno(),
@@ -62,6 +60,6 @@ export default defineConfig({
     boxShadow: {
       br: " 0px 0px 1px 0 #000,  1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff)",
       bl: " 0px 0px 1px 0 #000, -1rem 1rem 0px -0.25rem var(--un-shadow-color, #fff)",
-    }
+    },
   },
 });

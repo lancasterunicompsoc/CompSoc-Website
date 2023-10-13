@@ -30,7 +30,14 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: "LUCompSoc"
-    }
-  }
+      title: "LUCompSoc",
+    },
+  },
+  routeRules: {
+    "/img/**": {
+      headers: {
+        "Cache-Control": "max-age=604800, public",
+      },
+    },
+  },
 });

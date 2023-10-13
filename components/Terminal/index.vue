@@ -1,23 +1,38 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
 import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
+import systemInfo from "./systemInfo";
 import "./commands/";
 
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
 
 export interface HistoryItem {
-  input: string;
+  input: string | undefined;
   output: string | undefined;
   cwd: string;
   timestamp: number; // mainly used for a unique key for v-for
 }
 
-const history = ref<HistoryItem[]>([]);
+const MOTD = `The programs included with ${systemInfo.os.name} are free software.
+${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
+
+To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
+`;
+
+const history = ref<HistoryItem[]>([
+  {
+    input: undefined,
+    output: MOTD,
+    cwd: "",
+    timestamp: 0,
+  },
+]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -27,10 +42,21 @@ const coderef = ref<HTMLElement | null>(null);
 
 const { focused } = useFocus(coderef, { initialValue: true });
 
+const authStore = useAuthStore();
+const username = authStore.payload?.username ?? "anonymous";
+
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
 // but the issue is that it depends on this variable, hence introducing a circular dependency
-const commandState = ref<State>({ filesystem: { cwd: "/home/anonymous" } });
+const commandState = ref<State>({
+  filesystem: {
+    cwd: `/home/${username}`,
+    previous_cwd: `/home/${username}`,
+  },
+  session: {
+    username,
+  }
+});
 
 function handleCommand(command: string): string | undefined {
   const [cmd, ...params] = command.split(" ");
@@ -115,11 +141,11 @@ function handleInput(event: KeyboardEvent) {
       historySelectionOffset.value = commandHistory.value.length;
     }
     const historySelection = commandHistory.value.at(
-      -1 * historySelectionOffset.value
+      -1 * historySelectionOffset.value,
     );
     if (!historySelection) {
       console.error(
-        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`
+        `something went wrong, debug info: offset: ${historySelectionOffset.value}, history length: ${commandHistory.value.length}`,
       );
     }
     activeLineBuffer.value = historySelection ?? "";
@@ -134,7 +160,7 @@ function handleInput(event: KeyboardEvent) {
       activeLineBuffer.value = inputBuffer.value;
     } else {
       const historySelection = commandHistory.value.at(
-        -1 * historySelectionOffset.value
+        -1 * historySelectionOffset.value,
       );
       activeLineBuffer.value = historySelection ?? "";
     }
@@ -211,15 +237,18 @@ register({
 
   color: #fff;
   background-color: #000;
-  box-shadow: var(--red) 0 0 0 0, var(--red) 0 0 0 0 inset;
+  box-shadow:
+    var(--red) 0 0 0 0,
+    var(--red) 0 0 0 0 inset;
 
   transition: box-shadow 250ms ease-in-out;
-  
+
   cursor: text;
 }
 
 .terminal:focus {
-  box-shadow: var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
+  box-shadow:
+    var(--red) 0 0 var(--border-scale) calc(var(--border-scale) / 2),
     var(--red) 0 0 calc(var(--border-scale) / 2) calc(var(--border-scale) / 4)
       inset;
   outline: none;

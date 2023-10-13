@@ -18,7 +18,10 @@ export default defineEventHandler(async event => {
   }
 
   // could probably be done in a single query, dunno how tho and can't be bothered to find out
-  const updated = await prisma.user.update({ where: { id }, data: { banned: !user.banned } });
+  const updated = await prisma.user.update({
+    where: { id },
+    data: { banned: !user.banned },
+  });
   console.log(updated);
   return { ok: true };
 });

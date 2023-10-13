@@ -1,27 +1,29 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import IconDelete from "./IconDelete.vue";
 import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
 import { deletePost } from "./utils";
-import type { Event } from "./utils";
+import type { EventType } from "./utils";
+import { unixAnySpan } from "~/utils/time";
 import { useAuthStore } from "~/stores/auth";
 
-const { isAdmin, jwt, isLoggedIn } = useAuthStore();
+const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
 
 const router = useRouter();
-const p = defineProps<{ event: Event; isFullSize: boolean }>();
+const p = defineProps<{ event: EventType; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
-  if (!isLoggedIn) {
+  if (!isLoggedIn.value) {
     return;
   }
   const confirmed = window.confirm(
     "Are you sure you want to delete this event?",
   );
   if (confirmed) {
-    deletePost(id, jwt);
+    deletePost(id, jwt.value as unknown as string);
     router.back();
   } else {
     console.log("Event not deleted.");
@@ -42,26 +44,7 @@ function editEvent(id: number) {
           <IconTime />
         </figcaption>
         <p>
-          {{
-            new Date(event.startTime).toLocaleString("en-GB", {
-              timeZone:"utc",
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
-          to
-          {{
-            new Date(event.endTime).toLocaleString("en-GB", {
-              timeZone:"utc",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: false,
-            })
-          }}
+          {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </p>
       </figure>
       <figure class="flex">

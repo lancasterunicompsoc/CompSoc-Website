@@ -116,11 +116,23 @@ export const cwd = (state: State, _: Params) => {
 };
 
 const cd: CommandHandler = (state, params) => {
+  if (params.length === 0) {
+    state.filesystem.previous_cwd = state.filesystem.cwd;
+    state.filesystem.cwd = userHome(state);
+    return;
+  }
+  if (params[0] === "-") {
+    const current = state.filesystem.cwd;
+    state.filesystem.cwd = state.filesystem.previous_cwd;
+    state.filesystem.previous_cwd = current;
+    return;
+  }
   const path = resolvePath(state, params[0]);
   if (!exists(state, path)) {
     return `Cannot cd to ${path}: directory does not exist`;
   }
 
+  state.filesystem.previous_cwd = state.filesystem.cwd;
   state.filesystem.cwd = path;
 };
 

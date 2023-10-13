@@ -1,13 +1,17 @@
 <template>
   <div class="dark:bg-darkgrey dark:text-gray-300 bg-#e7e7e7">
-    <NuxtLayout name="default">
+    <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <noscript>
+      This website only works if you enable Javascript in your browser, please
+      enable Javascript execution and reload the page.
+    </noscript>
   </div>
 </template>
 
 <style>
-:root{
+:root {
   --highlight1Dark: #ec5042;
   --highlight2Dark: #d14537;
   --highlight1Light: #d12415;

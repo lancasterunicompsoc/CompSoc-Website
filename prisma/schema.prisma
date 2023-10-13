@@ -3,8 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-
+  provider     = "mysql"
   url          = env("NUXT_DATABASE_URL")
   relationMode = "prisma"
 }
@@ -21,17 +20,26 @@ model User {
 }
 
 model Event {
-  id          Int             @id @default(autoincrement())
-  name        String          @db.LongText
-  location    String          @db.LongText
-  summary     String          @db.LongText
-  description String          @db.LongText
-  slides      String          @db.LongText
-  image       String?         @db.LongText
-  organizer   String
-  startTime   DateTime
-  endTime     DateTime
-  difficulty  EventDifficulty
+  id            Int             @id @default(autoincrement())
+  name          String          @db.LongText
+  location      String          @db.LongText
+  summary       String          @db.LongText
+  description   String          @db.LongText
+  slides        String          @db.LongText
+  organizer     String
+  startTime     DateTime?
+  endTime       DateTime?
+  unixStartTime Int?
+  unixEndTime   Int?
+  difficulty    EventDifficulty
+  image         String?         @db.LongText
+}
+
+model Announcement {
+  id       Int     @id @default(autoincrement())
+  eventId  Int     @unique
+  reminder Boolean
+  released Boolean
 }
 
 enum EventDifficulty {
