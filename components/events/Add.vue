@@ -156,7 +156,7 @@ async function addEvent() {
       </div>
       <span
         >All times should be entered in the time that they will run. Do not
-        adujust for time zones.</span
+        adjust for time zones.</span
       >
       <div>
         <label for="unixStartTime">Start Time:</label>
