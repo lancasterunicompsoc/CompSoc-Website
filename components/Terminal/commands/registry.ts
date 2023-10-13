@@ -5,7 +5,7 @@ export type State = {
   },
   session: {
     username: string,
-  } 
+  }
 };
 export type Params = string[];
 export type CommandHandler = (

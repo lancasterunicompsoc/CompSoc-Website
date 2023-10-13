@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuthStore } from "~/stores/auth";
 
 import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
@@ -11,6 +10,8 @@ import "./commands/";
 
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
+
+import { useAuthStore } from "~/stores/auth";
 
 export interface HistoryItem {
   input: string | undefined;
