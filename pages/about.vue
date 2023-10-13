@@ -7,7 +7,9 @@
         in computing and technology among students and wider society. Social and
         educational events are run every week, with beginner and advanced topics
         to cover a wide variety of interests. See our
-        <a href="/events">events</a> for more information.
+        <NuxtLink to="/events">
+          events
+        </NuxtLink> for more information.
       </p>
     </Card>
 
@@ -19,7 +21,9 @@
         acquire funding, and generally make the Society function. The Exec is
         voted for by the members, and each role is typically held for a year.
         More information about the Exec can be found in the
-        <a href="constitution">Constitution</a>.
+        <NuxtLink to="/constitution">
+          Constitution
+        </NuxtLink>.
       </p>
     </Card>
 
