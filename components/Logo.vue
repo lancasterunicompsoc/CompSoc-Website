@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex">
+  <div class="flex">
     <img src="/img/logo/light.svg" alt="CompSoc Logo" />
     LUCompSoc
   </div>
