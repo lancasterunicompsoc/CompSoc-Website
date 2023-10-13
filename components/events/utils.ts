@@ -1,5 +1,11 @@
 import { DateOffset } from "~/utils/time.js";
 
+export enum EventDifficulty {
+  EASY = "EASY",
+  HARD = "HARD",
+  SOCIAL = "SOCIAL",
+}
+
 export type EventType = {
   id: number;
   name: string;
@@ -14,23 +20,24 @@ export type EventType = {
   difficulty: EventDifficulty;
 };
 
-export enum EventDifficulty {
-  EASY = "EASY",
-  HARD = "HARD",
-  SOCIAL = "SOCIAL",
-}
-
-export function getAllEvents(offset?: DateOffset) {
-  const { years, months, weeks, days } = offset ?? {
+type getAllEventParams = { offset?: DateOffset; isXp?: Boolean };
+export function getAllEvents(options: getAllEventParams) {
+  const { years, months, weeks, days } = options.offset ?? {
     years: 0,
     months: 0,
     weeks: 0,
     days: 0,
   };
+  const headers = options.isXp
+    ? { "User-Agent": "xp-advert" }
+    : { "User-Agent": window.navigator.userAgent };
   return $fetch<EventType[]>(
     `/api/events/all?years=${years ?? 0}&months=${months ?? 0}&weeks=${
       weeks ?? 0
     }&days=${days ?? 0}`,
+    {
+      headers,
+    },
   );
 }
 
