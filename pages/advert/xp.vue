@@ -102,8 +102,24 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
 
 <template>
   <div class="banner">
+    <div class="icons">
+      <div class="icon">
+        <img src="/img/windows/recycle-bin.png" />
+        <span>Recycle Bin</span>
+      </div>
+      <div class="icon">
+        <img src="/img/windows/my-computer.png" />
+        <span>My Computer</span>
+      </div>
+      <div class="icon">
+        <img src="/img/windows/compsoc.webp" />
+        <span>compsoc.io</span>
+      </div>
+    </div>
     <template v-if="displaySlide">
-      <Advert :slide="displaySlide" />
+      <div class="advert">
+        <Advert :slide="displaySlide" />
+      </div>
     </template>
     <div class="taskbar">
       <img src="/img/windows/start.png" />
@@ -130,6 +146,34 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
   background-image: url(/img/windows/bliss.webp);
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.icons {
+  position: absolute;
+  inset: 0.5em;
+
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(15, 1fr);
+  grid-auto-flow: column;
+  gap: 0.5em;
+}
+
+.icon {
+  font-size: 0.25em;
+  font-family: 'Pixelated MS Sans Serif';
+  color: white;
+}
+
+.icon img {
+  width: 4em;
+  margin-bottom: 0.25em;
+  image-rendering: pixelated;
+}
+
+.advert {
+  position: relative;
+  z-index: 10;
 }
 
 .taskbar {

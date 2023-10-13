@@ -27,7 +27,7 @@ onMounted(() => {
 <template>
   <article class="slide">
     <Window>
-      <Titlebar>Event!</Titlebar>
+      <Titlebar>CompSoc Event!</Titlebar>
       <WindowBody>
         <h1 class="title mb-2">
           <Iconified src="/img/windows/compsoc.webp">
@@ -37,7 +37,7 @@ onMounted(() => {
         <Iconified src="/img/windows/calendar.png">
           {{ unixAnySpan(event.unixStartTime, event.unixEndTime) }}
         </Iconified>
-        <div class="info flex flex-row items-stretch mb-4">
+        <div class="info flex flex-row mb-4">
           <Iconified src="/img/windows/location.png">
             {{ event.location }}
           </Iconified>
