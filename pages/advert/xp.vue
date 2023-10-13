@@ -42,7 +42,10 @@ function padSlides() {
 
 async function loadSlides(): Promise<SlideType[]> {
   return getAllEvents({
-    weeks: 2,
+    offset: {
+      weeks: 2,
+    },
+    isXp: true,
   }).then(events =>
     events.map(event => ({
       data: event,
