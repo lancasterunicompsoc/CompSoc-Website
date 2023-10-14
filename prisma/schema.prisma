@@ -27,10 +27,8 @@ model Event {
   description   String          @db.LongText
   slides        String          @db.LongText
   organizer     String
-  startTime     DateTime?
-  endTime       DateTime?
-  unixStartTime Int?
-  unixEndTime   Int?
+  unixStartTime Int
+  unixEndTime   Int
   difficulty    EventDifficulty
   image         String?         @db.LongText
 }
