@@ -27,7 +27,6 @@ const coderef = ref<HTMLElement | null>(null);
 const { focused } = useFocus(coderef, { initialValue: true });
 
 const eventsStore = useEventStore();
-const { events } = storeToRefs(eventsStore);
 const authStore = useAuthStore();
 
 const username = authStore.payload?.username ?? "anonymous";
