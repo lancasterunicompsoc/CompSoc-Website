@@ -148,8 +148,13 @@ const cd: CommandHandler = (state, params, { stdout }) => {
     return;
   }
   const path = resolvePath(state, params[0]);
-  if (!exists(state, path)) {
+  const item = findEntry(state, path);
+  if (item === null) {
     stdout.writeln(`Cannot cd to ${path}: directory does not exist`);
+    return;
+  }
+  if (item.type !== EntryType.directory) {
+    stdout.writeln(`Cannot cd to ${path}: file is not a directory`);
     return;
   }
 
