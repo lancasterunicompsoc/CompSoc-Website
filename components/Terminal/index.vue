@@ -56,7 +56,7 @@ const commandState = ref<State>({
   },
   session: {
     username,
-  }
+  },
 });
 
 function handleCommand(command: string): string | undefined {

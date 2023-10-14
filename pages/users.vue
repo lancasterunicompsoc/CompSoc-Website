@@ -41,16 +41,30 @@ function changeRole(event: Event) {
 
 <template>
   <div class="m-8">
-    <h1 class="text-3xl">Users</h1>
-    <div v-if="pending === true">Loading users...</div>
+    <h1 class="text-3xl">
+      Users
+    </h1>
+    <div v-if="pending === true">
+      Loading users...
+    </div>
     <table v-if="status === 'success' && data" class="mt-8 dark:bg-#222">
       <thead class="dark:bg-#222">
         <tr>
-          <th class="dark:bg-#222">ID</th>
-          <th class="dark:bg-#222">Name</th>
-          <th class="dark:bg-#222">Username</th>
-          <th class="dark:bg-#222">Role</th>
-          <th class="dark:bg-#222">Is banned</th>
+          <th class="dark:bg-#222">
+            ID
+          </th>
+          <th class="dark:bg-#222">
+            Name
+          </th>
+          <th class="dark:bg-#222">
+            Username
+          </th>
+          <th class="dark:bg-#222">
+            Role
+          </th>
+          <th class="dark:bg-#222">
+            Is banned
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -71,9 +85,15 @@ function changeRole(event: Event) {
               class="text-black"
               @change="changeRole"
             >
-              <option value="USER">USER</option>
-              <option value="PRIVILEGED">PRIVILEGED</option>
-              <option value="ADMIN">ADMIN</option>
+              <option value="USER">
+                USER
+              </option>
+              <option value="PRIVILEGED">
+                PRIVILEGED
+              </option>
+              <option value="ADMIN">
+                ADMIN
+              </option>
             </select>
           </td>
           <td class="dark:bg-#222">

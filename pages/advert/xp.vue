@@ -161,7 +161,7 @@ useTimeoutFn(() => window.location.reload(), 1000 * 3600 * 3);
 
 .icon {
   font-size: 0.25em;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: "Pixelated MS Sans Serif";
   color: white;
 }
 
