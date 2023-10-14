@@ -47,6 +47,14 @@ const commandState = ref<State>({
   getEvents,
 });
 
+watch(
+  () => authStore.payload?.username,
+  (username) => {
+    commandState.value.session.username = username ?? "anonymous";
+    handleCommand("cd");
+  }
+);
+
 const stdin = {
   read(_n?: number): string {
     const char = inputBuffer.value[0];
