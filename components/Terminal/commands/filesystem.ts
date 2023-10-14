@@ -1,31 +1,53 @@
 import type { CommandHandler, Params, State } from "./registry";
 import { register } from "./registry";
-
 import { whoami } from "./session";
+import { eventToFile } from "./utils";
 
-interface Entry {
-  name: string;
-  children?: ChildFactory;
+export enum EntryType {
+    directory,
+    file,
 }
+
+export interface DirEntry {
+  type: EntryType.directory,
+  name: string;
+  children: ChildFactory;
+}
+
+export interface FileEntry {
+  type: EntryType.file,
+  name: string;
+  content: string;
+}
+
+export type Entry = DirEntry | FileEntry;
 
 type ChildFactory = (state: State) => Entry[];
 
 const makeHomeDir = (name: string): Entry => ({
+  type: EntryType.directory,
   name,
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "events",
-      children: (_: State) => [
-        /* TODO: get events for user */
-      ],
+      children: (state: State) => {
+        const events = state.getEvents();
+        if (events) {
+          return events.map(e => eventToFile(e));
+        }
+        return [];
+      },
     },
   ],
 });
 
 const fileTree: Entry = {
+  type: EntryType.directory,
   name: "/",
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "home",
       children: (state: State) => {
         const iAm = whoami(state, []);
@@ -81,7 +103,7 @@ function resolvePath(state: State, path?: string): string {
   return normalizePath(state, fullPath);
 }
 
-function findDirectory(state: State, path: string): Entry | null {
+function findEntry(state: State, path: string): Entry | null {
   if (path === "/") {
     return fileTree;
   }
@@ -89,7 +111,7 @@ function findDirectory(state: State, path: string): Entry | null {
   const parts = normalizePath(state, path).split("/").splice(1);
   let dir = fileTree;
   for (const part of parts) {
-    if (dir.children === undefined) {
+    if (dir.type !== EntryType.directory) {
       return null;
     }
 
@@ -109,7 +131,7 @@ function findDirectory(state: State, path: string): Entry | null {
 }
 
 const exists = (state: State, path: string): boolean =>
-  findDirectory(state, path) !== null;
+  findEntry(state, path) !== null;
 
 export const cwd = (state: State, _: Params) => {
   return state.filesystem.cwd;
@@ -138,19 +160,42 @@ const cd: CommandHandler = (state, params) => {
 
 const ls: CommandHandler = (state, params) => {
   const path = resolvePath(state, params[0]);
-  const item = findDirectory(state, path);
+  const item = findEntry(state, path);
   if (item === null) {
     return `Cannot access '${path}': no such file or directory`;
   }
 
-  if (item.children === undefined) {
+  if (item.type !== EntryType.directory) {
     return path;
   }
 
   const children = item.children(state);
-  return children.map(child => child.name).join("    ");
+  return children.map(child => child.name).sort().join("    ");
 };
 
+const cat: CommandHandler = (state, params) => {
+  const output = [];
+  for (const param of params) {
+    const path = resolvePath(state, param);
+    const item = findEntry(state, path);
+    if (item === null) {
+      output.push(`Cannot access '${path}': no such file or directory`);
+      continue;
+    }
+    if (item.type !== EntryType.file) {
+      output.push(`Cannot read '${path}': it is not a file`);
+      continue;
+    }
+    output.push(item.content);
+  }
+  return output.join("\n\n");
+};
+
+register({
+  name: "cat",
+  fn: cat,
+  help: "Concatenate files to standard output",
+});
 register({
   name: "cd",
   fn: cd,

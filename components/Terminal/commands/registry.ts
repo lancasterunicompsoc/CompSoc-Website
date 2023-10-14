@@ -1,11 +1,14 @@
+import { EventType } from "~/components/events/utils";
+
 export type State = {
   filesystem: {
-    cwd: string,
-    previous_cwd: string,
-  },
+    cwd: string;
+    previous_cwd: string;
+  };
   session: {
-    username: string,
-  } 
+    username: string;
+  };
+  getEvents: () => EventType[] | null
 };
 export type Params = string[];
 export type CommandHandler = (
