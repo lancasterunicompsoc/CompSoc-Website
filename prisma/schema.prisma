@@ -40,6 +40,14 @@ model Announcement {
   released Boolean
 }
 
+model Review {
+  id      Int    @id @default(autoincrement())
+  eventId Int    @unique
+  userId  Int    @unique
+  rating  Int
+  comment String? @db.LongText
+}
+
 enum EventDifficulty {
   EASY
   HARD
