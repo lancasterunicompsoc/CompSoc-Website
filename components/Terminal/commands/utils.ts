@@ -12,7 +12,7 @@ export function eventToFile(event: EventType): Entry {
     `${unixAnySpan(event.unixStartTime, event.unixEndTime)}`,
     `Location: ${event.location}`,
     `Organizer: ${event.organizer}`,
-    event.slides ? `Slides: ${event.slides}\n` : null,
+    event.slides ? `Slides: ${event.slides}` : null,
     "",
     event.summary,
     "",

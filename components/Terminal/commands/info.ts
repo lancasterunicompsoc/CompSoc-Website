@@ -7,54 +7,57 @@ const echo: CommandHandler = (_state, params) => {
   return params.join(" ");
 };
 
-const info: CommandHandler = (_state, params) => {
+const info: CommandHandler = (_state, params, { stdout }) => {
   const target = params.join(" ");
   switch (target.toLowerCase()) {
     case "compsoc":
     case "lucompsoc":
     case "computer science society":
-      return "Lancaster University Computer Science Society exists to promote interest in computing and technology among students and wider society.";
+      stdout.write("Lancaster University Computer Science Society exists to promote interest in computing and technology among students and wider society.");
+      break;
 
     case "lu":
     case "uni":
     case "lancaster university":
-      return "Lancaster University is a collegiate university 3 miles south of Lancaster.";
+      stdout.write("Lancaster University is a collegiate university 3 miles south of Lancaster.");
+      break;
 
     default:
-      return `Could not find information for \`${target}\`. Try \`info compsoc\``;
+      stdout.write(`Could not find information for \`${target}\`. Try \`info compsoc\``);
+      break;
   }
 };
 
-const neofetch: CommandHandler = (state, _params) => {
-  const responseLines = [];
-  responseLines.push(`${whoami(state, [])}@compsoc.io`);
-  responseLines.push(
-    "-".repeat((responseLines.at(responseLines.length - 1) as string).length),
-  );
-  responseLines.push(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
-  responseLines.push(
-    `Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`,
-  );
-  responseLines.push(`Resolution: ${systemInfo.resolution}`);
-  responseLines.push(`Theme: ${systemInfo.theme}`);
-  responseLines.push(`Terminal: ${systemInfo.terminal}`);
-  responseLines.push(`Processor: ${systemInfo.processor}`);
-  return responseLines.join("\n");
+const neofetch: CommandHandler = (state, _params, { stdout }) => {
+  const n = stdout.writeln(`${whoami(state, [])}@compsoc.io`);
+  stdout.writeln("-".repeat(n - 1));
+  stdout.writeln(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
+  stdout.writeln(`Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`);
+  stdout.writeln(`Resolution: ${systemInfo.resolution}`);
+  stdout.writeln(`Theme: ${systemInfo.theme}`);
+  stdout.writeln(`Terminal: ${systemInfo.terminal}`);
+  stdout.writeln(`Processor: ${systemInfo.processor}`);
 };
 
-const man: CommandHandler = (_state, params) => {
+const man: CommandHandler = (_state, params, { stdout }) => {
   if (params.length > 0) {
     if (params.length > 1) {
-      return "man can only display one helppage at a time";
+      stdout.writeln("man can only display one helppage at a time");
+      return;
     }
     const helptext = getHelp(params[0] as string);
     if (!helptext) {
-      return `No manual entry for ${params[0]}`;
+      stdout.writeln(`No manual entry for ${params[0]}`);
+      return;
     }
-    return helptext;
+    stdout.writeln(helptext);
+    return;
   }
   const commandStrings = getAllCommands().sort().join("\n");
-  return `Help:\nThe following commands are available:\n${commandStrings}\nFor more information, run \`man PROGRAMNAME\``;
+  stdout.writeln("Help:");
+  stdout.writeln("The following commands are available:");
+  stdout.writeln(commandStrings);
+  stdout.writeln("For more information, run `man PROGRAMNAME`");
 };
 
 register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });

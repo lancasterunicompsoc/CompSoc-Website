@@ -50,7 +50,7 @@ const fileTree: Entry = {
       type: EntryType.directory,
       name: "home",
       children: (state: State) => {
-        const iAm = whoami(state, []);
+        const iAm = whoami(state);
         const children = [makeHomeDir(iAm)];
         if (iAm !== "anonymous") {
           children.push(makeHomeDir("anonymous"));
@@ -61,7 +61,7 @@ const fileTree: Entry = {
   ],
 };
 
-const userHome = (state: State) => `/home/${whoami(state, [])}`;
+const userHome = (state: State) => `/home/${whoami(state)}`;
 
 function normalizePath(state: State, path: string): string {
   const parts = path.split("/");
@@ -76,7 +76,7 @@ function normalizePath(state: State, path: string): string {
         normalizedParts.pop();
         break;
       case "~":
-        normalizedParts = ["/home", whoami(state, [])];
+        normalizedParts = ["/home", whoami(state)];
         break;
       default:
         normalizedParts.push(part);
@@ -94,11 +94,11 @@ function normalizePath(state: State, path: string): string {
 function resolvePath(state: State, path?: string): string {
   let fullPath;
   if (path === undefined) {
-    fullPath = cwd(state, []);
+    fullPath = cwd(state);
   } else if (path.startsWith("/")) {
     fullPath = path;
   } else {
-    fullPath = cwd(state, []) + "/" + path;
+    fullPath = cwd(state) + "/" + path;
   }
   return normalizePath(state, fullPath);
 }
@@ -133,11 +133,9 @@ function findEntry(state: State, path: string): Entry | null {
 const exists = (state: State, path: string): boolean =>
   findEntry(state, path) !== null;
 
-export const cwd = (state: State, _: Params) => {
-  return state.filesystem.cwd;
-};
+export const cwd = (state: State) => state.filesystem.cwd;
 
-const cd: CommandHandler = (state, params) => {
+const cd: CommandHandler = (state, params, { stdout }) => {
   if (params.length === 0) {
     state.filesystem.previous_cwd = state.filesystem.cwd;
     state.filesystem.cwd = userHome(state);
@@ -151,44 +149,45 @@ const cd: CommandHandler = (state, params) => {
   }
   const path = resolvePath(state, params[0]);
   if (!exists(state, path)) {
-    return `Cannot cd to ${path}: directory does not exist`;
+    stdout.writeln(`Cannot cd to ${path}: directory does not exist`);
+    return;
   }
 
   state.filesystem.previous_cwd = state.filesystem.cwd;
   state.filesystem.cwd = path;
 };
 
-const ls: CommandHandler = (state, params) => {
+const ls: CommandHandler = (state, params, { stdout }) => {
   const path = resolvePath(state, params[0]);
   const item = findEntry(state, path);
   if (item === null) {
-    return `Cannot access '${path}': no such file or directory`;
+    stdout.writeln(`Cannot access '${path}': no such file or directory`);
+    return;
   }
 
   if (item.type !== EntryType.directory) {
-    return path;
+    stdout.writeln(path);
+    return;
   }
 
   const children = item.children(state);
-  return children.map(child => child.name).sort().join("    ");
+  stdout.writeln(children.map(child => child.name).sort().join("    "));
 };
 
-const cat: CommandHandler = (state, params) => {
-  const output = [];
+const cat: CommandHandler = (state, params, { stdout }) => {
   for (const param of params) {
     const path = resolvePath(state, param);
     const item = findEntry(state, path);
     if (item === null) {
-      output.push(`Cannot access '${path}': no such file or directory`);
+      stdout.writeln(`Cannot access '${path}': no such file or directory`);
       continue;
     }
     if (item.type !== EntryType.file) {
-      output.push(`Cannot read '${path}': it is not a file`);
+      stdout.writeln(`Cannot read '${path}': it is not a file`);
       continue;
     }
-    output.push(item.content);
+    stdout.write(item.content);
   }
-  return output.join("\n\n");
 };
 
 register({
@@ -201,8 +200,16 @@ register({
   fn: cd,
   help: "Change working directory to the one specified in the first argument",
 });
-register({ name: "cwd", fn: cwd, help: "Display current working directory" });
-register({ name: "pwd", fn: cwd, help: "Display current working directory" });
+register({
+  name: "cwd",
+  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
+  help: "Display current working directory",
+});
+register({
+  name: "pwd",
+  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
+  help: "Display current working directory",
+});
 register({
   name: "ls",
   fn: ls,
