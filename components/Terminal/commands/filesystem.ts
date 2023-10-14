@@ -3,23 +3,43 @@ import { register } from "./registry";
 
 import { whoami } from "./session";
 
-interface Entry {
-  name: string;
-  children?: ChildFactory;
+import type { EventType } from "~/components/events/utils";
+
+enum EntryType {
+    directory,
+    file,
 }
+
+interface DirEntry {
+  name: string;
+  children: ChildFactory;
+}
+
+interface FileEntry {
+  name: string;
+  content: string;
+}
+
+type Entry = (DirEntry & { type: EntryType.directory }) | (FileEntry & { type: EntryType.file });
 
 type ChildFactory = (state: State) => Entry[];
 
+const eventToSlug = (event: EventType) => `${event.id}-${event.name.toLowerCase().split(" ").join("-")}`;
+
 const makeHomeDir = (name: string): Entry => ({
+  type: EntryType.directory,
   name,
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "events",
       children: (state: State) => {
         const events = state.getEvents();
         if (events) {
           return events.map(e => ({
-            name: e.name,
+            type: EntryType.file,
+            name: eventToSlug(e),
+            content: "",
           }));
         }
         return [];
@@ -29,9 +49,11 @@ const makeHomeDir = (name: string): Entry => ({
 });
 
 const fileTree: Entry = {
+  type: EntryType.directory,
   name: "/",
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "home",
       children: (state: State) => {
         const iAm = whoami(state, []);
@@ -95,7 +117,7 @@ function findDirectory(state: State, path: string): Entry | null {
   const parts = normalizePath(state, path).split("/").splice(1);
   let dir = fileTree;
   for (const part of parts) {
-    if (dir.children === undefined) {
+    if (dir.type !== EntryType.directory) {
       return null;
     }
 
@@ -149,7 +171,7 @@ const ls: CommandHandler = (state, params) => {
     return `Cannot access '${path}': no such file or directory`;
   }
 
-  if (item.children === undefined) {
+  if (item.type !== EntryType.directory) {
     return path;
   }
 
