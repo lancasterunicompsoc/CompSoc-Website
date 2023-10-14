@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuthStore } from "~/stores/auth";
-
+import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import TerminalHistoryItem from "./TerminalHistoryItem.vue";
 import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 import systemInfo from "./systemInfo";
 import "./commands/";
-
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
+import { useAuthStore } from "~/stores/auth";
+import { useEventStore } from "~/stores/event";
 
 export interface HistoryItem {
   input: string | undefined;
@@ -42,8 +42,14 @@ const coderef = ref<HTMLElement | null>(null);
 
 const { focused } = useFocus(coderef, { initialValue: true });
 
+const eventsStore = useEventStore();
+const { events } = storeToRefs(eventsStore);
 const authStore = useAuthStore();
+
 const username = authStore.payload?.username ?? "anonymous";
+
+onMounted(() => eventsStore.getAllEvents());
+const getEvents = () => eventsStore.events;
 
 // TODO: We could think about persisting the state in the future
 // I would prefer if we didnt hardcode the initial value and instead called `userHome`,
@@ -55,7 +61,8 @@ const commandState = ref<State>({
   },
   session: {
     username,
-  }
+  },
+  getEvents,
 });
 
 function handleCommand(command: string): string | undefined {

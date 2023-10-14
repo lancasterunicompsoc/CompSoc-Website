@@ -15,9 +15,15 @@ const makeHomeDir = (name: string): Entry => ({
   children: (_: State) => [
     {
       name: "events",
-      children: (_: State) => [
-        /* TODO: get events for user */
-      ],
+      children: (state: State) => {
+        const events = state.getEvents();
+        if (events) {
+          return events.map(e => ({
+            name: e.name,
+          }));
+        }
+        return [];
+      },
     },
   ],
 });
