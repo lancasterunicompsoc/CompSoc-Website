@@ -25,14 +25,8 @@ ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
 `;
 
-const history = ref<HistoryItem[]>([
-  {
-    input: undefined,
-    output: MOTD,
-    cwd: "",
-    timestamp: 0,
-  },
-]);
+const history = ref<HistoryItem[]>([]);
+const characterBuffer = ref<string>("");
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -65,19 +59,32 @@ const commandState = ref<State>({
   getEvents,
 });
 
-function handleCommand(command: string): string | undefined {
+const stdin = {
+  read(_n?: number): string {
+    const char = activeLineBuffer.value[0];
+    activeLineBuffer.value.substring(1);
+    return char ?? "";
+  }
+};
+const stdout = {
+  write(data: string): number { characterBuffer.value += data; return data.length; },
+  writeln(data: string): number { return this.write(data + "\n"); },
+};
+
+function handleCommand(command: string): void {
   const [cmd, ...params] = command.split(" ");
 
   if (!cmd) {
-    return "";
+    return;
   }
 
   const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
-    return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`;
+    stdout.writeln(`\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`);
+    return;
   }
 
-  return handler(commandState.value, params);
+  handler(commandState.value, params, { stdin, stdout });
 }
 
 function handleInput(event: KeyboardEvent) {
@@ -104,10 +111,12 @@ function handleInput(event: KeyboardEvent) {
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
+    stdout.writeln(activeLineBuffer.value);
+    activeLineBuffer.value = "";
     const pwd = cwd(commandState.value, []);
     let response;
     if (command !== "") {
-      response = handleCommand(command);
+      handleCommand(command);
     }
     history.value.push({
       input: command,
@@ -118,8 +127,10 @@ function handleInput(event: KeyboardEvent) {
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
-    activeLineBuffer.value = "";
     historySelectionOffset.value = 0;
+
+    stdout.write(cwd(commandState.value));
+    stdout.write("> ");
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -195,28 +206,29 @@ function handleInput(event: KeyboardEvent) {
 
 function clearScreen() {
   history.value = [];
+  characterBuffer.value = "";
 }
 
 register({
   name: "clear",
-  fn: (_state, _) => {
+  fn: (_state, _params, _io) => {
     // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
     nextTick(clearScreen);
-    return "";
   },
   help: "Clear the screen completely",
+});
+
+onMounted(() => {
+  stdout.writeln(MOTD);
+  stdout.write(cwd(commandState.value));
+  stdout.write("> ");
 });
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    <TerminalHistoryItem
-      v-for="item in history"
-      v-bind="item"
-      :key="item.timestamp"
-    />
-    <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer
-    }}<TerminalBlinker :focussed="focused ?? false" />
+    {{ characterBuffer }}
+    {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
 
