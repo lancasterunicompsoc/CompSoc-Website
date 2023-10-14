@@ -1,34 +1,56 @@
 import type { CommandHandler, Params, State } from "./registry";
 import { register } from "./registry";
-
 import { whoami } from "./session";
+import { eventToFile } from "./utils";
 
-interface Entry {
-  name: string;
-  children?: ChildFactory;
+export enum EntryType {
+    directory,
+    file,
 }
+
+export interface DirEntry {
+  type: EntryType.directory,
+  name: string;
+  children: ChildFactory;
+}
+
+export interface FileEntry {
+  type: EntryType.file,
+  name: string;
+  content: string;
+}
+
+export type Entry = DirEntry | FileEntry;
 
 type ChildFactory = (state: State) => Entry[];
 
 const makeHomeDir = (name: string): Entry => ({
+  type: EntryType.directory,
   name,
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "events",
-      children: (_: State) => [
-        /* TODO: get events for user */
-      ],
+      children: (state: State) => {
+        const events = state.getEvents();
+        if (events) {
+          return events.map(e => eventToFile(e));
+        }
+        return [];
+      },
     },
   ],
 });
 
 const fileTree: Entry = {
+  type: EntryType.directory,
   name: "/",
   children: (_: State) => [
     {
+      type: EntryType.directory,
       name: "home",
       children: (state: State) => {
-        const iAm = whoami(state, []);
+        const iAm = whoami(state);
         const children = [makeHomeDir(iAm)];
         if (iAm !== "anonymous") {
           children.push(makeHomeDir("anonymous"));
@@ -39,7 +61,7 @@ const fileTree: Entry = {
   ],
 };
 
-const userHome = (state: State) => `/home/${whoami(state, [])}`;
+const userHome = (state: State) => `/home/${whoami(state)}`;
 
 function normalizePath(state: State, path: string): string {
   const parts = path.split("/");
@@ -54,7 +76,7 @@ function normalizePath(state: State, path: string): string {
         normalizedParts.pop();
         break;
       case "~":
-        normalizedParts = ["/home", whoami(state, [])];
+        normalizedParts = ["/home", whoami(state)];
         break;
       default:
         normalizedParts.push(part);
@@ -72,16 +94,16 @@ function normalizePath(state: State, path: string): string {
 function resolvePath(state: State, path?: string): string {
   let fullPath;
   if (path === undefined) {
-    fullPath = cwd(state, []);
+    fullPath = cwd(state);
   } else if (path.startsWith("/")) {
     fullPath = path;
   } else {
-    fullPath = cwd(state, []) + "/" + path;
+    fullPath = cwd(state) + "/" + path;
   }
   return normalizePath(state, fullPath);
 }
 
-function findDirectory(state: State, path: string): Entry | null {
+function findEntry(state: State, path: string): Entry | null {
   if (path === "/") {
     return fileTree;
   }
@@ -89,7 +111,7 @@ function findDirectory(state: State, path: string): Entry | null {
   const parts = normalizePath(state, path).split("/").splice(1);
   let dir = fileTree;
   for (const part of parts) {
-    if (dir.children === undefined) {
+    if (dir.type !== EntryType.directory) {
       return null;
     }
 
@@ -109,13 +131,11 @@ function findDirectory(state: State, path: string): Entry | null {
 }
 
 const exists = (state: State, path: string): boolean =>
-  findDirectory(state, path) !== null;
+  findEntry(state, path) !== null;
 
-export const cwd = (state: State, _: Params) => {
-  return state.filesystem.cwd;
-};
+export const cwd = (state: State) => state.filesystem.cwd;
 
-const cd: CommandHandler = (state, params) => {
+const cd: CommandHandler = (state, params, { stdout }) => {
   if (params.length === 0) {
     state.filesystem.previous_cwd = state.filesystem.cwd;
     state.filesystem.cwd = userHome(state);
@@ -128,36 +148,73 @@ const cd: CommandHandler = (state, params) => {
     return;
   }
   const path = resolvePath(state, params[0]);
-  if (!exists(state, path)) {
-    return `Cannot cd to ${path}: directory does not exist`;
+  const item = findEntry(state, path);
+  if (item === null) {
+    stdout.writeln(`Cannot cd to ${path}: directory does not exist`);
+    return;
+  }
+  if (item.type !== EntryType.directory) {
+    stdout.writeln(`Cannot cd to ${path}: file is not a directory`);
+    return;
   }
 
   state.filesystem.previous_cwd = state.filesystem.cwd;
   state.filesystem.cwd = path;
 };
 
-const ls: CommandHandler = (state, params) => {
+const ls: CommandHandler = (state, params, { stdout }) => {
   const path = resolvePath(state, params[0]);
-  const item = findDirectory(state, path);
+  const item = findEntry(state, path);
   if (item === null) {
-    return `Cannot access '${path}': no such file or directory`;
+    stdout.writeln(`Cannot access '${path}': no such file or directory`);
+    return;
   }
 
-  if (item.children === undefined) {
-    return path;
+  if (item.type !== EntryType.directory) {
+    stdout.writeln(path);
+    return;
   }
 
   const children = item.children(state);
-  return children.map(child => child.name).join("    ");
+  stdout.writeln(children.map(child => child.name).sort().join("    "));
 };
 
+const cat: CommandHandler = (state, params, { stdout }) => {
+  for (const param of params) {
+    const path = resolvePath(state, param);
+    const item = findEntry(state, path);
+    if (item === null) {
+      stdout.writeln(`Cannot access '${path}': no such file or directory`);
+      continue;
+    }
+    if (item.type !== EntryType.file) {
+      stdout.writeln(`Cannot read '${path}': it is not a file`);
+      continue;
+    }
+    stdout.write(item.content);
+  }
+};
+
+register({
+  name: "cat",
+  fn: cat,
+  help: "Concatenate files to standard output",
+});
 register({
   name: "cd",
   fn: cd,
   help: "Change working directory to the one specified in the first argument",
 });
-register({ name: "cwd", fn: cwd, help: "Display current working directory" });
-register({ name: "pwd", fn: cwd, help: "Display current working directory" });
+register({
+  name: "cwd",
+  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
+  help: "Display current working directory",
+});
+register({
+  name: "pwd",
+  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
+  help: "Display current working directory",
+});
 register({
   name: "ls",
   fn: ls,

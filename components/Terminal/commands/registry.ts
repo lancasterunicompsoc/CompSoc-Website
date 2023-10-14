@@ -1,17 +1,23 @@
+import type { IStream, OStream } from "../stdio";
+
+import { EventType } from "~/components/events/utils";
+
 export type State = {
   filesystem: {
-    cwd: string,
-    previous_cwd: string,
-  },
+    cwd: string;
+    previous_cwd: string;
+  };
   session: {
-    username: string,
-  } 
+    username: string;
+  };
+  getEvents: () => EventType[] | null
 };
 export type Params = string[];
 export type CommandHandler = (
   state: State,
   params: Params,
-) => string | undefined;
+  io: { stdin: IStream, stdout: OStream },
+) => void;
 type Command = { fn: CommandHandler; help?: string };
 export const registry: Record<string, Command> = {};
 
@@ -21,7 +27,7 @@ export function register({ name, fn, help }: registerParams) {
   registry[name] = { fn, help };
 }
 
-export function getCommand(name: string) {
+export function getCommand(name: string): CommandHandler | undefined {
   return registry[name]?.fn;
 }
 

@@ -1,23 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuthStore } from "~/stores/auth";
-
+import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
-import TerminalHistoryItem from "./TerminalHistoryItem.vue";
-import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 import systemInfo from "./systemInfo";
 import "./commands/";
-
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
-
-export interface HistoryItem {
-  input: string | undefined;
-  output: string | undefined;
-  cwd: string;
-  timestamp: number; // mainly used for a unique key for v-for
-}
+import { useAuthStore } from "~/stores/auth";
+import { useEventStore } from "~/stores/event";
 
 const MOTD = `The programs included with ${systemInfo.os.name} are free software.
 ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
@@ -25,14 +16,7 @@ ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
 `;
 
-const history = ref<HistoryItem[]>([
-  {
-    input: undefined,
-    output: MOTD,
-    cwd: "",
-    timestamp: 0,
-  },
-]);
+const characterBuffer = ref<string>("");
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -42,12 +26,15 @@ const coderef = ref<HTMLElement | null>(null);
 
 const { focused } = useFocus(coderef, { initialValue: true });
 
+const eventsStore = useEventStore();
 const authStore = useAuthStore();
+
 const username = authStore.payload?.username ?? "anonymous";
 
+onMounted(() => eventsStore.getAllEvents());
+const getEvents = () => eventsStore.events;
+
 // TODO: We could think about persisting the state in the future
-// I would prefer if we didnt hardcode the initial value and instead called `userHome`,
-// but the issue is that it depends on this variable, hence introducing a circular dependency
 const commandState = ref<State>({
   filesystem: {
     cwd: `/home/${username}`,
@@ -55,22 +42,44 @@ const commandState = ref<State>({
   },
   session: {
     username,
-  }
+  },
+  getEvents,
 });
 
-function handleCommand(command: string): string | undefined {
+watch(
+  () => authStore.payload?.username,
+  (username) => {
+    commandState.value.session.username = username ?? "anonymous";
+    handleCommand("cd");
+  }
+);
+
+const stdin = {
+  read(_n?: number): string {
+    const char = inputBuffer.value[0];
+    inputBuffer.value = inputBuffer.value.substring(1);
+    return char ?? "";
+  }
+};
+const stdout = {
+  write(data: string): number { characterBuffer.value += data; return data.length; },
+  writeln(data: string): number { return this.write(data + "\n"); },
+};
+
+function handleCommand(command: string): void {
   const [cmd, ...params] = command.split(" ");
 
   if (!cmd) {
-    return "";
+    return;
   }
 
   const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
-    return `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`;
+    stdout.writeln(`\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`);
+    return;
   }
 
-  return handler(commandState.value, params);
+  handler(commandState.value, params, { stdin, stdout });
 }
 
 function handleInput(event: KeyboardEvent) {
@@ -97,22 +106,18 @@ function handleInput(event: KeyboardEvent) {
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
-    const pwd = cwd(commandState.value, []);
-    let response;
+    stdout.writeln(activeLineBuffer.value);
+    activeLineBuffer.value = "";
     if (command !== "") {
-      response = handleCommand(command);
+      handleCommand(command);
     }
-    history.value.push({
-      input: command,
-      output: response,
-      cwd: pwd,
-      timestamp: Date.now(),
-    });
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
-    activeLineBuffer.value = "";
     historySelectionOffset.value = 0;
+
+    stdout.write(cwd(commandState.value));
+    stdout.write("> ");
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -187,29 +192,29 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  history.value = [];
+  characterBuffer.value = `${cwd(commandState.value)}> `;
 }
 
 register({
   name: "clear",
-  fn: (_state, _) => {
+  fn: (_state, _params, _io) => {
     // we can't clear it immediately, because the 'clear' command will be drawn on screen AFTER this has run, due to the way the command systems works
     nextTick(clearScreen);
-    return "";
   },
   help: "Clear the screen completely",
+});
+
+onMounted(() => {
+  stdout.writeln(MOTD);
+  stdout.write(cwd(commandState.value));
+  stdout.write("> ");
 });
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    <TerminalHistoryItem
-      v-for="item in history"
-      v-bind="item"
-      :key="item.timestamp"
-    />
-    <TerminalMarker :cwd="commandState.filesystem.cwd" /> {{ activeLineBuffer
-    }}<TerminalBlinker :focussed="focused ?? false" />
+    {{ characterBuffer }}
+    {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
 
