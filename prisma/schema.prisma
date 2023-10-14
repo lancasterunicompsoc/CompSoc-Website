@@ -16,6 +16,8 @@ model User {
   role        Role    @default(USER)
   username    String  @unique
 
+  reviews Review[]
+
   @@index([id, username])
 }
 
@@ -31,19 +33,25 @@ model Event {
   unixEndTime   Int
   difficulty    EventDifficulty
   image         String?         @db.LongText
+
+  reviews      Review[]
+  announcement Announcement[]
 }
 
 model Announcement {
   id       Int     @id @default(autoincrement())
+  event    Event   @relation(fields: [eventId], references: [id])
   eventId  Int     @unique
   reminder Boolean
   released Boolean
 }
 
 model Review {
-  id      Int    @id @default(autoincrement())
-  eventId Int    @unique
-  userId  Int    @unique
+  id      Int     @id @default(autoincrement())
+  event   Event   @relation(fields: [eventId], references: [id])
+  eventId Int     @unique
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String  @unique
   rating  Int
   comment String? @db.LongText
 }
