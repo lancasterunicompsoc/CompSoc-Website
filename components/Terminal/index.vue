@@ -2,8 +2,6 @@
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
-import TerminalHistoryItem from "./TerminalHistoryItem.vue";
-import TerminalMarker from "./TerminalMarker.vue";
 import type { State } from "./commands/registry";
 import systemInfo from "./systemInfo";
 import "./commands/";
@@ -12,20 +10,12 @@ import { getAllCommands, register, getCommand } from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
-export interface HistoryItem {
-  input: string | undefined;
-  output: string | undefined;
-  cwd: string;
-  timestamp: number; // mainly used for a unique key for v-for
-}
-
 const MOTD = `The programs included with ${systemInfo.os.name} are free software.
 ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
 
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
 `;
 
-const history = ref<HistoryItem[]>([]);
 const characterBuffer = ref<string>("");
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
@@ -113,17 +103,9 @@ function handleInput(event: KeyboardEvent) {
     const command = activeLineBuffer.value.trim();
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
-    const pwd = cwd(commandState.value, []);
-    let response;
     if (command !== "") {
       handleCommand(command);
     }
-    history.value.push({
-      input: command,
-      output: response,
-      cwd: pwd,
-      timestamp: Date.now(),
-    });
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
@@ -205,8 +187,7 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  history.value = [];
-  characterBuffer.value = "";
+  characterBuffer.value = `${cwd(commandState.value)}> `;
 }
 
 register({
