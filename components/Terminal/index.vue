@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
 import systemInfo from "./systemInfo";
+import { colorize } from "./stdio";
 import "./commands/";
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
@@ -17,6 +17,7 @@ To get started, type \`help\` to list available commands. ${systemInfo.os.name} 
 `;
 
 const characterBuffer = ref<string>("");
+const outputBuffer = ref<string>("");
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -116,8 +117,10 @@ function handleInput(event: KeyboardEvent) {
     inputBuffer.value = "";
     historySelectionOffset.value = 0;
 
+    stdout.write("\x1B[0;31m");
     stdout.write(cwd(commandState.value));
     stdout.write("> ");
+    stdout.write("\x1B[0m");
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -209,11 +212,18 @@ onMounted(() => {
   stdout.write(cwd(commandState.value));
   stdout.write("> ");
 });
+
+watch(
+  characterBuffer,
+  (buffer) => {
+    outputBuffer.value = colorize(buffer);
+  }
+);
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    {{ characterBuffer }}
+    {{ outputBuffer }}
     {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
