@@ -1,15 +1,9 @@
 <template>
-  <div class="page">
+  <div class="page flex flex-column">
     <Header />
-    <div class="py-4 fill-page">
+    <div class="py-4 grow">
       <slot />
     </div>
     <Footer />
   </div>
 </template>
-
-<style>
-.fill-page {
-  min-height: calc(100vh - 184px);
-}
-</style>
