@@ -1,37 +1,78 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import Star from "~/components/SVG/Star";
 import StarFilled from "~/components/SVG/StarFilled";
+import { useAuthStore } from "~/stores/auth";
 
 definePageMeta({
   layout: "review",
 });
 
+const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
+
+const route = useRoute();
+const eventId = route.params.id as unknown as string;
+
 // TODO: proper animation between states
 
-const score = ref<number>(0);
+const score = ref<number>(5);
 const ghostScore = ref<number>(0);
-const hovered = ref<boolean>(false);
-const submitMessage = ref<string>("Submit");
+const displayScore = ref<number>(0);
+const feedbackMessage = ref<string>("");
 
-function ghostAway() {
-  if (hovered.value) {
-    return;
-  }
-  if (score.value < ghostScore.value) {
-    ghostScore.value--;
+function updateDisplayScoreActual() {
+  if (score.value < displayScore.value) {
+    displayScore.value--;
   } else {
-    ghostScore.value++;
+    displayScore.value++;
   }
-  if (ghostScore.value !== score.value) {
-    useTimeoutFn(ghostAway, 75);
+  if (displayScore.value !== score.value) {
+    useTimeoutFn(updateDisplayScore, 75);
   }
+}
+
+function updateDisplayScoreGhost() {
+  if (ghostScore.value < displayScore.value) {
+    displayScore.value--;
+  } else {
+    displayScore.value++;
+  }
+  if (displayScore.value !== ghostScore.value) {
+    useTimeoutFn(updateDisplayScore, 75);
+  }
+}
+
+function updateDisplayScore() {
+  if (ghostScore.value === 0) {
+    updateDisplayScoreActual();
+  } else {
+    updateDisplayScoreGhost();
+  }
+}
+
+watch([score, ghostScore], () => {
+  useTimeoutFn(updateDisplayScore, 125);
+}, { immediate: true });
+
+async function submitReview() {
+  console.log("submitting review");
+  await $fetch("/api/events/review", {
+    method: "POST",
+    body: {
+      event: eventId,
+      score: score.value,
+      feedback: feedbackMessage,
+    },
+    headers: { Bearer: jwt },
+  })
+    .then(console.log)
+    .catch(console.error);
 }
 </script>
 
 <template>
   <main>
-    <form>
-      <input type="hidden" name="score" :value="score" />
+    <form @submit.prevent="submitReview">
       <div class="row">
         <button
           v-for="x in [1, 2, 3, 4, 5]"
@@ -45,18 +86,16 @@ function ghostAway() {
           "
           @mouseenter="
             () => {
-              hovered = true;
               ghostScore = x;
             }
           "
           @mouseleave="
             () => {
-              hovered = false;
-              useTimeoutFn(ghostAway, 125);
+              ghostScore = 0;
             }
           "
         >
-          <StarFilled v-if="ghostScore > 0 ? ghostScore >= x : score >= x" />
+          <StarFilled v-if="displayScore >= x" />
           <Star v-else />
         </button>
       </div>
@@ -65,6 +104,7 @@ function ghostAway() {
         <label for="message">Feedback (optional)</label>
         <textarea
           id="message"
+          v-model="feedbackMessage"
           name="message"
           class="grow block px-4 py-2 bg-transparent outline-none border border-highlight1Light dark:border-highlight1Dark"
         ></textarea>
@@ -72,7 +112,7 @@ function ghostAway() {
 
       <div class="row">
         <button type="submit" class="btn btn-primary text-5xl p-6">
-          {{ submitMessage }}
+          Submit
         </button>
       </div>
     </form>
