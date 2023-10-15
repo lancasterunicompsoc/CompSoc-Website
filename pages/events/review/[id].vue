@@ -2,6 +2,8 @@
 import Star from "~/components/SVG/Star";
 import StarFilled from "~/components/SVG/StarFilled";
 
+// TODO: proper animation between states
+
 const score = ref<number>(0);
 const ghostScore = ref<number>(0);
 const hovered = ref<boolean>(false);
