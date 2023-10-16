@@ -13,12 +13,13 @@ const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
 const route = useRoute();
 const eventId = route.params.id as unknown as string;
 
-// TODO: proper animation between states
-
 const score = ref<number>(5);
 const ghostScore = ref<number>(0);
 const displayScore = ref<number>(0);
 const feedbackMessage = ref<string>("");
+
+const submitted = ref<boolean>(false);
+const now = useDateFormat(useNow(), "YYYY-MM-DD HH:mm:ss");
 
 function updateDisplayScoreActual() {
   if (score.value < displayScore.value) {
@@ -56,22 +57,45 @@ watch([score, ghostScore], () => {
 
 async function submitReview() {
   console.log("submitting review");
-  await $fetch("/api/events/review", {
-    method: "POST",
-    body: {
-      event: eventId,
-      score: score.value,
-      feedback: feedbackMessage,
-    },
-    headers: { Bearer: jwt },
-  })
-    .then(console.log)
-    .catch(console.error);
+  // await $fetch("/api/events/review", {
+  //   method: "POST",
+  //   body: {
+  //     event: eventId,
+  //     score: score.value,
+  //     feedback: feedbackMessage.value,
+  //   },
+  //   headers: { Bearer: jwt.value },
+  // })
+  //   .catch(console.error);
+  submitted.value = true;
 }
 </script>
 
 <template>
-  <main>
+  <main v-if="submitted">
+    <div class="column text-center m-auto text-3xl">
+      <p v-if="score === 5">
+        Glad you enjoyed it!
+      </p>
+      <p v-else-if="score === 4">
+        Perfection next time?
+      </p>
+      <p v-else-if="score === 3">
+        One more chance?
+      </p>
+      <p v-else-if="score === 2">
+        We'll try harder next time.
+      </p>
+      <p v-else-if="score === 1">
+        We're sorry to hear that.
+      </p>
+      <p class="my-8 text-highlight1Light dark:text-highlight1Dark font-bold">
+        Do not leave this page
+      </p>
+      <p>{{ now }}</p>
+    </div>
+  </main>
+  <main v-else>
     <form @submit.prevent="submitReview">
       <div class="row">
         <button
