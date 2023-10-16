@@ -29,6 +29,7 @@ export default defineConfig({
     ],
     ["centered", "mx-auto"],
     ["row", "flex flex-row justify-evenly items-stretch"],
+    ["column", "flex flex-col justify-evenly items-stretch"],
   ],
   presets: [
     presetUno(),
