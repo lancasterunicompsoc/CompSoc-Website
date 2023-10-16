@@ -14,12 +14,12 @@ const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
 const route = useRoute();
 const eventId = route.params.id as unknown as string;
 
-const score = ref<number>(5);
-const ghostScore = ref<number>(0);
-const displayScore = ref<number>(0);
-const feedbackMessage = ref<string>("");
+const score = ref(5);
+const ghostScore = ref(0);
+const displayScore = ref(0);
+const feedbackMessage = ref("");
 
-const submitted = ref<boolean>(false);
+const submitted = ref(false);
 const now = useDateFormat(useNow(), "YYYY-MM-DD HH:mm:ss");
 
 function updateDisplayScoreActual() {
@@ -65,7 +65,7 @@ async function submitReview() {
       score: score.value,
       feedback: feedbackMessage.value,
     },
-    headers: { Bearer: jwt.value },
+    headers: { Bearer: jwt.value as unknown as string }, // TODO: have proper error handling that forces people to log in if they aren't
   })
     .catch(console.error);
   submitted.value = true;
@@ -91,7 +91,7 @@ async function submitReview() {
         We're sorry to hear that.
       </p>
       <p class="my-8 text-highlight1Light dark:text-highlight1Dark font-bold">
-        Do not leave this page
+        Do not leave this page, show this on your way out
       </p>
       <p>{{ now }}</p>
     </div>
