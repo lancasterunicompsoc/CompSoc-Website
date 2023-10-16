@@ -57,16 +57,16 @@ watch([score, ghostScore], () => {
 
 async function submitReview() {
   console.log("submitting review");
-  // await $fetch("/api/events/review", {
-  //   method: "POST",
-  //   body: {
-  //     event: eventId,
-  //     score: score.value,
-  //     feedback: feedbackMessage.value,
-  //   },
-  //   headers: { Bearer: jwt.value },
-  // })
-  //   .catch(console.error);
+  await $fetch("/api/events/review", {
+    method: "POST",
+    body: {
+      event: eventId,
+      score: score.value,
+      feedback: feedbackMessage.value,
+    },
+    headers: { Bearer: jwt.value },
+  })
+    .catch(console.error);
   submitted.value = true;
 }
 </script>

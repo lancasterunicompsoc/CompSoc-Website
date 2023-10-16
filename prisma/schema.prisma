@@ -27,12 +27,10 @@ model Event {
   description   String          @db.LongText
   slides        String          @db.LongText
   organizer     String
-  startTime     DateTime?
-  endTime       DateTime?
-  unixStartTime Int?
-  unixEndTime   Int?
   difficulty    EventDifficulty
   image         String?         @db.LongText
+  unixEndTime   Int
+  unixStartTime Int
 }
 
 model Announcement {
@@ -40,6 +38,14 @@ model Announcement {
   eventId  Int     @unique
   reminder Boolean
   released Boolean
+}
+
+model Review {
+  id      Int     @id @default(autoincrement())
+  eventId Int     @unique
+  userId  String  @unique
+  rating  Int
+  comment String? @db.LongText
 }
 
 enum EventDifficulty {
