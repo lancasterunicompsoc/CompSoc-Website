@@ -9,14 +9,13 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(cuid())
-  banned      Boolean @default(false)
+  id          String   @id @default(cuid())
+  banned      Boolean  @default(false)
   displayName String
   mail        String
-  role        Role    @default(USER)
-  username    String  @unique
-
-  reviews Review[]
+  role        Role     @default(USER)
+  username    String   @unique
+  reviews     Review[]
 
   @@index([id, username])
 }
@@ -29,12 +28,11 @@ model Event {
   description   String          @db.LongText
   slides        String          @db.LongText
   organizer     String
-  unixStartTime Int
-  unixEndTime   Int
   difficulty    EventDifficulty
   image         String?         @db.LongText
-
-  reviews      Review[]
+  unixEndTime   Int
+  unixStartTime Int
+  reviews       Review[]
   announcement Announcement[]
 }
 
@@ -47,13 +45,14 @@ model Announcement {
 }
 
 model Review {
-  id      Int     @id @default(autoincrement())
-  event   Event   @relation(fields: [eventId], references: [id])
-  eventId Int     @unique
-  user    User    @relation(fields: [userId], references: [id])
-  userId  String  @unique
-  rating  Int
-  comment String? @db.LongText
+  id        String @id @default(cuid())
+  timestamp Int
+  event     Event  @relation(fields: [eventId], references: [id])
+  eventId   Int    @unique
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String @unique
+  rating    Int
+  comment   String @db.LongText
 }
 
 enum EventDifficulty {
