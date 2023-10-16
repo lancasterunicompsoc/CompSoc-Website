@@ -17,8 +17,6 @@ model User {
   username    String   @unique
   reviews     Review[]
 
-  reviews Review[]
-
   @@index([id, username])
 }
 
