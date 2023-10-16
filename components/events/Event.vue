@@ -5,6 +5,7 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
+import IconReview from "./IconReview.vue";
 import { deletePost } from "./utils";
 import type { EventType } from "./utils";
 import { unixAnySpan } from "~/utils/time";
@@ -32,6 +33,10 @@ function deleteEvent(id: number) {
 
 function editEvent(id: number) {
   console.log(id);
+}
+
+function reviewEvent(id: number) {
+  navigateTo(`/events/review/${id}`);
 }
 </script>
 
@@ -71,6 +76,9 @@ function editEvent(id: number) {
         </button>
         <button @click="deleteEvent(event.id)">
           <IconDelete />
+        </button>
+        <button @click="reviewEvent(event.id)">
+          <IconReview />
         </button>
       </div>
     </template>
