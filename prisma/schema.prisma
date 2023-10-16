@@ -48,11 +48,15 @@ model Review {
   id        String @id @default(cuid())
   timestamp Int
   event     Event  @relation(fields: [eventId], references: [id])
-  eventId   Int    @unique
+  eventId   Int
   user      User   @relation(fields: [userId], references: [id])
-  userId    String @unique
+  userId    String
   rating    Int
   comment   String @db.LongText
+
+  @@index([eventId])
+  @@index([userId])
+  @@unique([eventId, userId])
 }
 
 enum EventDifficulty {
