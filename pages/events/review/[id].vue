@@ -6,6 +6,7 @@ import { useAuthStore } from "~/stores/auth";
 
 definePageMeta({
   layout: "review",
+  middleware: ["auth-protected"],
 });
 
 const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
