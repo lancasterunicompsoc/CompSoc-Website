@@ -9,7 +9,7 @@ export function dateToUnix(date: Date) {
   return Math.floor(date.getTime() / 1000);
 }
 
-function unixToDate(date: number): Date {
+export function unixToDate(date: number): Date {
   return new Date(date * 1000);
 }
 

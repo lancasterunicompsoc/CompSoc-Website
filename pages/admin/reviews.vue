@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { formatTimeAgo } from "@vueuse/core";
 import { useAuthStore } from "~/stores/auth";
+import { unixToDate } from "~/utils/time";
 
 definePageMeta({
   middleware: ["auth-admin"],
@@ -11,6 +13,7 @@ const { pending, data, status, refresh } = useFetch("/api/admin/reviews", {
 });
 
 const eventsUrl = (eventId: number) => `/events/${eventId}`;
+const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
 </script>
 
 <template>
@@ -25,6 +28,7 @@ const eventsUrl = (eventId: number) => `/events/${eventId}`;
           <th class="dark:bg-#222">User</th>
           <th class="dark:bg-#222">Rating</th>
           <th class="dark:bg-#222">Comment</th>
+          <th class="dark:bg-#222">Timestamp</th>
         </thead>
         <tbody>
           <tr v-for="review in data" :key="review.id">
@@ -41,6 +45,9 @@ const eventsUrl = (eventId: number) => `/events/${eventId}`;
             </td>
             <td class="dark:bg-#222">
               {{ review.comment }}
+            </td>
+            <td class="dark:bg-#222">
+              {{ formatDate(review.timestamp) }}
             </td>
           </tr>
         </tbody>
