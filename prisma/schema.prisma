@@ -17,6 +17,8 @@ model User {
   username    String   @unique
   reviews     Review[]
 
+  reviews Review[]
+
   @@index([id, username])
 }
 
@@ -33,10 +35,12 @@ model Event {
   unixEndTime   Int
   unixStartTime Int
   reviews       Review[]
+  announcement Announcement[]
 }
 
 model Announcement {
   id       Int     @id @default(autoincrement())
+  event    Event   @relation(fields: [eventId], references: [id])
   eventId  Int     @unique
   reminder Boolean
   released Boolean
