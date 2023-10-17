@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { FetchError } from "ofetch";
 import Star from "~/components/SVG/Star";
 import StarFilled from "~/components/SVG/StarFilled";
 import { useAuthStore } from "~/stores/auth";
@@ -9,7 +10,7 @@ definePageMeta({
   middleware: ["auth-protected"],
 });
 
-const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
+const { jwt } = storeToRefs(useAuthStore());
 
 const route = useRoute();
 const eventId = route.params.id as unknown as string;
@@ -20,6 +21,7 @@ const displayScore = ref(0);
 const feedbackMessage = ref("");
 
 const submitted = ref(false);
+const error = ref<string | null>(null);
 const now = useDateFormat(useNow(), "YYYY-MM-DD HH:mm:ss");
 
 function updateDisplayScoreActual() {
@@ -52,9 +54,13 @@ function updateDisplayScore() {
   }
 }
 
-watch([score, ghostScore], () => {
-  useTimeoutFn(updateDisplayScore, 125);
-}, { immediate: true });
+watch(
+  [score, ghostScore],
+  () => {
+    useTimeoutFn(updateDisplayScore, 125);
+  },
+  { immediate: true },
+);
 
 async function submitReview() {
   console.log("submitting review");
@@ -67,29 +73,32 @@ async function submitReview() {
     },
     headers: { Bearer: jwt.value as unknown as string }, // TODO: have proper error handling that forces people to log in if they aren't
   })
-    .catch(console.error);
-  submitted.value = true;
+    .then(() => {
+      submitted.value = true;
+    })
+    .catch(err => {
+      const e = err as unknown as FetchError;
+      if (e.data?.message) {
+        error.value = e.data.message;
+      } else {
+        error.value = "Something went wrong";
+      }
+      console.error(e.data);
+    });
 }
 </script>
 
 <template>
-  <main v-if="submitted">
+  <main class="column text-center m-auto text-3xl bg-red-500" v-if="error">
+    Error: {{ error }}
+  </main>
+  <main v-else-if="submitted && !error">
     <div class="column text-center m-auto text-3xl">
-      <p v-if="score === 5">
-        Glad you enjoyed it!
-      </p>
-      <p v-else-if="score === 4">
-        Perfection next time?
-      </p>
-      <p v-else-if="score === 3">
-        One more chance?
-      </p>
-      <p v-else-if="score === 2">
-        We'll try harder next time.
-      </p>
-      <p v-else-if="score === 1">
-        We're sorry to hear that.
-      </p>
+      <p v-if="score === 5">Glad you enjoyed it!</p>
+      <p v-else-if="score === 4">Perfection next time?</p>
+      <p v-else-if="score === 3">One more chance?</p>
+      <p v-else-if="score === 2">We'll try harder next time.</p>
+      <p v-else-if="score === 1">We're sorry to hear that.</p>
       <p class="my-8 text-highlight1Light dark:text-highlight1Dark font-bold">
         Do not leave this page, show this on your way out
       </p>
