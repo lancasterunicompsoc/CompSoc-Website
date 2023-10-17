@@ -205,13 +205,15 @@ const ls: CommandHandler = (state, params, { stdout }) => {
     if (all) {
       children.push(".", "..");
     }
-    stdout.writeln(
+    stdout.write(
       children
         .filter(child => !child.startsWith(".") || most)
         .sort()
         .join("    "),
     );
+    stdout.write("    ");
   });
+  stdout.writeln("");
 };
 
 const cat: CommandHandler = (state, params, { stdout }) => {
