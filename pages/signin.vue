@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
+import { getRedirectUrl } from "~/utils/redirect";
 
 const route = useRoute();
 const router = useRouter();
@@ -21,12 +22,16 @@ onMounted(async () => {
     authstore.setJWT(result.jwt);
     if (result.isFirstTime === true) {
       router.replace("/onboarding");
-      return;
     }
-    router.replace("/");
   } catch (e) {
-    router.replace("/");
     console.error(e);
+  }
+
+  const redirectUrl = getRedirectUrl();
+  if (redirectUrl) {
+    router.replace(redirectUrl);
+  } else {
+    router.replace("/");
   }
 });
 </script>

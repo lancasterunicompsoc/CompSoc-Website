@@ -12,7 +12,6 @@ const { pending, data, status, refresh } = useFetch("/api/admin/reviews", {
   headers: { Bearer: authStore.jwt as unknown as string },
 });
 
-const eventsUrl = (eventId: number) => `/events/${eventId}`;
 const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
 </script>
 
@@ -33,7 +32,7 @@ const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
         <tbody>
           <tr v-for="review in data" :key="review.id">
             <td class="dark:bg-#222 text-blue underline">
-              <NuxtLink :to="eventsUrl(review.eventId)">
+              <NuxtLink :to="`/events/${review.eventId}`">
                 {{ review.eventId }}
               </NuxtLink>
             </td>
