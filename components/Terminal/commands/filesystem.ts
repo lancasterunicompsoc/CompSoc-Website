@@ -178,9 +178,13 @@ const ls: CommandHandler = (state, params, { stdout }) => {
   }
 
   let all = false;
+  let most = false;
   for (const flag of flags) {
     if (flag === "-a") {
       all = true;
+      most = true;
+    } else if (flag === "-A") {
+      most = true;
     }
   }
 
@@ -197,11 +201,13 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       return;
     }
 
+    const children = item.children(state).map(child => child.name);
+    if (all) {
+      children.push(".", "..");
+    }
     stdout.writeln(
-      item
-        .children(state)
-        .map(child => child.name)
-        .filter(child => !child.startsWith(".") || all)
+      children
+        .filter(child => !child.startsWith(".") || most)
         .sort()
         .join("    "),
     );
