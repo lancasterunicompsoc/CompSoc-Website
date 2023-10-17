@@ -47,7 +47,7 @@ const makeHomeDir = (name: string): Entry => ({
             name: ".secret",
             content: "you found me\n",
           },
-    ].filter(c => c !== null),
+    ].filter(c => c !== null) as Entry[],
 });
 
 const fileTree: Entry = {
