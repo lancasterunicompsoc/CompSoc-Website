@@ -44,8 +44,8 @@ const makeHomeDir = (name: string): Entry => ({
         ? null
         : {
             type: EntryType.file,
-            name: ".secret",
-            content: "you found me\n",
+            name: ".wake-up",
+            content: "The Matrix has you...\nFollow the white rabbit.\n",
           },
     ].filter(c => c !== null) as Entry[],
 });
