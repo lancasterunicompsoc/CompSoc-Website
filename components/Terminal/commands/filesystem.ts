@@ -1,4 +1,4 @@
-import type { CommandHandler, Params, State } from "./registry";
+import type { CommandHandler, State } from "./registry";
 import { register } from "./registry";
 import { whoami } from "./session";
 import { eventToFile } from "./utils";
@@ -141,6 +141,9 @@ function findEntry(state: State, path: string): Entry | null {
 const exists = (state: State, path: string): boolean =>
   findEntry(state, path) !== null;
 
+const resolveParentPath = (state: State, path: string): string =>
+  resolvePath(state, `${path}/..`);
+
 export const cwd = (state: State) => state.filesystem.cwd;
 
 const cd: CommandHandler = (state, params, { stdout }) => {
@@ -171,7 +174,7 @@ const cd: CommandHandler = (state, params, { stdout }) => {
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {
-  const flags = params.filter(p => p.startsWith("-"));
+  const flags = params.filter(p => p.startsWith("-")).map(p => p.substring(1));
   const targets = params.filter(p => !p.startsWith("-"));
   if (targets.length === 0) {
     targets.push(".");
@@ -179,16 +182,24 @@ const ls: CommandHandler = (state, params, { stdout }) => {
 
   let all = false;
   let most = false;
+  let list = false;
   for (const flag of flags) {
-    if (flag === "-a") {
+    if (flag.startsWith("-")) {
+      continue;
+    }
+    if (flag.includes("a")) {
       all = true;
       most = true;
-    } else if (flag === "-A") {
+    }
+    if (flag.includes("A")) {
       most = true;
+    }
+    if (flag.includes("l")) {
+      list = true;
     }
   }
 
-  targets.forEach(target => {
+  targets.forEach((target, i) => {
     const path = resolvePath(state, target);
     const item = findEntry(state, path);
     if (item === null) {
@@ -201,19 +212,37 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       return;
     }
 
-    const children = item.children(state).map(child => child.name);
+    const children = item.children(state);
     if (all) {
-      children.push(".", "..");
+      const parent = findEntry(state, resolveParentPath(state, path));
+      children.push(
+        { ...item, name: "." },
+        { ...(parent ?? item), name: ".." },
+      );
     }
-    stdout.write(
+    if (targets.length > 1) {
+      stdout.writeln(`${target}:`);
+    }
+    if (list) {
       children
-        .filter(child => !child.startsWith(".") || most)
-        .sort()
-        .join("    "),
-    );
-    stdout.write("    ");
+        .filter(child => !child.name.startsWith(".") || most)
+        .sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : 1)
+        .forEach(child => {
+          stdout.writeln(child.name);
+        });
+    } else {
+      stdout.writeln(
+        children
+          .map(child => child.name)
+          .filter(child => !child.startsWith(".") || most)
+          .sort()
+          .join("    "),
+      );
+    }
+    if (targets.length - 1 !== i) {
+      stdout.writeln("");
+    }
   });
-  stdout.writeln("");
 };
 
 const cat: CommandHandler = (state, params, { stdout }) => {
