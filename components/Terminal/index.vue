@@ -3,18 +3,11 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
-import systemInfo from "./systemInfo";
 import "./commands/";
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
-
-const MOTD = `The programs included with ${systemInfo.os.name} are free software.
-${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
-
-To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
-`;
 
 const characterBuffer = ref<string>("");
 const commandHistory = ref<string[]>([]);
@@ -206,7 +199,7 @@ register({
 });
 
 onMounted(() => {
-  stdout.writeln(MOTD);
+  handleCommand("cat /etc/motd");
   stdout.write(cwd(commandState.value));
   stdout.write(">");
 });
