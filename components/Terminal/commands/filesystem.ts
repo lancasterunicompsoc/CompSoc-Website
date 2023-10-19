@@ -212,7 +212,8 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       return;
     }
 
-    const children = item.children(state);
+    const children = item.children(state)
+      .filter(child => !child.name.startsWith(".") || most);
     if (all) {
       const parent = findEntry(state, resolveParentPath(state, path));
       children.push(
@@ -224,8 +225,8 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       stdout.writeln(`${target}:`);
     }
     if (list) {
+      stdout.writeln(`total ${children.length}`);
       children
-        .filter(child => !child.name.startsWith(".") || most)
         .sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : 1)
         .forEach(child => {
           stdout.writeln(child.name);
@@ -234,7 +235,6 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       stdout.writeln(
         children
           .map(child => child.name)
-          .filter(child => !child.startsWith(".") || most)
           .sort()
           .join("    "),
       );
