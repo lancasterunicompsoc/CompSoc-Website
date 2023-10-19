@@ -174,28 +174,30 @@ const cd: CommandHandler = (state, params, { stdout }) => {
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {
-  const flags = params.filter(p => p.startsWith("-")).map(p => p.substring(1));
+  const flagStrings = params.filter(p => p.startsWith("-")).map(p => p.substring(1));
   const targets = params.filter(p => !p.startsWith("-"));
   if (targets.length === 0) {
     targets.push(".");
   }
 
-  let all = false;
-  let most = false;
-  let list = false;
-  for (const flag of flags) {
+  const flags = {
+    all: false,
+    most: false,
+    list: false,
+  };
+  for (const flag of flagStrings) {
     if (flag.startsWith("-")) {
       continue;
     }
     if (flag.includes("a")) {
-      all = true;
-      most = true;
+      flags.all = true;
+      flags.most = true;
     }
     if (flag.includes("A")) {
-      most = true;
+      flags.most = true;
     }
     if (flag.includes("l")) {
-      list = true;
+      flags.list = true;
     }
   }
 
@@ -213,8 +215,8 @@ const ls: CommandHandler = (state, params, { stdout }) => {
     }
 
     const children = item.children(state)
-      .filter(child => !child.name.startsWith(".") || most);
-    if (all) {
+      .filter(child => !child.name.startsWith(".") || flags.most);
+    if (flags.all) {
       const parent = findEntry(state, resolveParentPath(state, path));
       children.push(
         { ...item, name: "." },
@@ -224,7 +226,7 @@ const ls: CommandHandler = (state, params, { stdout }) => {
     if (targets.length > 1) {
       stdout.writeln(`${target}:`);
     }
-    if (list) {
+    if (flags.list) {
       stdout.writeln(`total ${children.length}`);
       children
         .sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : 1)
