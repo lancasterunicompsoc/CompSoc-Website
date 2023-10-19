@@ -4,18 +4,18 @@ import { whoami } from "./session";
 import { eventToFile } from "./utils";
 
 export enum EntryType {
-    directory,
-    file,
+  directory,
+  file,
 }
 
 export interface DirEntry {
-  type: EntryType.directory,
+  type: EntryType.directory;
   name: string;
   children: ChildFactory;
 }
 
 export interface FileEntry {
-  type: EntryType.file,
+  type: EntryType.file;
   name: string;
   content: string;
 }
@@ -27,19 +27,27 @@ type ChildFactory = (state: State) => Entry[];
 const makeHomeDir = (name: string): Entry => ({
   type: EntryType.directory,
   name,
-  children: (_: State) => [
-    {
-      type: EntryType.directory,
-      name: "events",
-      children: (state: State) => {
-        const events = state.getEvents();
-        if (events) {
-          return events.map(e => eventToFile(e));
-        }
-        return [];
+  children: (_: State) =>
+    [
+      {
+        type: EntryType.directory,
+        name: "events",
+        children: (state: State) => {
+          const events = state.getEvents();
+          if (events) {
+            return events.map(e => eventToFile(e));
+          }
+          return [];
+        },
       },
-    },
-  ],
+      name === "anonymous"
+        ? null
+        : {
+            type: EntryType.file,
+            name: ".wake-up",
+            content: "The Matrix has you...\nFollow the white rabbit.\n",
+          },
+    ].filter(c => c !== null) as Entry[],
 });
 
 const fileTree: Entry = {
@@ -163,20 +171,49 @@ const cd: CommandHandler = (state, params, { stdout }) => {
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {
-  const path = resolvePath(state, params[0]);
-  const item = findEntry(state, path);
-  if (item === null) {
-    stdout.writeln(`Cannot access '${path}': no such file or directory`);
-    return;
+  const flags = params.filter(p => p.startsWith("-"));
+  const targets = params.filter(p => !p.startsWith("-"));
+  if (targets.length === 0) {
+    targets.push(".");
   }
 
-  if (item.type !== EntryType.directory) {
-    stdout.writeln(path);
-    return;
+  let all = false;
+  let most = false;
+  for (const flag of flags) {
+    if (flag === "-a") {
+      all = true;
+      most = true;
+    } else if (flag === "-A") {
+      most = true;
+    }
   }
 
-  const children = item.children(state);
-  stdout.writeln(children.map(child => child.name).sort().join("    "));
+  targets.forEach(target => {
+    const path = resolvePath(state, target);
+    const item = findEntry(state, path);
+    if (item === null) {
+      stdout.writeln(`Cannot access '${path}': no such file or directory`);
+      return;
+    }
+
+    if (item.type !== EntryType.directory) {
+      stdout.writeln(path);
+      return;
+    }
+
+    const children = item.children(state).map(child => child.name);
+    if (all) {
+      children.push(".", "..");
+    }
+    stdout.write(
+      children
+        .filter(child => !child.startsWith(".") || most)
+        .sort()
+        .join("    "),
+    );
+    stdout.write("    ");
+  });
+  stdout.writeln("");
 };
 
 const cat: CommandHandler = (state, params, { stdout }) => {

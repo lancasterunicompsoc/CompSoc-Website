@@ -106,6 +106,7 @@ function handleInput(event: KeyboardEvent) {
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
+    stdout.write(" ");
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
     if (command !== "") {
@@ -117,7 +118,7 @@ function handleInput(event: KeyboardEvent) {
     historySelectionOffset.value = 0;
 
     stdout.write(cwd(commandState.value));
-    stdout.write("> ");
+    stdout.write(">");
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -192,7 +193,7 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  characterBuffer.value = `${cwd(commandState.value)}> `;
+  characterBuffer.value = `${cwd(commandState.value)}>`;
 }
 
 register({
@@ -207,7 +208,7 @@ register({
 onMounted(() => {
   stdout.writeln(MOTD);
   stdout.write(cwd(commandState.value));
-  stdout.write("> ");
+  stdout.write(">");
 });
 </script>
 
@@ -237,7 +238,7 @@ onMounted(() => {
   margin: 2rem auto;
 
   font-family: monospace;
-  white-space: pre-line;
+  white-space: pre-wrap;
   overflow-y: scroll;
 
   color: #fff;
