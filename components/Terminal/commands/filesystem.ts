@@ -2,6 +2,7 @@ import type { CommandHandler, Params, State } from "./registry";
 import { register } from "./registry";
 import { whoami } from "./session";
 import { eventToFile } from "./utils";
+import { MOTD } from "~/components/Terminal/systemInfo";
 
 export enum EntryType {
   directory,
@@ -66,6 +67,17 @@ const fileTree: Entry = {
         return children;
       },
     },
+    {
+      type: EntryType.directory,
+      name: "etc",
+      children: (_state: State) => [
+        {
+          type: EntryType.file,
+          name: "motd",
+          content: MOTD,
+        }
+      ],
+    }
   ],
 };
 
