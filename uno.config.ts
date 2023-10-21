@@ -67,6 +67,7 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     colors: {
+      lightbg: "#e7e7e7",
       darkgrey: "#333",
       lightgrey: "#222",
       textcolour: "#e8ebeb",

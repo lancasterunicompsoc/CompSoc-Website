@@ -21,8 +21,9 @@ export type EventType = {
   difficulty: EventDifficulty;
 };
 
-type getAllEventParams = { offset?: DateOffset; isXp?: Boolean };
+type getAllEventParams = { offset?: DateOffset; isXp?: Boolean, past?: boolean };
 export function getAllEvents(options?: getAllEventParams) {
+  const past = options?.past ?? false;
   const { years, months, weeks, days } = options?.offset ?? {
     years: 0,
     months: 0,
@@ -35,7 +36,7 @@ export function getAllEvents(options?: getAllEventParams) {
   return $fetch<EventType[]>(
     `/api/events/all?years=${years ?? 0}&months=${months ?? 0}&weeks=${
       weeks ?? 0
-    }&days=${days ?? 0}`,
+    }&days=${days ?? 0}&past=${past}`,
     {
       headers,
     },
