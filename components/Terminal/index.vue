@@ -69,7 +69,7 @@ const stdout = {
 function prompt() {
   stdout.write("\x1B[0;31;1m");
   stdout.write(cwd(commandState.value));
-  stdout.write("> ");
+  stdout.write(">");
   stdout.write("\x1B[0m");
 }
 
