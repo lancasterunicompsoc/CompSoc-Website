@@ -15,6 +15,7 @@ export type jwtDecodedType = {
 
 export type Role = "USER" | "PRIVILEGED" | "ADMIN";
 export type jwtPayloadType = {
+  id: string;
   username: string;
   displayName: string;
   mail: string;
@@ -46,7 +47,12 @@ export async function createJWT(
     throw new Error("user not found");
   }
 
+  if (user.banned) {
+    throw new Error("user banned");
+  }
+
   const payload: jwtPayloadType = {
+    id: user.id,
     username,
     banned: user.banned,
     role: user.role,

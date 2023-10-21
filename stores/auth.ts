@@ -53,12 +53,7 @@ export function decodeJwt<T>(token: string): T & jwtMetadataType {
     ...metadata,
   };
 }
-type jwtPayloadType = {
-  username: string;
-  banned: boolean;
-  role: "USER" | "PRIVILEGED" | "ADMIN";
-  displayName: string;
-  mail: string;
+type decodedJWTPayload = jwtPayloadType & {
   iat: number;
   exp: number;
   iss: "compsoc";
@@ -66,7 +61,7 @@ type jwtPayloadType = {
 
 interface AuthState {
   jwt: string | null;
-  payload: jwtPayloadType | null;
+  payload: decodedJWTPayload | null;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -89,7 +84,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     setJWT(token: string) {
       try {
-        const decoded = decodeJwt<jwtPayloadType>(token);
+        const decoded = decodeJwt<decodedJWTPayload>(token);
         this.jwt = token;
         this.payload = decoded;
       } catch (e) {

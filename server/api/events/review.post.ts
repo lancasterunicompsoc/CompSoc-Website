@@ -23,6 +23,8 @@ export default defineEventHandler(async event => {
     }),
   );
 
+  // we've now started putting id's into our tokens, so this statement because unnecessary
+  // TODO: remove after 24.10 (so that all tokens are new)
   const user = await prisma.user.findUnique({
     where: { username: auth.decoded.username },
   });
