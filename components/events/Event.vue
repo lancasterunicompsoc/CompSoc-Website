@@ -57,7 +57,14 @@ function reviewEvent(id: number) {
         <figcaption>
           <IconLocation />
         </figcaption>
-        <p>{{ event.location }}</p>
+        <template v-if="event.mazemapLink">
+          <a :href="event.mazemapLink" class="underline text-highlight2Light">
+            <p>{{ event.location }}</p>
+          </a>
+        </template>
+        <template v-else>
+          <p>{{ event.location }}</p>
+        </template>
       </figure>
       <figure class="flex">
         <figcaption>

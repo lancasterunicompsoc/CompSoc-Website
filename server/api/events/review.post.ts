@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+import { createError as createServerError } from "h3";
 import { useValidatedBody, z } from "h3-zod";
 import { dateToUnix } from "~/utils/time";
 
@@ -21,6 +23,8 @@ export default defineEventHandler(async event => {
     }),
   );
 
+  // we've now started putting id's into our tokens, so this statement because unnecessary
+  // TODO: remove after 24.10 (so that all tokens are new)
   const user = await prisma.user.findUnique({
     where: { username: auth.decoded.username },
   });
@@ -31,15 +35,28 @@ export default defineEventHandler(async event => {
   const userId = user.id;
 
   // TODO: make client side field correspond to db schema names
-  const review = await prisma.review.create({
-    data: {
-      userId,
-      eventId,
-      rating: score,
-      comment: feedback,
-      timestamp: dateToUnix(new Date()),
-    },
-  });
+  try {
+    const review = await prisma.review.create({
+      data: {
+        userId,
+        eventId,
+        rating: score,
+        comment: feedback,
+        timestamp: dateToUnix(new Date()),
+      },
+    });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.log("is of prisma error type");
+      if (e.code === "P2002") {
+        throw createServerError({
+          status: 400,
+          statusMessage: "review already submitted",
+        });
+      }
+    }
+    throw e;
+  }
 
   return { ok: true };
 });

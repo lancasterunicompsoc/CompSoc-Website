@@ -14,6 +14,7 @@ const inputEndTime = ref("");
 const formData = ref<Omit<EventType, "id">>({
   name: "",
   location: "",
+  mazemapLink: "",
   summary: "",
   description: "",
   slides: "",
@@ -28,6 +29,7 @@ const resetFormData = () => {
   formData.value = {
     name: "",
     location: "",
+    mazemapLink: "",
     summary: "",
     description: "",
     slides: "",
@@ -103,6 +105,16 @@ async function addEvent() {
           type="text"
           id="location"
           v-model="formData.location"
+          required
+        />
+      </div>
+      <div>
+        <label for="mazemapLink">Mazemap link:</label>
+        <input
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+          id="mazemapLink"
+          v-model="formData.mazemapLink"
           required
         />
       </div>

@@ -7,6 +7,7 @@ export default defineEventHandler(async event => {
     const {
       name,
       location,
+      mazemapLink,
       summary,
       description,
       slides,
@@ -20,6 +21,7 @@ export default defineEventHandler(async event => {
       z.object({
         name: z.string(),
         location: z.string(),
+        mazemapLink: z.string(),
         summary: z.string(),
         description: z.string(),
         slides: z
@@ -41,6 +43,7 @@ export default defineEventHandler(async event => {
       data: {
         name,
         location,
+        mazemapLink,
         summary,
         description,
         slides,
