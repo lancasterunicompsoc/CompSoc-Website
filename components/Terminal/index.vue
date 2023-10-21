@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
-import systemInfo from "./systemInfo";
 import type { StyledSpan } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
@@ -233,7 +232,7 @@ watch(
     <span
       v-for="span in outputBuffer"
       :key="span.text"
-      :class="`terminal-fg-${span.style.foreground} terminal-bg-${span.style.background} terminal-fw-${span.style.weight} terminal-underline-${span.style.underline}`"
+      :class="`text-terminal-${span.style.foreground} bg-terminal-${span.style.background} terminal-fw-${span.style.weight} terminal-underline-${span.style.underline}`"
     >
       {{ span.text }}
     </span>
@@ -290,56 +289,6 @@ watch(
   .terminal {
     display: none;
   }
-}
-
-.terminal-bg-black {
-  background-color: #000000;
-}
-.terminal-bg-red {
-  background-color: var(--red);
-}
-.terminal-bg-green {
-  background-color: green;
-}
-.terminal-bg-yellow {
-  background-color: yellow;
-}
-.terminal-bg-blue {
-  background-color: blue;
-}
-.terminal-bg-purple {
-  background-color: purple;
-}
-.terminal-bg-cyan {
-  background-color: cyan;
-}
-.terminal-bg-white {
-  background-color: #ffffff;
-}
-
-.terminal-fg-black {
-  color: #000000;
-}
-.terminal-fg-red {
-  color: var(--red);
-}
-.terminal-fg-green {
-  color: green;
-}
-.terminal-fg-yellow {
-  color: yellow;
-}
-.terminal-fg-blue {
-  color: blue;
-}
-.terminal-fg-purple {
-  color: purple;
-}
-.terminal-fg-cyan {
-  color: cyan;
-}
-.terminal-fg-white {
-  color: #ffffff;
 }
 
 .terminal-fw-faint {
