@@ -23,7 +23,9 @@ export type jwtPayloadType = {
 };
 
 export async function verifyIssJwt(jwt: string): Promise<jwtDecodedType> {
-  const { payload } = await joseJwtVerify(jwt, encodedSecret);
+  const { payload } = await joseJwtVerify(jwt, encodedSecret, {
+    clockTolerance: 60, // due to ISS issuing tokens which only last for 5 seconds, people on a bad connection might have troubles completing the login cycle in less than 5s
+  });
   return payload as unknown as jwtDecodedType;
 }
 

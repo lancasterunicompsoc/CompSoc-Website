@@ -11,12 +11,6 @@ import { getAllCommands, register, getCommand } from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
-const MOTD = `The programs included with ${systemInfo.os.name} are free software.
-${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
-
-To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
-`;
-
 const characterBuffer = ref("");
 const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
@@ -122,6 +116,7 @@ function handleInput(event: KeyboardEvent) {
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
+    stdout.write(" ");
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
     if (command !== "") {
@@ -207,7 +202,7 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  characterBuffer.value = `${cwd(commandState.value)}> `;
+  characterBuffer.value = `${cwd(commandState.value)}>`;
 }
 
 register({
@@ -220,7 +215,7 @@ register({
 });
 
 onMounted(() => {
-  stdout.writeln(MOTD);
+  handleCommand("cat /etc/motd");
   prompt();
 });
 
@@ -265,7 +260,7 @@ watch(
   margin: 2rem auto;
 
   font-family: monospace;
-  white-space: pre-line;
+  white-space: pre-wrap;
   overflow-y: scroll;
 
   color: #fff;

@@ -5,6 +5,7 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
+import IconReview from "./IconReview";
 import { deletePost } from "./utils";
 import type { EventType } from "./utils";
 import { unixAnySpan } from "~/utils/time";
@@ -32,6 +33,11 @@ function deleteEvent(id: number) {
 
 function editEvent(id: number) {
   console.log(id);
+}
+
+function reviewEvent(id: number) {
+  const reviewUrl = `/events/review/${id}`;
+  navigateTo(reviewUrl);
 }
 </script>
 
@@ -65,13 +71,18 @@ function editEvent(id: number) {
     <template v-if="isFullSize">
       <p>{{ event.description }}</p>
       <a :href="event.slides" v-if="event.slides">View Slides</a>
-      <div class="flex" v-if="isAdmin">
-        <button @click="editEvent(event.id)">
-          <IconEdit />
-        </button>
-        <button @click="deleteEvent(event.id)">
-          <IconDelete />
-        </button>
+      <div class="flex">
+        <template v-if="isLoggedIn">
+          <button v-if="isAdmin" @click="editEvent(event.id)">
+            <IconEdit />
+          </button>
+          <button v-if="isAdmin" @click="deleteEvent(event.id)">
+            <IconDelete />
+          </button>
+        </template>
+        <NuxtLink :to="`/events/review/${event.id}`">
+          <IconReview />
+        </NuxtLink>
       </div>
     </template>
   </div>
