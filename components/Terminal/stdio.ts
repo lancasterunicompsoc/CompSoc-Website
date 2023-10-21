@@ -9,61 +9,107 @@ export interface OStream {
 
 export type IOStream = IStream & OStream;
 
-enum TokenType {
-  background,
-  reset,
-  text,
+enum Color {
+  black = "black",
+  red = "red",
+  green = "green",
+  yellow = "yellow",
+  blue = "blue",
+  purple = "purple",
+  cyan = "cyan",
+  white = "white",
 }
 
-enum Color {
-  black,
-  red,
-  green,
-  yellow,
-  blue,
-  purple,
-  cyan,
-  white,
+enum Weight {
+  normal = "normal",
+  bold = "bold",
+  faint = "faint",
+}
+enum Underline {
+  none = "none",
+  single = "single",
+  double = "double",
 }
 
 type Style = {
   foreground: Color,
   background: Color,
-}
-
-type Token = {
-  type: TokenType.reset
-} | {
-  type: TokenType.text, text: string
-} | {
-  type: TokenType.background, color: Color
+  weight: Weight,
+  underline: Underline,
+};
+const DEFAULT_STYLE: Style = {
+  foreground: Color.white,
+  background: Color.black,
+  weight: Weight.normal,
+  underline: Underline.none,
 };
 
-function tokenizeEscapeCode(code: string): Token {
-  if (code === "0") {
-    return { type: TokenType.reset };
-  }
-  if (!code.includes(";")) {
-    switch (code) {
-      case "40": return { type: TokenType.background, color: Color.black };
-      case "41": return { type: TokenType.background, color: Color.red };
-      case "42": return { type: TokenType.background, color: Color.green };
-      case "43": return { type: TokenType.background, color: Color.yellow };
-      case "44": return { type: TokenType.background, color: Color.blue };
-      case "45": return { type: TokenType.background, color: Color.purple };
-      case "46": return { type: TokenType.background, color: Color.cyan };
-      case "47": return { type: TokenType.background, color: Color.white };
-      default: throw new Error("invalid color code");
+export type StyledSpan = { text: string; style: Style };
+
+function parseEscapeCode(code: string, currentStyle: Style): Style {
+  return code.split(";").reduce((style, part) => {
+    switch (Number.parseInt(part)) {
+      case 0:
+        return DEFAULT_STYLE;
+      case 1:
+        return { ...style, weight: Weight.bold };
+      case 2:
+        return { ...style, weight: Weight.faint };
+      case 4:
+        return { ...style, underline: Underline.single };
+      case 7:
+        return { ...style, foreground: style.background, background: style.foreground };
+      case 21:
+        return { ...style, underline: Underline.double };
+      case 22:
+        return { ...style, weight: Weight.normal };
+      case 24:
+        return { ...style, underline: Underline.none };
+      case 30:
+        return { ...style, foreground: Color.black };
+      case 31:
+        return { ...style, foreground: Color.red };
+      case 32:
+        return { ...style, foreground: Color.green };
+      case 33:
+        return { ...style, foreground: Color.yellow };
+      case 34:
+        return { ...style, foreground: Color.blue };
+      case 35:
+        return { ...style, foreground: Color.purple };
+      case 36:
+        return { ...style, foreground: Color.cyan };
+      case 37:
+        return { ...style, foreground: Color.white };
+      case 39:
+        return { ...style, foreground: DEFAULT_STYLE.foreground };
+      case 40:
+        return { ...style, background: Color.black };
+      case 41:
+        return { ...style, background: Color.red };
+      case 42:
+        return { ...style, background: Color.green };
+      case 43:
+        return { ...style, background: Color.yellow };
+      case 44:
+        return { ...style, background: Color.blue };
+      case 45:
+        return { ...style, background: Color.purple };
+      case 46:
+        return { ...style, background: Color.cyan };
+      case 47:
+        return { ...style, background: Color.white };
+      case 49:
+        return { ...style, background: DEFAULT_STYLE.background };
+      default:
+        throw new Error("invalid code");
     }
-  }
-  const [first, second] = code.split(";");
-  switch (first) {
-    case "0": break;
-  }
+  }, currentStyle);
 }
 
-export function colorize(input: string): string {
-  const tokens: Token[] = [];
+export function colorize(input: string): StyledSpan[] {
+  const tokens: StyledSpan[] = [];
+  let currentStyle = DEFAULT_STYLE;
   let buffer = "";
   for (let i = 0; i < input.length; i++) {
     if (input[i] === "\x1B") {
@@ -76,15 +122,14 @@ export function colorize(input: string): string {
         console.error("colorizing error: invalid token");
         continue;
       }
-      tokens.push({ type: TokenType.text, text: buffer });
+      tokens.push({ text: buffer, style: currentStyle });
       buffer = "";
       escapeCode = escapeCode.substring(1);
-      tokens.push(tokenizeEscapeCode(escapeCode));
+      currentStyle = parseEscapeCode(escapeCode, currentStyle);
       i = j;
     } else {
       buffer += input[i];
     }
   }
-  console.log(tokens);
-  return tokens.join("");
+  return tokens;
 }

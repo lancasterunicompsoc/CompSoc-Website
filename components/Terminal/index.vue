@@ -3,6 +3,7 @@ import { ref } from "vue";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
 import systemInfo from "./systemInfo";
+import type { StyledSpan } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
 import { cwd } from "./commands/filesystem";
@@ -16,8 +17,8 @@ ${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted
 To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
 `;
 
-const characterBuffer = ref<string>("");
-const outputBuffer = ref<string>("");
+const characterBuffer = ref("");
+const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -49,10 +50,10 @@ const commandState = ref<State>({
 
 watch(
   () => authStore.payload?.username,
-  (username) => {
+  username => {
     commandState.value.session.username = username ?? "anonymous";
     handleCommand("cd");
-  }
+  },
 );
 
 const stdin = {
@@ -60,12 +61,24 @@ const stdin = {
     const char = inputBuffer.value[0];
     inputBuffer.value = inputBuffer.value.substring(1);
     return char ?? "";
-  }
+  },
 };
 const stdout = {
-  write(data: string): number { characterBuffer.value += data; return data.length; },
-  writeln(data: string): number { return this.write(data + "\n"); },
+  write(data: string): number {
+    characterBuffer.value += data;
+    return data.length;
+  },
+  writeln(data: string): number {
+    return this.write(data + "\n");
+  },
 };
+
+function prompt() {
+  stdout.write("\x1B[0;31;1m");
+  stdout.write(cwd(commandState.value));
+  stdout.write("> ");
+  stdout.write("\x1B[0m");
+}
 
 function handleCommand(command: string): void {
   const [cmd, ...params] = command.split(" ");
@@ -76,7 +89,9 @@ function handleCommand(command: string): void {
 
   const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
-    stdout.writeln(`\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`);
+    stdout.writeln(
+      `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`,
+    );
     return;
   }
 
@@ -117,10 +132,7 @@ function handleInput(event: KeyboardEvent) {
     inputBuffer.value = "";
     historySelectionOffset.value = 0;
 
-    stdout.write("\x1B[0;31m");
-    stdout.write(cwd(commandState.value));
-    stdout.write("> ");
-    stdout.write("\x1B[0m");
+    prompt();
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -209,21 +221,27 @@ register({
 
 onMounted(() => {
   stdout.writeln(MOTD);
-  stdout.write(cwd(commandState.value));
-  stdout.write("> ");
+  prompt();
 });
 
 watch(
   characterBuffer,
-  (buffer) => {
+  buffer => {
     outputBuffer.value = colorize(buffer);
-  }
+  },
+  { immediate: true },
 );
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    {{ outputBuffer }}
+    <span
+      v-for="span in outputBuffer"
+      :key="span.text"
+      :class="`terminal-fg-${span.style.foreground} terminal-bg-${span.style.background} terminal-fw-${span.style.weight} terminal-underline-${span.style.underline}`"
+    >
+      {{ span.text }}
+    </span>
     {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
@@ -277,5 +295,76 @@ watch(
   .terminal {
     display: none;
   }
+}
+
+.terminal-bg-black {
+  background-color: #000000;
+}
+.terminal-bg-red {
+  background-color: var(--red);
+}
+.terminal-bg-green {
+  background-color: green;
+}
+.terminal-bg-yellow {
+  background-color: yellow;
+}
+.terminal-bg-blue {
+  background-color: blue;
+}
+.terminal-bg-purple {
+  background-color: purple;
+}
+.terminal-bg-cyan {
+  background-color: cyan;
+}
+.terminal-bg-white {
+  background-color: #ffffff;
+}
+
+.terminal-fg-black {
+  color: #000000;
+}
+.terminal-fg-red {
+  color: var(--red);
+}
+.terminal-fg-green {
+  color: green;
+}
+.terminal-fg-yellow {
+  color: yellow;
+}
+.terminal-fg-blue {
+  color: blue;
+}
+.terminal-fg-purple {
+  color: purple;
+}
+.terminal-fg-cyan {
+  color: cyan;
+}
+.terminal-fg-white {
+  color: #ffffff;
+}
+
+.terminal-fw-faint {
+  font-weight: 200;
+  opacity: 0.75;
+}
+.terminal-fw-normal {
+  font-weight: 400;
+}
+.terminal-fw-bold {
+  font-weight: 700;
+}
+
+.terminal-underline-none {
+  text-decoration: none;
+}
+.terminal-underline-single {
+  text-decoration: underline;
+}
+.terminal-underline-double {
+  text-decoration: underline double;
 }
 </style>
