@@ -1,17 +1,20 @@
+import { useValidatedQuery, z } from "h3-zod";
 import { dateToUnix } from "~/utils/time";
-interface OffsetData {
-  years?: string;
-  months?: string;
-  weeks?: string;
-  days?: string;
-}
 
-export default defineEventHandler(event => {
-  const offsetData = getQuery<OffsetData>(event);
-  let years = parseInt(offsetData.years ?? "0");
-  const months = parseInt(offsetData.months ?? "0");
-  const weeks = parseInt(offsetData.weeks ?? "0");
-  const days = parseInt(offsetData.days ?? "0");
+export default defineEventHandler(async event => {
+  const query = await useValidatedQuery(
+    event,
+    z.object({
+      years: z.coerce.number().optional().default(0),
+      months: z.coerce.number().optional().default(0),
+      weeks: z.coerce.number().optional().default(0),
+      days: z.coerce.number().optional().default(0),
+    }),
+  );
+
+  const { months, weeks, days } = query;
+  let { years } = query;
+
   if (years + months + weeks + days === 0) {
     years = 1;
   }
