@@ -10,6 +10,7 @@ export type EventType = {
   id: number;
   name: string;
   location: string;
+  mazemapLink: string;
   summary: string;
   description: string;
   slides: string;
