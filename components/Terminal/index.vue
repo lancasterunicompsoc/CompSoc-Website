@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
+import type { StyledSpan } from "./stdio";
+import { colorize } from "./stdio";
 import "./commands/";
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
-const characterBuffer = ref<string>("");
+const characterBuffer = ref("");
+const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -41,10 +43,10 @@ const commandState = ref<State>({
 
 watch(
   () => authStore.payload?.username,
-  (username) => {
+  username => {
     commandState.value.session.username = username ?? "anonymous";
     handleCommand("cd");
-  }
+  },
 );
 
 const stdin = {
@@ -52,12 +54,24 @@ const stdin = {
     const char = inputBuffer.value[0];
     inputBuffer.value = inputBuffer.value.substring(1);
     return char ?? "";
-  }
+  },
 };
 const stdout = {
-  write(data: string): number { characterBuffer.value += data; return data.length; },
-  writeln(data: string): number { return this.write(data + "\n"); },
+  write(data: string): number {
+    characterBuffer.value += data;
+    return data.length;
+  },
+  writeln(data: string): number {
+    return this.write(data + "\n");
+  },
 };
+
+function prompt() {
+  stdout.write("\x1B[0;31;1m");
+  stdout.write(cwd(commandState.value));
+  stdout.write("> ");
+  stdout.write("\x1B[0m");
+}
 
 function handleCommand(command: string): void {
   const [cmd, ...params] = command.split(" ");
@@ -68,7 +82,9 @@ function handleCommand(command: string): void {
 
   const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
-    stdout.writeln(`\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`);
+    stdout.writeln(
+      `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`,
+    );
     return;
   }
 
@@ -110,8 +126,7 @@ function handleInput(event: KeyboardEvent) {
     inputBuffer.value = "";
     historySelectionOffset.value = 0;
 
-    stdout.write(cwd(commandState.value));
-    stdout.write(">");
+    prompt();
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -200,14 +215,27 @@ register({
 
 onMounted(() => {
   handleCommand("cat /etc/motd");
-  stdout.write(cwd(commandState.value));
-  stdout.write(">");
+  prompt();
 });
+
+watch(
+  characterBuffer,
+  buffer => {
+    outputBuffer.value = colorize(buffer);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    {{ characterBuffer }}
+    <span
+      v-for="span in outputBuffer"
+      :key="span.text"
+      :class="`text-terminal-${span.style.foreground} bg-terminal-${span.style.background} terminal-fw-${span.style.weight} terminal-underline-${span.style.underline}`"
+    >
+      {{ span.text }}
+    </span>
     {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
@@ -261,5 +289,26 @@ onMounted(() => {
   .terminal {
     display: none;
   }
+}
+
+.terminal-fw-faint {
+  font-weight: 200;
+  opacity: 0.75;
+}
+.terminal-fw-normal {
+  font-weight: 400;
+}
+.terminal-fw-bold {
+  font-weight: 700;
+}
+
+.terminal-underline-none {
+  text-decoration: none;
+}
+.terminal-underline-single {
+  text-decoration: underline;
+}
+.terminal-underline-double {
+  text-decoration: underline double;
 }
 </style>
