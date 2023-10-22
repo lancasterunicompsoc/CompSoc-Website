@@ -26,7 +26,7 @@
       <a class="hover:bg-darkred" href="https://slides.compsoc.io/">Slides</a>
       <template v-if="authStore.isAdmin">
         <NuxtLink class="hover:bg-darkred" to="/admin/users">Users</NuxtLink>
-        <NuxtLink class="hover:bg-darkred" to="/admin/reviews">Reviews</NuxtLink>
+        <NuxtLink class="hover:bg-darkred" to="/admin/reviews/0">Reviews</NuxtLink>
       </template>
       <Login class="hover:bg-darkred" />
       <DarkToggle />

@@ -9,14 +9,26 @@ export default defineEventHandler(async event => {
       months: z.coerce.number().optional().default(0),
       weeks: z.coerce.number().optional().default(0),
       days: z.coerce.number().optional().default(0),
+      past: z
+        .enum(["false", "true"])
+        .optional()
+        .transform(val => val === "true"),
+      all: z
+        .enum(["false", "true"])
+        .optional()
+        .transform(val => val === "true"),
     }),
   );
 
-  const { months, weeks, days } = query;
+  const { months, weeks, days, past, all } = query;
   let { years } = query;
 
   if (years + months + weeks + days === 0) {
     years = 1;
+  }
+
+  if (all) {
+    return event.context.prisma.event.findMany();
   }
 
   // Calculate the current date and the end of the desired offset
@@ -26,6 +38,24 @@ export default defineEventHandler(async event => {
   futureDate.setMonth(currentDate.getMonth() + months);
   futureDate.setDate(currentDate.getDate() + days + 7 * weeks);
 
+  if (past) {
+    const pastDate = new Date();
+    pastDate.setFullYear(currentDate.getFullYear() - years);
+    pastDate.setMonth(currentDate.getMonth() - months);
+    pastDate.setDate(currentDate.getDate() - days - 7 * weeks);
+
+    return event.context.prisma.event.findMany({
+      where: {
+        unixStartTime: {
+          lte: dateToUnix(currentDate),
+          gte: dateToUnix(pastDate),
+        },
+      },
+      orderBy: {
+        unixStartTime: "desc",
+      },
+    });
+  }
   // Fetch events that fall within the date range and sort by startTime
   return event.context.prisma.event.findMany({
     where: {
