@@ -52,5 +52,6 @@ export default defineNuxtConfig({
     },
     "/start": { redirect: joinLink },
     "/join": { redirect: joinLink },
+    "/admin/reviews": { redirect: "/admin/reviews/0" },
   },
 });

@@ -7,16 +7,15 @@ definePageMeta({
   middleware: ["auth-admin"],
 });
 
-const filterByEvent = ref<string>("all");
-const eventId = ref(0);
-
-watch(filterByEvent, () => {
-  if (filterByEvent.value === "all") {
-    eventId.value = 0;
-    return;
-  }
-  eventId.value = Number(filterByEvent.value);
-});
+const route = useRoute();
+const router = useRouter();
+if (
+  typeof route.params.id !== "string" ||
+  Number.isNaN(Number(route.params.id))
+) {
+  router.replace("/admin/reviews/0"); // 0 is our magic number for all events
+}
+const id = Number(route.params.id);
 
 const authStore = useAuthStore();
 const {
@@ -24,7 +23,7 @@ const {
   data: reviewsData,
   status: reviewsStatus,
   refresh: reviewsRefresh,
-} = await useFetch(() => `/api/admin/reviews?eventId=${eventId.value}`, {
+} = useFetch(`/api/admin/reviews?eventId=${id}`, {
   headers: { Bearer: authStore.jwt as unknown as string },
 });
 
@@ -36,6 +35,14 @@ const {
 } = useFetch("/api/events/all?all=true");
 
 const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
+
+const newEventId = ref(id);
+
+const handleEventFilter = () => {
+  nextTick(() => {
+    router.push(`/admin/reviews/${newEventId.value}`);
+  });
+};
 </script>
 
 <template>
@@ -46,12 +53,12 @@ const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
       <div v-if="eventsData">
         <label for="events" class="py-4 pr-4">Event:</label>
         <select
-          v-model="filterByEvent"
           id="events"
           class="bg-lightbg dark:bg-darkgrey"
+          v-model="newEventId"
+          @change="handleEventFilter"
         >
-          <!-- TODO: sync this to the url, so that we can share results for this directly via link-->
-          <option value="all">All</option>
+          <option :value="0">All</option>
           <option :value="event.id" v-for="event in eventsData" :key="event.id">
             {{ event.id }} - {{ event.name }}
           </option>
@@ -77,7 +84,7 @@ const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
               </NuxtLink>
             </td>
             <td class="dark:bg-#222">
-              {{ review.userId }}
+              {{ review.user.username }}
             </td>
             <td class="dark:bg-#222 flex">
               <span
