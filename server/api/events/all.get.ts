@@ -13,14 +13,22 @@ export default defineEventHandler(async event => {
         .enum(["false", "true"])
         .optional()
         .transform(val => val === "true"),
+      all: z
+        .enum(["false", "true"])
+        .optional()
+        .transform(val => val === "true"),
     }),
   );
 
-  const { months, weeks, days, past } = query;
+  const { months, weeks, days, past, all } = query;
   let { years } = query;
 
   if (years + months + weeks + days === 0) {
     years = 1;
+  }
+
+  if (all) {
+    return event.context.prisma.event.findMany();
   }
 
   // Calculate the current date and the end of the desired offset
