@@ -21,7 +21,7 @@ export default defineEventHandler(async event => {
   if (query.eventId !== 0) {
     const review = await prisma.review.findFirst({
       where: { eventId: query.eventId },
-      include: { user: { select: { username: true } } },
+      include: { user: { select: { username: true, suVerified: true } } },
     });
     if (review === null) {
       return [];
@@ -30,6 +30,6 @@ export default defineEventHandler(async event => {
   }
 
   return prisma.review.findMany({
-    include: { user: { select: { username: true } } },
+    include: { user: { select: { username: true, suVerified: true } } },
   });
 });
