@@ -20,6 +20,22 @@ export default eventHandler(async event => {
 
   try {
     const payload = await verifyJWT(jwt);
+    const { prisma } = event.context;
+    const user = await prisma.user.findUnique({
+      where: { username: payload.username },
+    });
+    if (!user) {
+      throw new Error("error while verifying request");
+    }
+
+    if (user.banned) {
+      throw new Error("banned user");
+    }
+
+    if (user.role !== payload.role) {
+      payload.role = user.role;
+    }
+
     event.context.auth = { jwt, decoded: payload };
   } catch (e) {
     console.error("error while verifying jwt");

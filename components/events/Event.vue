@@ -36,7 +36,8 @@ function editEvent(id: number) {
 }
 
 function reviewEvent(id: number) {
-  navigateTo(`/events/review/${id}`);
+  const reviewUrl = `/events/review/${id}`;
+  navigateTo(reviewUrl);
 }
 </script>
 
@@ -56,7 +57,14 @@ function reviewEvent(id: number) {
         <figcaption>
           <IconLocation />
         </figcaption>
-        <p>{{ event.location }}</p>
+        <template v-if="event.mazemapLink">
+          <a :href="event.mazemapLink" class="underline text-highlight2Light">
+            <p>{{ event.location }}</p>
+          </a>
+        </template>
+        <template v-else>
+          <p>{{ event.location }}</p>
+        </template>
       </figure>
       <figure class="flex">
         <figcaption>
@@ -70,16 +78,18 @@ function reviewEvent(id: number) {
     <template v-if="isFullSize">
       <p>{{ event.description }}</p>
       <a :href="event.slides" v-if="event.slides">View Slides</a>
-      <div v-if="isLoggedIn" class="flex">
-        <button v-if="isAdmin" @click="editEvent(event.id)">
-          <IconEdit />
-        </button>
-        <button v-if="isAdmin" @click="deleteEvent(event.id)">
-          <IconDelete />
-        </button>
-        <button @click="reviewEvent(event.id)">
+      <div class="flex">
+        <template v-if="isLoggedIn">
+          <button v-if="isAdmin" @click="editEvent(event.id)">
+            <IconEdit />
+          </button>
+          <button v-if="isAdmin" @click="deleteEvent(event.id)">
+            <IconDelete />
+          </button>
+        </template>
+        <NuxtLink :to="`/events/review/${event.id}`">
           <IconReview />
-        </button>
+        </NuxtLink>
       </div>
     </template>
   </div>

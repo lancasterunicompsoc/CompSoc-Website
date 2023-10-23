@@ -15,6 +15,7 @@ export type jwtDecodedType = {
 
 export type Role = "USER" | "PRIVILEGED" | "ADMIN";
 export type jwtPayloadType = {
+  id: string;
   username: string;
   displayName: string;
   mail: string;
@@ -23,7 +24,9 @@ export type jwtPayloadType = {
 };
 
 export async function verifyIssJwt(jwt: string): Promise<jwtDecodedType> {
-  const { payload } = await joseJwtVerify(jwt, encodedSecret);
+  const { payload } = await joseJwtVerify(jwt, encodedSecret, {
+    clockTolerance: 60, // due to ISS issuing tokens which only last for 5 seconds, people on a bad connection might have troubles completing the login cycle in less than 5s
+  });
   return payload as unknown as jwtDecodedType;
 }
 
@@ -44,7 +47,12 @@ export async function createJWT(
     throw new Error("user not found");
   }
 
+  if (user.banned) {
+    throw new Error("user banned");
+  }
+
   const payload: jwtPayloadType = {
+    id: user.id,
     username,
     banned: user.banned,
     role: user.role,

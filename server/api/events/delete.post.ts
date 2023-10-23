@@ -1,9 +1,11 @@
+import { useValidatedBody, z } from "h3-zod";
+
 export default defineEventHandler(async event => {
   if (event.context.auth?.decoded?.role !== "ADMIN") {
     throw new Error("you do not belong here");
   }
   try {
-    const { id } = await readBody(event);
+    const { id } = await useValidatedBody(event, z.object({ id: z.coerce.number() }));
 
     await event.context.prisma.event.delete({
       where: { id },

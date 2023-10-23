@@ -1,3 +1,5 @@
+const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7/join";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -39,5 +41,17 @@ export default defineNuxtConfig({
         "Cache-Control": "max-age=604800, public",
       },
     },
+    "/slides": { redirect: "https://slides.compsoc.io" },
+    "/discord": { redirect: "https://discord.gg/zH5MsZCrJG" },
+    "/github": { redirect: "https://github.com/LUCompSoc" },
+    "/github/CompSoc-Website": {
+      redirect: "https://github.com/lancasterunicompsoc/CompSoc-Website",
+    },
+    "/github/compsoc-website": {
+      redirect: "https://github.com/lancasterunicompsoc/CompSoc-Website",
+    },
+    "/start": { redirect: joinLink },
+    "/join": { redirect: joinLink },
+    "/admin/reviews": { redirect: "/admin/reviews/0" },
   },
 });

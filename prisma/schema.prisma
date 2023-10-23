@@ -11,6 +11,7 @@ datasource db {
 model User {
   id          String   @id @default(cuid())
   banned      Boolean  @default(false)
+  suVerified  Boolean? @default(false)
   displayName String
   mail        String
   role        Role     @default(USER)
@@ -24,6 +25,7 @@ model Event {
   id            Int             @id @default(autoincrement())
   name          String          @db.LongText
   location      String          @db.LongText
+  mazemapLink   String          @default("") @db.VarChar(2048)
   summary       String          @db.LongText
   description   String          @db.LongText
   slides        String          @db.LongText
@@ -33,7 +35,7 @@ model Event {
   unixEndTime   Int
   unixStartTime Int
   reviews       Review[]
-  announcement Announcement[]
+  announcement  Announcement[]
 }
 
 model Announcement {
@@ -54,9 +56,9 @@ model Review {
   rating    Int
   comment   String @db.LongText
 
+  @@unique([eventId, userId])
   @@index([eventId])
   @@index([userId])
-  @@unique([eventId, userId])
 }
 
 enum EventDifficulty {

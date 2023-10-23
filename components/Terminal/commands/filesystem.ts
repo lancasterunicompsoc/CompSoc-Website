@@ -1,21 +1,22 @@
-import type { CommandHandler, Params, State } from "./registry";
+import type { CommandHandler, State } from "./registry";
 import { register } from "./registry";
 import { whoami } from "./session";
 import { eventToFile } from "./utils";
+import { MOTD } from "~/components/Terminal/systemInfo";
 
 export enum EntryType {
-    directory,
-    file,
+  directory,
+  file,
 }
 
 export interface DirEntry {
-  type: EntryType.directory,
+  type: EntryType.directory;
   name: string;
   children: ChildFactory;
 }
 
 export interface FileEntry {
-  type: EntryType.file,
+  type: EntryType.file;
   name: string;
   content: string;
 }
@@ -27,19 +28,27 @@ type ChildFactory = (state: State) => Entry[];
 const makeHomeDir = (name: string): Entry => ({
   type: EntryType.directory,
   name,
-  children: (_: State) => [
-    {
-      type: EntryType.directory,
-      name: "events",
-      children: (state: State) => {
-        const events = state.getEvents();
-        if (events) {
-          return events.map(e => eventToFile(e));
-        }
-        return [];
+  children: (_: State) =>
+    [
+      {
+        type: EntryType.directory,
+        name: "events",
+        children: (state: State) => {
+          const events = state.getEvents();
+          if (events) {
+            return events.map(e => eventToFile(e));
+          }
+          return [];
+        },
       },
-    },
-  ],
+      name === "anonymous"
+        ? null
+        : {
+            type: EntryType.file,
+            name: ".wake-up",
+            content: "The Matrix has you...\nFollow the white rabbit.\n",
+          },
+    ].filter(c => c !== null) as Entry[],
 });
 
 const fileTree: Entry = {
@@ -58,6 +67,17 @@ const fileTree: Entry = {
         return children;
       },
     },
+    {
+      type: EntryType.directory,
+      name: "etc",
+      children: (_state: State) => [
+        {
+          type: EntryType.file,
+          name: "motd",
+          content: MOTD,
+        }
+      ],
+    }
   ],
 };
 
@@ -133,6 +153,9 @@ function findEntry(state: State, path: string): Entry | null {
 const exists = (state: State, path: string): boolean =>
   findEntry(state, path) !== null;
 
+const resolveParentPath = (state: State, path: string): string =>
+  resolvePath(state, `${path}/..`);
+
 export const cwd = (state: State) => state.filesystem.cwd;
 
 const cd: CommandHandler = (state, params, { stdout }) => {
@@ -163,20 +186,77 @@ const cd: CommandHandler = (state, params, { stdout }) => {
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {
-  const path = resolvePath(state, params[0]);
-  const item = findEntry(state, path);
-  if (item === null) {
-    stdout.writeln(`Cannot access '${path}': no such file or directory`);
-    return;
+  const flagStrings = params.filter(p => p.startsWith("-")).map(p => p.substring(1));
+  const targets = params.filter(p => !p.startsWith("-"));
+  if (targets.length === 0) {
+    targets.push(".");
   }
 
-  if (item.type !== EntryType.directory) {
-    stdout.writeln(path);
-    return;
+  const flags = {
+    all: false,
+    most: false,
+    list: false,
+  };
+  for (const flag of flagStrings) {
+    if (flag.startsWith("-")) {
+      continue;
+    }
+    if (flag.includes("a")) {
+      flags.all = true;
+      flags.most = true;
+    }
+    if (flag.includes("A")) {
+      flags.most = true;
+    }
+    if (flag.includes("l")) {
+      flags.list = true;
+    }
   }
 
-  const children = item.children(state);
-  stdout.writeln(children.map(child => child.name).sort().join("    "));
+  targets.forEach((target, i) => {
+    const path = resolvePath(state, target);
+    const item = findEntry(state, path);
+    if (item === null) {
+      stdout.writeln(`Cannot access '${path}': no such file or directory`);
+      return;
+    }
+
+    if (item.type !== EntryType.directory) {
+      stdout.writeln(path);
+      return;
+    }
+
+    const children = item.children(state)
+      .filter(child => !child.name.startsWith(".") || flags.most);
+    if (flags.all) {
+      const parent = findEntry(state, resolveParentPath(state, path));
+      children.push(
+        { ...item, name: "." },
+        { ...(parent ?? item), name: ".." },
+      );
+    }
+    if (targets.length > 1) {
+      stdout.writeln(`${target}:`);
+    }
+    if (flags.list) {
+      stdout.writeln(`total ${children.length}`);
+      children
+        .sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : 1)
+        .forEach(child => {
+          stdout.writeln(child.name);
+        });
+    } else {
+      stdout.writeln(
+        children
+          .map(child => child.name)
+          .sort()
+          .join("    "),
+      );
+    }
+    if (targets.length - 1 !== i) {
+      stdout.writeln("");
+    }
+  });
 };
 
 const cat: CommandHandler = (state, params, { stdout }) => {

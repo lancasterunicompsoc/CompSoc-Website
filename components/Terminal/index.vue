@@ -1,22 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State } from "./commands/registry";
-import systemInfo from "./systemInfo";
+import type { StyledSpan } from "./stdio";
+import { colorize } from "./stdio";
 import "./commands/";
 import { cwd } from "./commands/filesystem";
 import { getAllCommands, register, getCommand } from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
-const MOTD = `The programs included with ${systemInfo.os.name} are free software.
-${systemInfo.os.name} comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.
-
-To get started, type \`help\` to list available commands. ${systemInfo.os.name} is a best-faith implementation of Posix, but may not be entirely Posix-compliant.
-`;
-
-const characterBuffer = ref<string>("");
+const characterBuffer = ref("");
+const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -48,10 +43,10 @@ const commandState = ref<State>({
 
 watch(
   () => authStore.payload?.username,
-  (username) => {
+  username => {
     commandState.value.session.username = username ?? "anonymous";
     handleCommand("cd");
-  }
+  },
 );
 
 const stdin = {
@@ -59,12 +54,24 @@ const stdin = {
     const char = inputBuffer.value[0];
     inputBuffer.value = inputBuffer.value.substring(1);
     return char ?? "";
-  }
+  },
 };
 const stdout = {
-  write(data: string): number { characterBuffer.value += data; return data.length; },
-  writeln(data: string): number { return this.write(data + "\n"); },
+  write(data: string): number {
+    characterBuffer.value += data;
+    return data.length;
+  },
+  writeln(data: string): number {
+    return this.write(data + "\n");
+  },
 };
+
+function prompt() {
+  stdout.write("\x1B[0;31;1m");
+  stdout.write(cwd(commandState.value));
+  stdout.write(">");
+  stdout.write("\x1B[0m");
+}
 
 function handleCommand(command: string): void {
   const [cmd, ...params] = command.split(" ");
@@ -75,7 +82,9 @@ function handleCommand(command: string): void {
 
   const handler = getCommand(cmd.toLowerCase());
   if (handler === undefined) {
-    stdout.writeln(`\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`);
+    stdout.writeln(
+      `\`${cmd}\` is not a valid command. Use the \`help\` command to learn more`,
+    );
     return;
   }
 
@@ -106,6 +115,7 @@ function handleInput(event: KeyboardEvent) {
 
   if (key === "Enter") {
     const command = activeLineBuffer.value.trim();
+    stdout.write(" ");
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
     if (command !== "") {
@@ -116,8 +126,7 @@ function handleInput(event: KeyboardEvent) {
     inputBuffer.value = "";
     historySelectionOffset.value = 0;
 
-    stdout.write(cwd(commandState.value));
-    stdout.write("> ");
+    prompt();
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -192,7 +201,7 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  characterBuffer.value = `${cwd(commandState.value)}> `;
+  characterBuffer.value = `${cwd(commandState.value)}>`;
 }
 
 register({
@@ -205,15 +214,28 @@ register({
 });
 
 onMounted(() => {
-  stdout.writeln(MOTD);
-  stdout.write(cwd(commandState.value));
-  stdout.write("> ");
+  handleCommand("cat /etc/motd");
+  prompt();
 });
+
+watch(
+  characterBuffer,
+  buffer => {
+    outputBuffer.value = colorize(buffer);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <code ref="coderef" class="terminal edit" tabindex="0" @keydown="handleInput">
-    {{ characterBuffer }}
+    <span
+      v-for="span in outputBuffer"
+      :key="span.text"
+      :class="`text-terminal-${span.style.foreground} bg-terminal-${span.style.background} terminal-fw-${span.style.weight} terminal-underline-${span.style.underline}`"
+    >
+      {{ span.text }}
+    </span>
     {{ activeLineBuffer }}<TerminalBlinker :focussed="focused" />
   </code>
 </template>
@@ -237,7 +259,7 @@ onMounted(() => {
   margin: 2rem auto;
 
   font-family: monospace;
-  white-space: pre-line;
+  white-space: pre-wrap;
   overflow-y: scroll;
 
   color: #fff;
@@ -267,5 +289,26 @@ onMounted(() => {
   .terminal {
     display: none;
   }
+}
+
+.terminal-fw-faint {
+  font-weight: 200;
+  opacity: 0.75;
+}
+.terminal-fw-normal {
+  font-weight: 400;
+}
+.terminal-fw-bold {
+  font-weight: 700;
+}
+
+.terminal-underline-none {
+  text-decoration: none;
+}
+.terminal-underline-single {
+  text-decoration: underline;
+}
+.terminal-underline-double {
+  text-decoration: underline double;
 }
 </style>
