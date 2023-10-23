@@ -20,12 +20,13 @@ const id = Number(route.params.id);
 const authStore = useAuthStore();
 const {
   pending: reviewsPending,
-  data: reviewsData,
+  data: allReviews,
   status: reviewsStatus,
   refresh: reviewsRefresh,
 } = useFetch(`/api/admin/reviews?eventId=${id}`, {
   headers: { Bearer: authStore.jwt as unknown as string },
 });
+const reviewsData = ref(new Array(allReviews.value));
 
 const {
   pending: eventsPending,
@@ -37,32 +38,59 @@ const {
 const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
 
 const newEventId = ref(id);
+const showVerified = ref(true);
 
 const handleEventFilter = () => {
   nextTick(() => {
     router.push(`/admin/reviews/${newEventId.value}`);
   });
 };
+
+watch(showVerified, () => {
+  if (showVerified.value) {
+    reviewsData.value = allReviews.value;
+  } else {
+    reviewsData.value = allReviews.value?.filter(review => !review.user.suVerified) ?? [];
+  }
+});
 </script>
 
 <template>
   <div class="m-8">
-    <h1 class="text-3xl">Reviews</h1>
+    <h1 class="text-3xl">
+      Reviews
+    </h1>
     <div>
-      <h2 class="text-2xl font-bold">Filter</h2>
+      <h2 class="text-2xl font-bold">
+        Filter
+      </h2>
       <div v-if="eventsData">
-        <label for="events" class="py-4 pr-4">Event:</label>
-        <select
-          id="events"
-          class="bg-lightbg dark:bg-darkgrey"
-          v-model="newEventId"
-          @change="handleEventFilter"
-        >
-          <option :value="0">All</option>
-          <option :value="event.id" v-for="event in eventsData" :key="event.id">
-            {{ event.id }} - {{ event.name }}
-          </option>
-        </select>
+        <div>
+          <label for="events" class="py-4 pr-4">Event:</label>
+          <select
+            id="events"
+            v-model="newEventId"
+            class="bg-lightbg dark:bg-darkgrey"
+            @change="handleEventFilter"
+          >
+            <option :value="0">
+              All
+            </option>
+            <option
+              v-for="event in eventsData"
+              :key="event.id"
+              :value="event.id"
+            >
+              {{ event.id }} - {{ event.name }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="show-verified" class="py-4 pr-4">
+            Show verified users:
+          </label>
+          <input id="show-verified" v-model="showVerified" type="checkbox" name="show-verified" />
+        </div>
       </div>
     </div>
     <div v-if="reviewsPending === true">Loading reviews...</div>
