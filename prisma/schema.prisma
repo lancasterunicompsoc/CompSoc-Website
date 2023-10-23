@@ -11,6 +11,7 @@ datasource db {
 model User {
   id          String   @id @default(cuid())
   banned      Boolean  @default(false)
+  suVerified  Boolean? @default(false)
   displayName String
   mail        String
   role        Role     @default(USER)
