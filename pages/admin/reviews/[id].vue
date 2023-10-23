@@ -18,15 +18,17 @@ if (
 const id = Number(route.params.id);
 
 const authStore = useAuthStore();
+const eventData = await useFetch(`/api/admin/reviews?eventId=${id}`, {
+  headers: { Bearer: authStore.jwt as unknown as string },
+});
 const {
   pending: reviewsPending,
   data: allReviews,
   status: reviewsStatus,
   refresh: reviewsRefresh,
-} = useFetch(`/api/admin/reviews?eventId=${id}`, {
-  headers: { Bearer: authStore.jwt as unknown as string },
-});
-const reviewsData = ref(new Array(allReviews.value));
+} = eventData;
+allReviews.value = allReviews.value?.filter(r => (r && r.user) ?? false) ?? [];
+const reviewsData = ref(allReviews.value.map(x => x));
 
 const {
   pending: eventsPending,
@@ -112,13 +114,13 @@ watch(showVerified, () => {
               </NuxtLink>
             </td>
             <td class="dark:bg-#222">
-              {{ review.user.username }}
+              {{ review.user?.username }}
             </td>
             <td class="dark:bg-#222 flex">
               <span
-                class="i-carbon-star-filled text-yellow-500"
                 v-for="s in review.rating"
                 :key="s"
+                class="i-carbon-star-filled text-yellow-500"
               ></span>
             </td>
             <td class="dark:bg-#222">
