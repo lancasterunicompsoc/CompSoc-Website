@@ -17,6 +17,8 @@ if (
 }
 const id = Number(route.params.id);
 
+const showVerified = ref(true);
+
 const authStore = useAuthStore();
 const eventData = await useFetch(`/api/admin/reviews?eventId=${id}`, {
   headers: { Bearer: authStore.jwt as unknown as string },
@@ -27,8 +29,12 @@ const {
   status: reviewsStatus,
   refresh: reviewsRefresh,
 } = eventData;
-allReviews.value = allReviews.value?.filter(r => (r && r.user) ?? false) ?? [];
-const reviewsData = ref(allReviews.value.map(x => x));
+const reviewsData = computed(() => {
+  if (allReviews.value === null) {
+    return [];
+  }
+  return allReviews.value.filter(r => showVerified.value || !r.user.suVerified);
+});
 
 const {
   pending: eventsPending,
@@ -40,32 +46,19 @@ const {
 const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
 
 const newEventId = ref(id);
-const showVerified = ref(true);
 
 const handleEventFilter = () => {
   nextTick(() => {
     router.push(`/admin/reviews/${newEventId.value}`);
   });
 };
-
-watch(showVerified, () => {
-  if (showVerified.value) {
-    reviewsData.value = allReviews.value;
-  } else {
-    reviewsData.value = allReviews.value?.filter(review => !review.user.suVerified) ?? [];
-  }
-});
 </script>
 
 <template>
   <div class="m-8">
-    <h1 class="text-3xl">
-      Reviews
-    </h1>
+    <h1 class="text-3xl">Reviews</h1>
     <div>
-      <h2 class="text-2xl font-bold">
-        Filter
-      </h2>
+      <h2 class="text-2xl font-bold">Filter</h2>
       <div v-if="eventsData">
         <div>
           <label for="events" class="py-4 pr-4">Event:</label>
@@ -75,9 +68,7 @@ watch(showVerified, () => {
             class="bg-lightbg dark:bg-darkgrey"
             @change="handleEventFilter"
           >
-            <option :value="0">
-              All
-            </option>
+            <option :value="0">All</option>
             <option
               v-for="event in eventsData"
               :key="event.id"
@@ -89,9 +80,17 @@ watch(showVerified, () => {
         </div>
         <div>
           <label for="show-verified" class="py-4 pr-4">
-            Show verified users:
+            <template v-if="showVerified"
+              >Show non verified users only:</template
+            >
+            <template v-else>Show all users</template>
           </label>
-          <input id="show-verified" v-model="showVerified" type="checkbox" name="show-verified" />
+          <input
+            id="show-verified"
+            v-model="showVerified"
+            type="checkbox"
+            name="show-verified"
+          />
         </div>
       </div>
     </div>

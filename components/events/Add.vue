@@ -115,7 +115,6 @@ async function addEvent() {
           type="text"
           id="mazemapLink"
           v-model="formData.mazemapLink"
-          required
         />
       </div>
       <div>

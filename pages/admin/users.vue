@@ -51,6 +51,7 @@ function changeRole(event: Event) {
           <th class="dark:bg-#222">Username</th>
           <th class="dark:bg-#222">Role</th>
           <th class="dark:bg-#222">Is banned</th>
+          <th class="dark:bg-#222">Verified</th>
         </tr>
       </thead>
       <tbody>
@@ -81,6 +82,12 @@ function changeRole(event: Event) {
               type="checkbox"
               :checked="user.banned"
               @change="() => toggleBan(user.id)"
+            />
+          </td>
+          <td class="dark:bg-#222">
+            <input
+              type="checkbox"
+              :checked="!!user.suVerified"
             />
           </td>
         </tr>
