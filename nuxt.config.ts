@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     public: {
       loginUrl: "",
     },
+    resend_key: "",
   },
   app: {
     head: {
