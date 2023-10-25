@@ -54,9 +54,14 @@ const fileTree: Entry = {
           type: EntryType.file,
           name: "motd",
           content: MOTD,
+        },
+        {
+          type: EntryType.file,
+          name: "init.sh",
+          content: "echo Hello, world!",
         }
       ],
-    }
+    },
   ],
 };
 export default fileTree;
