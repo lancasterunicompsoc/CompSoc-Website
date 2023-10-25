@@ -1,5 +1,5 @@
-import type { Entry } from "./filesystem";
-import { EntryType } from "./filesystem";
+import type { Entry } from "../filesystem";
+import { EntryType } from "../filesystem";
 
 import type { EventType } from "~/components/events/utils";
 

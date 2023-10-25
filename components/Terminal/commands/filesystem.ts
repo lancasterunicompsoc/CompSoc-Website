@@ -1,85 +1,8 @@
+import { Entry, EntryType } from "../filesystem";
+import fileTree from "../filesystem/tree";
 import type { CommandHandler, State } from "./registry";
 import { register } from "./registry";
 import { whoami } from "./session";
-import { eventToFile } from "./utils";
-import { MOTD } from "~/components/Terminal/systemInfo";
-
-export enum EntryType {
-  directory,
-  file,
-}
-
-export interface DirEntry {
-  type: EntryType.directory;
-  name: string;
-  children: ChildFactory;
-}
-
-export interface FileEntry {
-  type: EntryType.file;
-  name: string;
-  content: string;
-}
-
-export type Entry = DirEntry | FileEntry;
-
-type ChildFactory = (state: State) => Entry[];
-
-const makeHomeDir = (name: string): Entry => ({
-  type: EntryType.directory,
-  name,
-  children: (_: State) =>
-    [
-      {
-        type: EntryType.directory,
-        name: "events",
-        children: (state: State) => {
-          const events = state.getEvents();
-          if (events) {
-            return events.map(e => eventToFile(e));
-          }
-          return [];
-        },
-      },
-      name === "anonymous"
-        ? null
-        : {
-            type: EntryType.file,
-            name: ".wake-up",
-            content: "The Matrix has you...\nFollow the white rabbit.\n",
-          },
-    ].filter(c => c !== null) as Entry[],
-});
-
-const fileTree: Entry = {
-  type: EntryType.directory,
-  name: "/",
-  children: (_: State) => [
-    {
-      type: EntryType.directory,
-      name: "home",
-      children: (state: State) => {
-        const iAm = whoami(state);
-        const children = [makeHomeDir(iAm)];
-        if (iAm !== "anonymous") {
-          children.push(makeHomeDir("anonymous"));
-        }
-        return children;
-      },
-    },
-    {
-      type: EntryType.directory,
-      name: "etc",
-      children: (_state: State) => [
-        {
-          type: EntryType.file,
-          name: "motd",
-          content: MOTD,
-        }
-      ],
-    }
-  ],
-};
 
 const userHome = (state: State) => `/home/${whoami(state)}`;
 
