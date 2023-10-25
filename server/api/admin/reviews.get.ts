@@ -19,14 +19,11 @@ export default defineEventHandler(async event => {
   );
 
   if (query.eventId !== 0) {
-    const review = await prisma.review.findFirst({
+    const review = await prisma.review.findMany({
       where: { eventId: query.eventId },
       include: { user: { select: { username: true, suVerified: true } } },
     });
-    if (review === null) {
-      return [];
-    }
-    return [review];
+    return review;
   }
 
   return prisma.review.findMany({
