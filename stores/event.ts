@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { EventType } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 
 type FetchState = "initial" | "loading" | "done" | "error";
 

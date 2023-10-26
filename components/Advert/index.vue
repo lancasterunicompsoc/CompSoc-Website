@@ -5,7 +5,7 @@ import Card from "./Card.vue";
 
 import type { SlideType, CardData } from "./types";
 import { SlideLayout } from "./types";
-import { EventType } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 
 const { slide } = defineProps<{ slide: SlideType }>();
 </script>
