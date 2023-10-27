@@ -16,7 +16,7 @@ import IconLocation from "~/mail/components/icons/Location";
 import IconSpeaker from "~/mail/components/icons/Speaker";
 import IconTime from "~/mail/components/icons/Time";
 
-type EventType = {
+type MailEventType = {
   id: number;
   unixStartTime: number;
   unixEndTime: number;
@@ -50,7 +50,7 @@ function Location({
 }
 
 type Props = {
-  event: EventType;
+  event: MailEventType;
 };
 
 const InfoLine = ({ event }: Props) =>

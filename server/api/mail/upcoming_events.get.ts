@@ -36,6 +36,7 @@ export default defineEventHandler(async _event => {
         main: {
           maxWidth: "45rem",
           margin: "5em auto 2em",
+          lineHeight: 1.75,
         },
         h2: {
           fontSize: "1.5rem",

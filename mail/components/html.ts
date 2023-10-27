@@ -91,6 +91,7 @@ type Style = {
   fontFamily?: string;
   fontSize?: string;
   fontWeight?: number;
+  lineHeight?: number;
   margin?:
     | Margin
     | { left?: Margin; right?: Margin; top?: Margin; bottom?: Margin };
@@ -98,7 +99,7 @@ type Style = {
   padding?: 0 | string;
   textAlign?: "left" | "right" | "center" | "none";
   textDecoration?: string;
-} & { [index: string]: string };
+} | { [index: string]: string };
 export function style(
   styles: string | { [index: string]: Style | string },
 ): string {
@@ -131,6 +132,7 @@ function renderStyleItem(
         fontWeight: "font-weight",
         textAlign: "text-align",
         textDecoration: "text-decoration",
+        lineHeight: "line-height",
         maxWidth: "max-width",
       }[k] ?? k,
       v,
