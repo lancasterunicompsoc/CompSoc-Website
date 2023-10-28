@@ -1,6 +1,11 @@
 import { dateToUnix, unixToDate, unixAnySpan } from "~/utils/time";
 
 export default defineEventHandler(async event => {
+  const config = useRuntimeConfig();
+  if (event.headers.get("authorization") !== config.cron_secret) {
+    return { ok: false };
+  }
+
   // Calculate the current date and the end of the desired offset
   const currentDate = new Date();
   const futureDate = unixToDate(dateToUnix(new Date()) + 604800); // get the next 7 days of events
@@ -36,8 +41,6 @@ export default defineEventHandler(async event => {
   content += eventStrings.join(hr);
 
   content += "​";
-
-  const config = useRuntimeConfig();
 
   $fetch(
     `https://discord.com/api/webhooks/${config.discord_id}/${config.discord_token}`,

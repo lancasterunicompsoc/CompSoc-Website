@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     database_url: "", // same here
     discord_id: "",
     discord_token: "",
+    cron_secret: "",
     public: {
       loginUrl: "",
     },
