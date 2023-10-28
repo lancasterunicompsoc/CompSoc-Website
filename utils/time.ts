@@ -59,3 +59,14 @@ export function unixAnySpan(start: number, end: number): string {
     return unixToDatespan(start, end);
   }
 }
+
+export function icsTime(input: number): number[] {
+  const date = unixToDate(input);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // JS Months are zero-based, so add 1
+  const day = date.getDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+
+  return [year, month, day, hours, minutes];
+}
