@@ -42,7 +42,7 @@ export default defineEventHandler(async event => {
 
   content += "​";
 
-  $fetch(
+  await $fetch(
     `https://discord.com/api/webhooks/${config.discord_id}/${config.discord_token}`,
     { method: "POST", body: { content } },
   );
