@@ -22,7 +22,7 @@ export default defineEventHandler(async event => {
   });
   const hr =
     "\n~~                                                                                                                         ~~";
-  let content = "@everyone\n# Here's whats coming up this week:\n";
+  let content = "@everyone\n# Here's what's coming up this week:\n";
   const eventStrings = [];
   for (const e of events) {
     const location =
