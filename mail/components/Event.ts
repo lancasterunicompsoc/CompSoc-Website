@@ -7,16 +7,11 @@ import {
   span,
   div,
   article,
-  figcaption,
-  figure,
 } from "~/mail/components/html";
 
 import Icon from "~/mail/components/icons";
-import IconLocation from "~/mail/components/icons/Location";
-import IconSpeaker from "~/mail/components/icons/Speaker";
-import IconTime from "~/mail/components/icons/Time";
 
-type MailEventType = {
+export type MailEventType = {
   id: number;
   unixStartTime: number;
   unixEndTime: number;
@@ -43,9 +38,10 @@ function Location({
       children: text,
     });
   }
-  return figure({
+  return Icon({
     class: "flex",
-    children: [figcaption(IconLocation()), text],
+    name: "location",
+    children: text,
   });
 }
 
@@ -59,13 +55,13 @@ const InfoLine = ({ event }: Props) =>
     children: [
       Icon({
         class: "flex",
-        img: IconTime(),
+        name: "time",
         children: p(unixAnySpan(event.unixStartTime, event.unixEndTime)),
       }),
       Location(event),
       Icon({
         class: "flex",
-        img: IconSpeaker(),
+        name: "speaker",
         children: p(event.organizer),
       }),
       span({
