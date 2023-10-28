@@ -8,6 +8,7 @@ const { isAdmin } = storeToRefs(useAuthStore());
 </script>
 <template>
   <main class="main-container">
+    <a href="/feed.xml">RSS Feed</a>
     <ClientOnly>
       <Add v-if="isAdmin" />
       <All />
