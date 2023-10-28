@@ -15,7 +15,7 @@ import Event from "~/mail/components/Event";
 export default defineEventHandler(async _event => {
   // const { resend_key: resendKey } = useRuntimeConfig();
   // const resend = new Resend(resendKey);
-  const events = await $fetch("/api/events/all?weeks=1");
+  const events = await $fetch("https://compsoc.io/api/events/all?weeks=1");
   const content = html([
     head([
       style({
