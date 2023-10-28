@@ -21,11 +21,9 @@ export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
-    github_client_id: "", // same here
-    github_client_secret: "", // same here
     database_url: "", // same here
-    discord_client_secret: "",
-    discord_client_id: "",
+    discord_id: "",
+    discord_token: "",
     public: {
       loginUrl: "",
     },
