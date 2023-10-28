@@ -201,7 +201,8 @@ function handleInput(event: KeyboardEvent) {
 }
 
 function clearScreen() {
-  characterBuffer.value = `${cwd(commandState.value)}>`;
+  characterBuffer.value = "";
+  prompt();
 }
 
 register({
