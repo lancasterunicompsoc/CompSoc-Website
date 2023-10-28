@@ -4,5 +4,5 @@
       "path": "/api/discord",
       "schedule": "0 18 * * 0"
     }
-  ],
+  ]
 }
