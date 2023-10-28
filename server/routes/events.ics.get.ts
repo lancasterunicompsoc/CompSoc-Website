@@ -24,7 +24,7 @@ export default defineEventHandler(async event => {
   }
   let { error, value } = createEvents(objIcs);
   if (error != null) {
-    value = "";
+    throw error;
   }
   return value?.replaceAll(";CN=", ":");
 });
