@@ -2,7 +2,7 @@ import { dateToUnix, unixToDate, unixAnySpan } from "~/utils/time";
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig();
-  if (event.headers.get("authorization") !== config.cron_secret) {
+  if (event.headers.get("authorization") !== process.env.CRON_SECRET) {
     return { ok: false };
   }
 
