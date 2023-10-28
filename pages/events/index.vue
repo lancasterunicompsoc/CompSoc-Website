@@ -8,7 +8,7 @@ const { isAdmin } = storeToRefs(useAuthStore());
 </script>
 <template>
   <main class="main-container">
-    <a href="/events.ics">iCalendar/ICS Feed</a>
+    <a target="_blank" href="/events.ics">iCalendar/ICS Feed</a>
     <ClientOnly>
       <Add v-if="isAdmin" />
       <All />
