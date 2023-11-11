@@ -3,6 +3,17 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
 import Event from "~/components/events/Event.vue";
 
+useHead({
+  title: "LUCompSoc Events",
+  meta: [
+    {
+      name: "description",
+      content:
+        "All past and upcoming events run by Lancaster University Computing Society, LU CompSoc",
+    },
+  ],
+});
+
 const { isAdmin } = storeToRefs(useAuthStore());
 const router = useRouter();
 
@@ -36,6 +47,7 @@ const { data: allEvents } = await useFetch(
         <h2>All Events</h2>
         <div>
           <select
+            aria-labelledby="past and future events toggle"
             name=""
             id="futurePast"
             class="bg-lightbg dark:bg-darkgrey"

@@ -19,14 +19,16 @@
     </div>
     <nav
       class="flex flex-col items-center sm:flex-row sm:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
-      v-show="!isMobile || isMenuOpen"
+      v-show="hasMounted && (!isMobile || isMenuOpen)"
     >
       <NuxtLink class="hover:bg-darkred" to="/about">About Us</NuxtLink>
       <NuxtLink class="hover:bg-darkred" to="/events">Events</NuxtLink>
       <a class="hover:bg-darkred" href="https://slides.compsoc.io/">Slides</a>
       <template v-if="authStore.isAdmin">
         <NuxtLink class="hover:bg-darkred" to="/admin/users">Users</NuxtLink>
-        <NuxtLink class="hover:bg-darkred" to="/admin/reviews/0">Reviews</NuxtLink>
+        <NuxtLink class="hover:bg-darkred" to="/admin/reviews/0"
+          >Reviews</NuxtLink
+        >
       </template>
       <Login class="hover:bg-darkred" />
       <DarkToggle />
@@ -39,7 +41,9 @@ import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore();
 const isMenuOpen = ref(false);
 const { width } = useWindowSize();
-const isMobile = computed(() => width.value < 640);
+const isMobile = computed(() => width.value && width.value < 640);
+const hasMounted = ref(false);
+onMounted(() => (hasMounted.value = true));
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
