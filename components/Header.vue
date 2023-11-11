@@ -2,7 +2,7 @@
   <header
     class="bg-#ddd dark:bg-lightgrey px-8 py-4 flex flex-col sm:flex-row m-0 justify-between items-center"
   >
-    <div class="flex items-center justify-between w-full">
+    <div class="flex grow-0 items-center justify-between w-full">
       <NuxtLink to="/">
         <h1 class="font-bold text-2em">
           <Logo />
@@ -18,7 +18,7 @@
       </div>
     </div>
     <nav
-      class="flex flex-col items-center sm:flex-row sm:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
+      class="flex grow flex-col items-center sm:flex-row sm:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
       v-show="hasMounted && (!isMobile || isMenuOpen)"
     >
       <NuxtLink class="hover:bg-darkred" to="/about">About Us</NuxtLink>

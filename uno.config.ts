@@ -13,7 +13,7 @@ export default defineConfig({
   shortcuts: [
     [
       "btn",
-      "px-4 py-1 rounded w-max block bg-highlight1Light dark:bg-highlight1Dark text-white no-underline cursor-pointer hover:bg-highlight2Light dark:hover:bg-highlight2Dark disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50",
+      "px-4 py-1 mr-1 mb-1 w-max block bg-highlight1Light dark:bg-highlight1Dark text-white no-underline cursor-pointer hover:bg-highlight2Light dark:hover:bg-highlight2Dark disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50",
     ],
     [
       "btn-secondary",
