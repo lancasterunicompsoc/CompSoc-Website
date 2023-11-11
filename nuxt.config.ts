@@ -4,6 +4,7 @@ const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7/join";
 export default defineNuxtConfig({
   modules: [
     "@nuxt/devtools",
+    "@nuxtjs/color-mode",
     "@vueuse/nuxt",
     "@nuxt/content",
     "@unocss/nuxt",
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
-  ssr: false,
+  ssr: true,
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
     database_url: "", // same here
@@ -51,5 +52,11 @@ export default defineNuxtConfig({
     "/start": { redirect: joinLink },
     "/join": { redirect: joinLink },
     "/admin/reviews": { redirect: "/admin/reviews/0" },
+  },
+  colorMode: {
+    preference: "system", // default value of $colorMode.preference
+    fallback: "dark", // fallback value if not system preference found
+    storageKey: "nuxt-color-mode",
+    classSuffix: "",
   },
 });

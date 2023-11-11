@@ -1,23 +1,32 @@
 <script setup lang="ts">
-import type { EventType } from "~/components/events/utils";
-import { getEvent } from "~/components/events/utils";
 import Event from "~/components/events/Event.vue";
 
 const route = useRoute();
+const router = useRouter();
 const id = route.params.id as unknown as string;
 
-const thisEvent = ref<EventType | null>(null);
-
-getEvent(id, (data, err) => {
-  if (err || data === null) {
-    throw console.error("Failed", err);
-  }
-  thisEvent.value = data;
+const { data } = await useFetch(`/api/events/event?id=${id}`, {
+  onResponse: ({ response }) => {
+    if (response.status === 204) {
+      router.replace("/events");
+    }
+  },
+  onRequestError: ({ request, response }) => {
+    console.error(
+      "[fetch response error]",
+      request,
+      response!.status,
+      response!.body,
+    );
+    router.push("/events");
+  },
 });
 </script>
 
 <template>
-  <main v-if="thisEvent">
-    <Event :event="thisEvent" :is-full-size="true" />
+  <main v-if="data">
+    <ClientOnly>
+      <Event :event="data" :is-full-size="true" />
+    </ClientOnly>
   </main>
 </template>

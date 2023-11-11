@@ -1,29 +1,19 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
-import { getAllEvents, EventType } from "~/components/events/utils";
 import Event from "~/components/events/Event.vue";
 
 const { isAdmin } = storeToRefs(useAuthStore());
 const router = useRouter();
 
-const allEvents = ref<EventType[] | null>(null);
 const hasErrored = ref(false);
 
 const pastFuture = ref<"future" | "past">("future");
-watch(
-  pastFuture,
-  () => {
-    getAllEvents({ past: pastFuture.value === "past" })
-      .then(events => {
-        allEvents.value = events;
-      })
-      .catch(err => {
-        hasErrored.value = true;
-        console.error(err);
-      });
-  },
-  { immediate: true },
+const fetchPast = computed(() => pastFuture.value === "past");
+
+const { data: allEvents } = await useFetch(
+  () => `/api/events/all?past=${fetchPast.value}`,
+  { watch: [fetchPast] },
 );
 </script>
 <template>
@@ -40,34 +30,34 @@ watch(
           Add Event
         </button>
       </div>
-      <div>
-        <div class="flex flex-row justify-between items-center">
-          <h2>All Events</h2>
-          <div>
-            <select
-              name=""
-              id="futurePast"
-              class="bg-lightbg dark:bg-darkgrey"
-              v-model="pastFuture"
-            >
-              <option value="future">Future Events</option>
-              <option value="past">Past Events</option>
-            </select>
-          </div>
-        </div>
-        <div v-if="hasErrored">
-          Unfortunately we've had trouble loading events data, please try again
-          later
-        </div>
-        <ul v-if="allEvents">
-          <li class="card" v-for="(event, index) in allEvents" :key="index">
-            <NuxtLink :to="`/events/${event.id}`">
-              <Event :event="event" :is-full-size="false" />
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
     </ClientOnly>
+    <div>
+      <div class="flex flex-row justify-between items-center">
+        <h2>All Events</h2>
+        <div>
+          <select
+            name=""
+            id="futurePast"
+            class="bg-lightbg dark:bg-darkgrey"
+            v-model="pastFuture"
+          >
+            <option value="future">Future Events</option>
+            <option value="past">Past Events</option>
+          </select>
+        </div>
+      </div>
+      <div v-if="hasErrored">
+        Unfortunately we've had trouble loading events data, please try again
+        later
+      </div>
+      <ul v-if="allEvents">
+        <li class="card" v-for="(event, index) in allEvents" :key="index">
+          <NuxtLink :to="`/events/${event.id}`">
+            <Event :event="event" :is-full-size="false" />
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
   </main>
 </template>
 
