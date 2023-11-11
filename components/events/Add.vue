@@ -2,6 +2,9 @@
 import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
 
+type formType = Omit<EventType, "id"> & { id?: string };
+type formWithoutId = Omit<EventType, "id">;
+
 const props = defineProps<
   | {
       isEdit: false;
@@ -15,9 +18,6 @@ const emit = defineEmits<{
   eventEdited: [values: EventType];
 }>();
 
-type formType = Omit<EventType, "id"> & { id?: string };
-type formWithoutId = Omit<EventType, "id">;
-
 const formData = ref<formType>({
   name: props?.formValues?.name ?? "",
   location: props?.formValues?.location ?? "",
@@ -29,7 +29,7 @@ const formData = ref<formType>({
   organizer: props?.formValues?.organizer ?? "",
   unixStartTime: props?.formValues?.unixStartTime ?? 0,
   unixEndTime: props?.formValues?.unixEndTime ?? 0,
-  difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY, // Add the difficulty field to formData
+  difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
 
 const inputStartTime = ref(convertToLocalDate(unixToDate(formData.value.unixStartTime)));
