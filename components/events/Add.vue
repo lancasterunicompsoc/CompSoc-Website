@@ -1,91 +1,58 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { getAllEvents, EventDifficulty } from "./utils";
+import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
-import { useAuthStore } from "~/stores/auth";
 
-const showModal = ref(false);
+type formType = Omit<EventType, "id"> & { id?: string };
+type formWithoutId = Omit<EventType, "id">;
 
-const { jwt, isLoggedIn } = storeToRefs(useAuthStore());
+const props = defineProps<
+  | {
+      isEdit: false;
+      formValues?: formWithoutId;
+    }
+  | { formValues: EventType; isEdit: true }
+>();
 
-const inputStartTime = ref("");
-const inputEndTime = ref("");
+const emit = defineEmits<{
+  eventAdded: [values: formWithoutId];
+  eventEdited: [values: EventType];
+}>();
 
-const formData = ref<Omit<EventType, "id">>({
-  name: "",
-  location: "",
-  mazemapLink: "",
-  summary: "",
-  description: "",
-  slides: "",
-  image: "",
-  organizer: "",
-  unixStartTime: 0,
-  unixEndTime: 0,
-  difficulty: EventDifficulty.EASY, // Add the difficulty field to formData
+const formData = ref<formType>({
+  name: props?.formValues?.name ?? "",
+  location: props?.formValues?.location ?? "",
+  mazemapLink: props?.formValues?.mazemapLink ?? "",
+  summary: props?.formValues?.summary ?? "",
+  description: props?.formValues?.description ?? "",
+  slides: props?.formValues?.slides ?? "",
+  image: props?.formValues?.image ?? "",
+  organizer: props?.formValues?.organizer ?? "",
+  unixStartTime: props?.formValues?.unixStartTime ?? 0,
+  unixEndTime: props?.formValues?.unixEndTime ?? 0,
+  difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
 
-const resetFormData = () => {
-  formData.value = {
-    name: "",
-    location: "",
-    mazemapLink: "",
-    summary: "",
-    description: "",
-    slides: "",
-    image: "",
-    organizer: "",
-    unixStartTime: 0,
-    unixEndTime: 0,
-    difficulty: EventDifficulty.EASY,
-  };
-};
+const inputStartTime = ref(convertToLocalDate(unixToDate(formData.value.unixStartTime)));
+const inputEndTime = ref(convertToLocalDate(unixToDate(formData.value.unixEndTime)));
 
-async function addEvent() {
-  if (!isLoggedIn.value) {
-    return;
-  }
-  try {
-    formData.value.unixStartTime = inputToUnix(inputStartTime.value);
-    formData.value.unixEndTime = inputToUnix(inputEndTime.value);
-    console.log(formData.value.unixStartTime);
+function addEvent() {
+  formData.value.unixStartTime = inputToUnix(inputStartTime.value);
+  formData.value.unixEndTime = inputToUnix(inputEndTime.value);
 
-    const response = await fetch("/api/events/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Bearer: jwt.value as string,
-      },
-      body: JSON.stringify(formData.value),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      getAllEvents();
-      resetFormData();
-      showModal.value = false;
-    } else {
-      const errorData = await response.json();
-      console.log(`Error adding event: ${errorData.error}`);
-    }
-  } catch (error) {
-    console.error("Error adding event:", error);
-    console.log("Error adding event. Please try again later.");
+  if (props.isEdit) {
+    const values = { ...formData.value, id: props.formValues.id };
+    emit("eventEdited", values);
+  } else {
+    emit("eventAdded", { ...formData.value });
   }
 }
 </script>
 <template>
-  <div>
-    <button class="bg-#ddd dark:bg-lightgrey" @click="showModal = true">
-      Add Event
-    </button>
-  </div>
-  <div v-if="showModal" class="modal-shade"></div>
-  <div v-if="showModal" class="modal dark:bg-darkgrey bg-#e7e7e7">
+  <div class="dark:bg-darkgrey bg-#e7e7e7">
     <div class="flex flex-justify-between flex-items-center">
-      <h2>Add Event</h2>
-      <button class="close" @click="showModal = false">&times;</button>
+      <h2 v-if="isEdit">Edit Event</h2>
+      <h2 v-else>Add Event</h2>
+      <button class="close" @click="$router.go(-1)">&times;</button>
     </div>
     <form @submit.prevent="addEvent">
       <div>
@@ -232,28 +199,6 @@ async function addEvent() {
   </div>
 </template>
 <style scoped>
-.modal {
-  position: absolute;
-  top: 2rem;
-  left: 25vw;
-  width: 50vw;
-  padding: 1rem;
-  z-index: 999;
-}
-
-.modal div {
-  margin: 1rem;
-}
-
-.modal-shade {
-  position: absolute;
-  background-color: #00000099;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
 input,
 textarea {
   color: inherit;

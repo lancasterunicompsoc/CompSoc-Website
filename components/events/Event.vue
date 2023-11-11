@@ -14,7 +14,7 @@ import { useAuthStore } from "~/stores/auth";
 const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
 
 const router = useRouter();
-const p = defineProps<{ event: EventType; isFullSize: boolean }>();
+const props = defineProps<{ event: EventType; isFullSize: boolean }>();
 
 function deleteEvent(id: number) {
   if (!isLoggedIn.value) {
@@ -29,10 +29,6 @@ function deleteEvent(id: number) {
   } else {
     console.log("Event not deleted.");
   }
-}
-
-function editEvent(id: number) {
-  console.log(id);
 }
 
 function reviewEvent(id: number) {
@@ -80,7 +76,7 @@ function reviewEvent(id: number) {
       <a :href="event.slides" v-if="event.slides">View Slides</a>
       <div class="flex">
         <template v-if="isLoggedIn">
-          <button v-if="isAdmin" @click="editEvent(event.id)">
+          <button v-if="isAdmin" @click="router.push(`/events/update/${props.event.id}`)">
             <IconEdit />
           </button>
           <button v-if="isAdmin" @click="deleteEvent(event.id)">

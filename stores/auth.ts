@@ -98,6 +98,8 @@ export const useAuthStore = defineStore("auth", {
     },
   },
   persist: {
-    storage: persistedState.localStorage,
+    storage: persistedState.cookiesWithOptions({
+      sameSite: "strict",
+    }),
   },
 });
