@@ -55,9 +55,9 @@ export default defineEventHandler(async event => {
       },
     });
     // Send the ID of the newly created event in the response
-    return { id: newEvent.id };
+    return { id: newEvent.id, ok: true } as const;
   } catch (error) {
     console.error("Error adding event:", error);
-    return { ok: false, error };
+    throw createError("failed to add event");
   }
 });

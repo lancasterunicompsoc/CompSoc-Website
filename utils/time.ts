@@ -17,7 +17,7 @@ export function inputToUnix(date: string): number {
   return dateToUnix(new Date(date + "Z"));
 }
 
-function fullDate(date: Date): string {
+export function fullDate(date: Date): string {
   return date.toLocaleString("en-GB", {
     timeZone: "utc",
     weekday: "long",
@@ -29,13 +29,23 @@ function fullDate(date: Date): string {
   });
 }
 
-function justTime(date: Date): string {
+export function justTime(date: Date): string {
   return date.toLocaleString("en-GB", {
     timeZone: "utc",
     hour: "numeric",
     minute: "numeric",
     hour12: false,
   });
+}
+
+export function convertToLocalDate(date: Date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 }
 
 export function unixToTimespan(start: number, end: number): string {
