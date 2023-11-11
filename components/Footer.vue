@@ -7,16 +7,17 @@ import Instagram from "./SVG/Instagram.vue";
   <footer
     class="bg-#ddd dark:bg-lightgrey p-4 flex m-0 items-center flex-row justify-center"
   >
-    <a href="https://discord.gg/compsoc " target="_blank" class="social-icon">
+    <a href="https://discord.gg/compsoc " target="_blank" class="social-icon" aria-label="Discord">
       <Discord />
     </a>
-    <a href="https://github.com/LUCompSoc" target="_blank" class="social-icon">
+    <a href="https://github.com/LUCompSoc" target="_blank" class="social-icon" aria-label="Github">
       <Github />
     </a>
     <a
       href="https://www.instagram.com/lucompsoc"
       target="_blank"
       class="social-icon"
+      aria-label="Instagram"
     >
       <Instagram />
     </a>

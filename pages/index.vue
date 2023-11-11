@@ -9,7 +9,7 @@
 
     <a
       href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
-      class="button block"
+      class="button block text-white"
     >
       Join the society
     </a>

@@ -25,8 +25,6 @@ const { data } = await useFetch(`/api/events/event?id=${id}`, {
 
 <template>
   <main v-if="data">
-    <ClientOnly>
-      <Event :event="data" :is-full-size="true" />
-    </ClientOnly>
+    <Event :event="data" :is-full-size="true" />
   </main>
 </template>

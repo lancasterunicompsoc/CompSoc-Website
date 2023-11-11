@@ -32,6 +32,16 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "LUCompSoc",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Website of the Lancaster University Computing Society, LUCompSoc",
+        },
+      ],
+      htmlAttrs: {
+        lang: "en",
+      },
     },
   },
   routeRules: {
