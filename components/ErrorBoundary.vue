@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { FetchError } from "ofetch";
 
-const error = ref<FetchError>();
+const error = ref<
+  | FetchError
+  | {
+      url?: string;
+      statusCode?: string;
+      statusMessage?: string;
+      message: string;
+      description?: string;
+      data: any;
+    }
+>();
 
 function clearError() {
   error.value = undefined;
