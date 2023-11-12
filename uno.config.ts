@@ -17,7 +17,7 @@ export default defineConfig({
     ],
     [
       "btn-secondary",
-      "px-4 py-1 rounded inline-block text-white cursor-pointer disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50 bg-blue-400 hover:bg-blue-500",
+      "px-4 py-2 mr-1 mb-1 w-max block bg-slate-400 dark:bg-slate-400 text-white no-underline cursor-pointer hover:bg-slate-500 dark:hover:bg-slate-500 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50",
     ],
     [
       "icon-btn",
