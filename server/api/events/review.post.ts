@@ -49,8 +49,8 @@ export default defineEventHandler(async event => {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       console.log("is of prisma error type");
       if (e.code === "P2002") {
-        throw createServerError({
-          status: 400,
+        throw createError({
+          statusCode: 400,
           statusMessage: "review already submitted",
         });
       }

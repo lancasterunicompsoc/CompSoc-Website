@@ -29,9 +29,10 @@ const { data: allEvents } = await useFetch(
 </script>
 <template>
   <main class="main-container">
-    <a target="_blank" href="/events.ics">iCalendar/ICS Feed</a
-    >&NonBreakingSpace;
-    <a target="_blank" href="/feed.xml">RSS Feed</a>
+    <div flex ml-auto justify-end>
+      <a target="_blank" href="/events.ics" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">iCalendar/ICS Feed</a>
+      <a target="_blank" href="/feed.xml" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">RSS Feed</a>
+    </div>
     <ClientOnly>
       <div v-if="isAdmin">
         <button
@@ -46,8 +47,9 @@ const { data: allEvents } = await useFetch(
       <div class="flex flex-row justify-between items-center">
         <h2>All Events</h2>
         <div>
+          <span hidden id="filterLabel">Filters:</span>
           <select
-            aria-labelledby="past and future events toggle"
+            aria-labelledby="filterLabel"
             name=""
             id="futurePast"
             class="bg-lightbg dark:bg-darkgrey"

@@ -41,7 +41,7 @@ const {
   data: eventsData,
   status: eventsStatus,
   refresh: eventsRefresh,
-} = useFetch("/api/events/all?all=true");
+} = await useFetch("/api/events/all?all=true");
 
 const formatDate = (unixdate: number) => formatTimeAgo(unixToDate(unixdate));
 
