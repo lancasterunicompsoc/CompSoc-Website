@@ -5,9 +5,9 @@ import IconEdit from "./IconEdit.vue";
 import IconLocation from "./IconLocation.vue";
 import IconSpeaker from "./IconSpeaker.vue";
 import IconTime from "./IconTime.vue";
-import IconReview from "./IconReview";
-import { deletePost } from "./utils";
-import type { EventType } from "./utils";
+import IconReview from "./IconReview.vue";
+import { deletePost } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 import { unixAnySpan } from "~/utils/time";
 import { useAuthStore } from "~/stores/auth";
 
@@ -76,7 +76,10 @@ function reviewEvent(id: number) {
       <a :href="event.slides" v-if="event.slides">View Slides</a>
       <div class="flex">
         <template v-if="isLoggedIn">
-          <button v-if="isAdmin" @click="router.push(`/events/update/${props.event.id}`)">
+          <button
+            v-if="isAdmin"
+            @click="router.push(`/events/update/${props.event.id}`)"
+          >
             <IconEdit />
           </button>
           <button v-if="isAdmin" @click="deleteEvent(event.id)">

@@ -30,19 +30,27 @@ const { data: allEvents } = await useFetch(
 <template>
   <main class="main-container">
     <div flex ml-auto justify-end>
-      <a target="_blank" href="/events.ics" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">iCalendar/ICS Feed</a>
-      <a target="_blank" href="/feed.xml" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">RSS Feed</a>
+      <a
+        target="_blank"
+        href="/events.ics"
+        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+        >iCalendar/ICS Feed</a
+      >
+      <a
+        target="_blank"
+        href="/feed.xml"
+        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+        >RSS Feed</a
+      >
     </div>
-    <ClientOnly>
-      <div v-if="isAdmin">
-        <button
-          class="bg-#ddd dark:bg-lightgrey p-4"
-          @click="router.push('/events/add')"
-        >
-          Add Event
-        </button>
-      </div>
-    </ClientOnly>
+    <div v-if="isAdmin">
+      <button
+        class="bg-#ddd dark:bg-lightgrey p-4"
+        @click="router.push('/events/add')"
+      >
+        Add Event
+      </button>
+    </div>
     <div>
       <div class="flex flex-row justify-between items-center">
         <h2>All Events</h2>
