@@ -24,5 +24,10 @@ export default defineEventHandler(async event => {
   if (error != null) {
     throw error;
   }
+  setHeaders(event, {
+    // eslint-disable-next-line quotes
+    "Content-Disposition": 'attachment; filename="events.ics"',
+    "Content-Type": "text/calendar; charset=utf-8",
+  });
   return value!.replaceAll(";CN=", ":");
 });

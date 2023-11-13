@@ -47,5 +47,11 @@ export default defineEventHandler(async event => {
       image: e.image ?? "",
     });
   });
+
+  setHeaders(event, {
+    // eslint-disable-next-line quotes
+    "Content-Disposition": 'attachment; filename="events.rss"',
+    "Content-Type": "application/rss+xml; charset=utf-8",
+  });
   return feed.rss2();
 });
