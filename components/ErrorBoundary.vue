@@ -22,6 +22,8 @@ onErrorCaptured(err => {
   return false;
 });
 
+const emits = defineEmits(["error"]);
+
 const route = useRoute();
 watch(
   () => route.fullPath,

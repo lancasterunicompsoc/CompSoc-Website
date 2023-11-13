@@ -20,7 +20,18 @@ export default defineEventHandler(async event => {
 
   allEvents.forEach(e => {
     const link = `https://compsoc.io/events/${e.id}`;
-    const content = `<h1>${e.name}</h1><b>Time: </b>${unixAnySpan(e.unixStartTime, e.unixEndTime)} <b>Location: </b>${e.location} <b>Organizer: </b>${e.organizer} <b>Difficulty: </b>${e.difficulty}<p>${e.summary}<p>${e.summary}</p><p>${e.description}</p>p<p><a href="${e.slides}">Slides</a> <a href="https://compsoc.io/events/review/${e.id}">Leave a review</a></p>`;
+    const content = `<h1>${e.name}</h1><b>Time: </b>${unixAnySpan(
+      e.unixStartTime,
+      e.unixEndTime,
+    )} <b>Location: </b>${e.location} <b>Organizer: </b>${
+      e.organizer
+    } <b>Difficulty: </b>${e.difficulty}<p>${e.summary}<p>${e.summary}</p><p>${
+      e.description
+    }</p>p<p><a href="${
+      e.slides
+    }">Slides</a> <a href="https://compsoc.io/events/review/${
+      e.id
+    }">Leave a review</a></p>`;
     feed.addItem({
       title: `${e.name} - ${e.difficulty}`,
       id: link,

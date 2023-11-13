@@ -28,7 +28,11 @@ export default defineEventHandler(async event => {
   }
 
   if (all) {
-    return event.context.prisma.event.findMany();
+    return event.context.prisma.event.findMany({
+      where: {
+        hidden: false,
+      },
+    });
   }
 
   // Calculate the current date and the end of the desired offset
@@ -50,6 +54,7 @@ export default defineEventHandler(async event => {
           lte: dateToUnix(currentDate),
           gte: dateToUnix(pastDate),
         },
+        hidden: false,
       },
       orderBy: {
         unixStartTime: "desc",
@@ -63,6 +68,7 @@ export default defineEventHandler(async event => {
         gte: dateToUnix(currentDate), // Greater than or equal to today
         lte: dateToUnix(futureDate), // Less than or equal to a year from now
       },
+      hidden: false,
     },
     orderBy: {
       unixStartTime: "asc", // Sorting by startTime in ascending order

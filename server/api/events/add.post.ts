@@ -19,11 +19,11 @@ export default defineEventHandler(async event => {
     } = await useValidatedBody(
       event,
       z.object({
-        name: z.string(),
-        location: z.string(),
+        name: z.string().min(1),
+        location: z.string().min(1),
         mazemapLink: z.string(),
-        summary: z.string(),
-        description: z.string(),
+        summary: z.string().min(1),
+        description: z.string().min(1),
         slides: z
           .string()
           .refine(
@@ -31,7 +31,7 @@ export default defineEventHandler(async event => {
               value.startsWith("https://slides.compsoc.io/") || value === "",
           ),
         image: z.string(),
-        organizer: z.string(),
+        organizer: z.string().min(1),
         unixStartTime: z.number(),
         unixEndTime: z.number(),
         difficulty: z.enum(["EASY", "HARD", "SOCIAL"]),
