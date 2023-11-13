@@ -70,7 +70,7 @@ export function unixAnySpan(start: number, end: number): string {
   }
 }
 
-export function icsTime(input: number): number[] {
+export function icsTime(input: number): [number, number, number, number, number] {
   const date = unixToDate(input);
   const year = date.getFullYear();
   const month = date.getMonth() + 1; // JS Months are zero-based, so add 1
