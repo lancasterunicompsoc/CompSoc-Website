@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const color = useColorMode({ initialValue: "dark" });
+const color = useColorMode();
 
 useHead({
   meta: [
@@ -19,8 +19,10 @@ useHead({
 });
 
 function toggleDark() {
-  color.value = color.value === "dark" ? "light" : "dark";
+  color.preference = color.value === "dark" ? "light" : "dark";
 }
+
+const isDark = computed(() => color.value === "dark");
 </script>
 
 <template>
@@ -28,6 +30,7 @@ function toggleDark() {
     <Switch
       class="SwitchAppearance"
       aria-label="toggle dark mode"
+      :aria-checked="isDark"
       @click="toggleDark"
     >
       <IconSun class="sun" />

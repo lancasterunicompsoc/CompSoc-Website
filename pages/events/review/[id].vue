@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { FetchError } from "ofetch";
 import Star from "~/components/SVG/Star";
 import StarFilled from "~/components/SVG/StarFilled";
 import { useAuthStore } from "~/stores/auth";
@@ -21,7 +20,6 @@ const displayScore = ref(0);
 const feedbackMessage = ref("");
 
 const submitted = ref(false);
-const error = ref<string | null>(null);
 const now = useDateFormat(useNow(), "YYYY-MM-DD HH:mm:ss");
 
 function updateDisplayScoreActual() {
@@ -73,26 +71,12 @@ async function submitReview() {
     },
     headers: { Bearer: jwt.value as unknown as string }, // TODO: have proper error handling that forces people to log in if they aren't
   })
-    .then(() => {
-      submitted.value = true;
-    })
-    .catch(err => {
-      const e = err as unknown as FetchError;
-      if (e.data?.message) {
-        error.value = e.data.message;
-      } else {
-        error.value = "Something went wrong";
-      }
-      console.error(e.data);
-    });
+  submitted.value = true
 }
 </script>
 
 <template>
-  <main class="column text-center m-auto text-3xl bg-red-500" v-if="error">
-    Error: {{ error }}
-  </main>
-  <main v-else-if="submitted && !error">
+  <main v-if="submitted">
     <div class="column text-center m-auto text-3xl">
       <p v-if="score === 5">Glad you enjoyed it!</p>
       <p v-else-if="score === 4">Perfection next time?</p>

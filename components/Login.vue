@@ -14,14 +14,16 @@ const startLogin = () => {
 </script>
 
 <template>
-  <ClientOnly>
-    <div v-bind="$attrs">
-      <a v-if="!authStore.isLoggedIn" class="pointer-cursor" @click="startLogin"
-        >Log In</a
-      >
-      <a v-else href="#" class="pointer-cursor" @click="authStore.logOut"
-        >Log Out</a
-      >
-    </div>
-  </ClientOnly>
+  <div v-bind="$attrs">
+    <a
+      v-if="!authStore.isLoggedIn"
+      class="pointer-cursor"
+      @click="startLogin"
+      :href="loginUrl"
+      >Log In</a
+    >
+    <a v-else href="#" class="pointer-cursor" @click="authStore.logOut"
+      >Log Out</a
+    >
+  </div>
 </template>
