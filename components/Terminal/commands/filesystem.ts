@@ -28,7 +28,7 @@ type ChildFactory = (state: State) => Entry[];
 const makeHomeDir = (name: string): Entry => ({
   type: EntryType.directory,
   name,
-  children: (_: State) =>
+  children: _state =>
     [
       {
         type: EntryType.directory,
@@ -54,11 +54,11 @@ const makeHomeDir = (name: string): Entry => ({
 const fileTree: Entry = {
   type: EntryType.directory,
   name: "/",
-  children: (_: State) => [
+  children: _state => [
     {
       type: EntryType.directory,
       name: "home",
-      children: (state: State) => {
+      children: state => {
         const iAm = whoami(state);
         const children = [makeHomeDir(iAm)];
         if (iAm !== "anonymous") {
@@ -70,7 +70,7 @@ const fileTree: Entry = {
     {
       type: EntryType.directory,
       name: "etc",
-      children: (_state: State) => [
+      children: _state => [
         {
           type: EntryType.file,
           name: "motd",
@@ -81,16 +81,27 @@ const fileTree: Entry = {
     {
       type: EntryType.directory,
       name: "usr",
-      children: (_state: State) => [
+      children: _state => [
         {
           type: EntryType.directory,
           name: "bin",
-          children: (_state: State) =>
+          children: _state =>
             getAllCommands().map(cmd => ({
               type: EntryType.file,
               name: cmd,
               content: getCommand(cmd)?.toString() ?? "",
             })),
+        },
+        {
+          type: EntryType.directory,
+          name: "share",
+          children: _state => [
+            {
+              type: EntryType.directory,
+              name: "man",
+              children: _state => [],
+            },
+          ],
         },
       ],
     },
