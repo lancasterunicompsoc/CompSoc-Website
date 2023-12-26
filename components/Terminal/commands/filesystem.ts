@@ -102,7 +102,20 @@ const fileTree: Entry = {
             {
               type: EntryType.directory,
               name: "man",
-              children: _state => [],
+              children: _state => [
+                {
+                  type: EntryType.directory,
+                  name: "man1",
+                  children: _state => [
+                    {
+                      type: EntryType.file,
+                      name: "pwd.1",
+                      content:
+                        "PWD(1)\n\n\x1B[1mNAME\x1B[0m\n\tpwd - print name of current/working directory\n\n\x1B[1mSYNOPSIS\x1B[0m\n\tpwd\n\n\x1B[1mDESCRIPTION\x1B[0m\n\tPrint the full filename of the current working directory.\n\n\x1B[1mAUTHOR\x1B[0m\n\tWritten by Jonathan Leeming.",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -180,7 +193,7 @@ export function findEntry(state: State, path: string): Entry | null {
   return dir;
 }
 
-const exists = (state: State, path: string): boolean =>
+export const exists = (state: State, path: string): boolean =>
   findEntry(state, path) !== null;
 
 const resolveParentPath = (state: State, path: string): string =>

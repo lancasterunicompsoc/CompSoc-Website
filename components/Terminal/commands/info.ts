@@ -1,5 +1,7 @@
+import { StdIO } from "../stdio";
 import systemInfo from "../systemInfo";
-import type { CommandHandler } from "./registry";
+import { EntryType, exists, findEntry } from "./filesystem";
+import type { CommandHandler, State } from "./registry";
 import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
@@ -45,25 +47,41 @@ const neofetch: CommandHandler = (state, _params, { stdout }) => {
   stdout.writeln(`Processor: ${systemInfo.processor}`);
 };
 
-const man: CommandHandler = (_state, params, { stdout }) => {
-  if (params.length > 0) {
-    if (params.length > 1) {
-      stdout.writeln("man can only display one helppage at a time");
-      return;
-    }
-    const helptext = getHelp(params[0] as string);
-    if (!helptext) {
-      stdout.writeln(`No manual entry for ${params[0]}`);
-      return;
-    }
-    stdout.writeln(helptext);
-    return;
+function printManPage(
+  page: 1,
+  name: string,
+  state: State,
+  { stdout }: StdIO,
+): boolean {
+  const entry = findEntry(state, `/usr/share/man/man${page}/${name}.${page}`);
+  if (!entry || entry.type !== EntryType.file) {
+    return false;
   }
-  const commandStrings = getAllCommands().sort().join("\n");
-  stdout.writeln("Help:");
-  stdout.writeln("The following commands are available:");
-  stdout.writeln(commandStrings);
-  stdout.writeln("For more information, run `man PROGRAMNAME`");
+  stdout.writeln(entry.content);
+  return true;
+}
+
+const man: CommandHandler = (state, params, stdio) => {
+  const { stdout } = stdio;
+  if (params.length === 0) {
+    const commandStrings = getAllCommands().sort().join("\n");
+    stdout.writeln("Help:");
+    stdout.writeln("The following commands are available:");
+    stdout.writeln(commandStrings);
+    stdout.writeln("For more information, run `man PROGRAMNAME`");
+  }
+
+  if (params.length === 1) {
+    const helptext = getHelp(params[0] as string);
+    if (helptext) {
+      stdout.writeln(helptext);
+      return;
+    }
+    if (printManPage(1, params[0] as string, state, stdio)) {
+      return;
+    }
+    stdout.writeln(`No manual entry for ${params[0]}`);
+  }
 };
 
 register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
