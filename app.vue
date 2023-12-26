@@ -18,6 +18,14 @@
   --highlight2Dark: #d14537;
   --highlight1Light: #d12415;
   --highlight2Light: #ae3428;
+
+  --highlight1: var(--highlight1Light);
+  --highlight2: var(--highlight2Light);
+}
+
+.dark {
+  --highlight1: var(--highlight1Dark);
+  --highlight2: var(--highlight2Dark);
 }
 
 * {

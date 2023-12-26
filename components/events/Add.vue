@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import IconBack from "../SVG/IconBack.vue";
 import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
 
@@ -32,8 +33,12 @@ const formData = ref<formType>({
   difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
 
-const inputStartTime = ref(convertToLocalDate(unixToDate(formData.value.unixStartTime)));
-const inputEndTime = ref(convertToLocalDate(unixToDate(formData.value.unixEndTime)));
+const inputStartTime = ref(
+  convertToLocalDate(unixToDate(formData.value.unixStartTime)),
+);
+const inputEndTime = ref(
+  convertToLocalDate(unixToDate(formData.value.unixEndTime)),
+);
 
 function addEvent() {
   formData.value.unixStartTime = inputToUnix(inputStartTime.value);
@@ -50,109 +55,111 @@ function addEvent() {
 <template>
   <div class="dark:bg-darkgrey bg-#e7e7e7">
     <div class="flex flex-justify-between flex-items-center">
+      <button class="close" @click="$router.go(-1)">
+        <IconBack />
+      </button>
       <h2 v-if="isEdit">Edit Event</h2>
       <h2 v-else>Add Event</h2>
-      <button class="close" @click="$router.go(-1)">&times;</button>
     </div>
     <form @submit.prevent="addEvent">
       <div>
         <label for="name">Name:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="name"
           v-model="formData.name"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
           required
         />
       </div>
       <div>
         <label for="location">Location:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="location"
           v-model="formData.location"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
           required
         />
       </div>
       <div>
         <label for="mazemapLink">Mazemap link:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="mazemapLink"
           v-model="formData.mazemapLink"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
         />
       </div>
       <div>
         <label for="summary">Summary:</label>
         <textarea
-          class="bg-#ddd dark:bg-lightgrey"
-          type="datetime-local"
           id="summary"
           v-model="formData.summary"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
           required
         ></textarea>
       </div>
       <div>
         <label for="description">Description:</label>
         <textarea
-          class="bg-#ddd dark:bg-lightgrey"
-          type="datetime-local"
           id="description"
           v-model="formData.description"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
           required
         ></textarea>
       </div>
       <div>
         <label for="image">Image:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="image"
           v-model="formData.image"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
         />
       </div>
       <div>
         <label for="slides">Slides:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="slides"
           v-model="formData.slides"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
         />
       </div>
       <div>
         <label for="organizer">Organizer:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="text"
           id="organizer"
           v-model="formData.organizer"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
           required
         />
       </div>
-      <span
-        >All times should be entered in the time that they will run. Do not
-        adjust for time zones.</span
-      >
+      <span>
+        All times should be entered in the time that they will run. Do not
+        adjust for time zones.
+      </span>
       <div>
         <label for="unixStartTime">Start Time:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="datetime-local"
           id="unixStartTime"
           v-model="inputStartTime"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
           required
         />
       </div>
       <div>
         <label for="unixEndTime">End Time:</label>
         <input
-          class="bg-#ddd dark:bg-lightgrey"
-          type="datetime-local"
           id="unixEndTime"
           v-model="inputEndTime"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="datetime-local"
           required
         />
       </div>
@@ -160,31 +167,31 @@ function addEvent() {
         <label>Difficulty:</label>
         <div>
           <input
-            type="radio"
             id="easy"
+            v-model="formData.difficulty"
+            type="radio"
             name="difficulty"
             value="EASY"
-            v-model="formData.difficulty"
           />
           <label for="easy">Easy</label>
         </div>
         <div>
           <input
-            type="radio"
             id="hard"
+            v-model="formData.difficulty"
+            type="radio"
             name="difficulty"
             value="HARD"
-            v-model="formData.difficulty"
           />
           <label for="hard">Hard</label>
         </div>
         <div>
           <input
-            type="radio"
             id="social"
+            v-model="formData.difficulty"
+            type="radio"
             name="difficulty"
             value="SOCIAL"
-            v-model="formData.difficulty"
           />
           <label for="social">Social</label>
         </div>
@@ -193,7 +200,8 @@ function addEvent() {
         class="submit bg-#ddd dark:bg-lightgrey float-right"
         type="submit"
       >
-        Add Event
+        <template v-if="isEdit">Save Changes</template>
+        <template v-else>Add Event</template>
       </button>
     </form>
   </div>
