@@ -108,10 +108,11 @@ const man: CommandHandler = async (state, params, stdio) => {
 const which: CommandHandler = (state, params, { stdout }) => {
   if (params.length === 0) {
     stdout.writeln("Usage:");
-    stdout.writeln("    which <FILE>");
+    stdout.writeln("    which <PROGRAMNAME>...");
     return 1;
   }
 
+  let failedArguments = 0;
   for (const cmd of params) {
     if (getNativeCommands().includes(cmd)) {
       stdout.writeln("native command");
@@ -128,8 +129,10 @@ const which: CommandHandler = (state, params, { stdout }) => {
     }
     if (!found) {
       stdout.writeln(`could not find ${cmd}`);
+      failedArguments++;
     }
   }
+  return params.length === 0 ? -1 : failedArguments;
 };
 
 register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
@@ -145,4 +148,4 @@ register({
 });
 register({ name: "help", fn: man, help: "Get help about available commands" });
 register({ name: "man", fn: man, help: "Get help about available commands" });
-register({ name: "which", fn: which, help: "Retrieves the paths of commands" });
+register({ name: "which", fn: which });
