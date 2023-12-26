@@ -3,8 +3,8 @@ import type { CommandHandler } from "./registry";
 import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
 
-const echo: CommandHandler = (_state, params) => {
-  return params.join(" ");
+const echo: CommandHandler = (_state, params, { stdout }) => {
+  stdout.writeln(params.join(" "));
 };
 
 const info: CommandHandler = (_state, params, { stdout }) => {
@@ -13,23 +13,29 @@ const info: CommandHandler = (_state, params, { stdout }) => {
     case "compsoc":
     case "lucompsoc":
     case "computer science society":
-      stdout.write("Lancaster University Computer Science Society exists to promote interest in computing and technology among students and wider society.");
+      stdout.write(
+        "Lancaster University Computer Science Society exists to promote interest in computing and technology among students and wider society.",
+      );
       break;
 
     case "lu":
     case "uni":
     case "lancaster university":
-      stdout.write("Lancaster University is a collegiate university 3 miles south of Lancaster.");
+      stdout.write(
+        "Lancaster University is a collegiate university 3 miles south of Lancaster.",
+      );
       break;
 
     default:
-      stdout.write(`Could not find information for \`${target}\`. Try \`info compsoc\``);
+      stdout.write(
+        `Could not find information for \`${target}\`. Try \`info compsoc\``,
+      );
       break;
   }
 };
 
 const neofetch: CommandHandler = (state, _params, { stdout }) => {
-  const n = stdout.writeln(`${whoami(state, [])}@compsoc.io`);
+  const n = stdout.writeln(`${whoami(state)}@compsoc.io`);
   stdout.writeln("-".repeat(n - 1));
   stdout.writeln(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
   stdout.writeln(`Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`);
