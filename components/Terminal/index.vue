@@ -73,8 +73,37 @@ function prompt() {
   stdout.write("\x1B[0m");
 }
 
+function parseCommand(command: string): string[] {
+  let buffer = "";
+  // eslint-disable-next-line quotes
+  let inQuotes: false | '"' | "'" = false;
+  const parts = [];
+  for (const char of command) {
+    if (!inQuotes && " \t\n\r".includes(char)) {
+      parts.push(buffer);
+      buffer = "";
+      continue;
+    }
+    if (inQuotes && char === inQuotes && !buffer.endsWith("\\")) {
+      parts.push(buffer);
+      buffer = "";
+      continue;
+    }
+    // eslint-disable-next-line quotes
+    if (!inQuotes && (char === '"' || char === "'") && !buffer.endsWith("\\")) {
+      inQuotes = char;
+      continue;
+    }
+    buffer += char;
+  }
+  if (buffer) {
+    parts.push(buffer);
+  }
+  return parts;
+}
+
 function handleCommand(command: string): void {
-  const [cmd, ...params] = command.split(" ");
+  const [cmd, ...params] = parseCommand(command);
 
   if (!cmd) {
     return;
