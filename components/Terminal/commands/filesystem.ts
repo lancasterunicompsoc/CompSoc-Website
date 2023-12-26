@@ -1,214 +1,12 @@
-import type { CommandHandler, State } from "./registry";
+import {
+  EntryType,
+  userHome,
+  resolvePath,
+  resolveParentPath,
+  findEntry,
+} from "../filesystem";
+import type { CommandHandler } from "./registry";
 import { register } from "./registry";
-import { whoami } from "./session";
-import { eventToFile } from "./utils";
-import { MOTD } from "~/components/Terminal/systemInfo";
-
-export enum EntryType {
-  directory,
-  file,
-}
-
-export interface DirEntry {
-  type: EntryType.directory;
-  name: string;
-  children: ChildFactory;
-}
-
-export interface FileEntry {
-  type: EntryType.file;
-  name: string;
-  content: string;
-  executable?: boolean;
-}
-
-export type Entry = DirEntry | FileEntry;
-
-type ChildFactory = (state: State) => Entry[];
-
-const makeHomeDir = (name: string): Entry => ({
-  type: EntryType.directory,
-  name,
-  children: _state =>
-    [
-      {
-        type: EntryType.directory,
-        name: "events",
-        children: (state: State) => {
-          const events = state.getEvents();
-          if (events) {
-            return events.map(e => eventToFile(e));
-          }
-          return [];
-        },
-      },
-      name === "anonymous"
-        ? null
-        : {
-            type: EntryType.file,
-            name: ".wake-up",
-            content: "The Matrix has you...\nFollow the white rabbit.\n",
-          },
-    ].filter(c => c !== null) as Entry[],
-});
-
-const fileTree: Entry = {
-  type: EntryType.directory,
-  name: "/",
-  children: _state => [
-    {
-      type: EntryType.directory,
-      name: "home",
-      children: state => {
-        const iAm = whoami(state);
-        const children = [makeHomeDir(iAm)];
-        if (iAm !== "anonymous") {
-          children.push(makeHomeDir("anonymous"));
-        }
-        return children;
-      },
-    },
-    {
-      type: EntryType.directory,
-      name: "etc",
-      children: _state => [
-        {
-          type: EntryType.file,
-          name: "motd",
-          content: MOTD,
-        },
-      ],
-    },
-    {
-      type: EntryType.directory,
-      name: "usr",
-      children: _state => [
-        {
-          type: EntryType.directory,
-          name: "bin",
-          children: _state => [
-            {
-              type: EntryType.file,
-              name: "pwd",
-              content: "echo $PWD",
-              executable: true,
-            },
-          ],
-        },
-        {
-          type: EntryType.directory,
-          name: "share",
-          children: _state => [
-            {
-              type: EntryType.directory,
-              name: "man",
-              children: _state => [
-                {
-                  type: EntryType.directory,
-                  name: "man1",
-                  children: _state => [
-                    {
-                      type: EntryType.file,
-                      name: "pwd.1",
-                      content: `PWD(1)
-
-\x1B[1mNAME\x1B[0m
-    pwd - print name of current/working directory
-
-\x1B[1mSYNOPSIS\x1B[0m
-    pwd
-
-\x1B[1mDESCRIPTION\x1B[0m
-    Print the full filename of the current working directory.
-`,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
-const userHome = (state: State) => `/home/${whoami(state)}`;
-
-function normalizePath(state: State, path: string): string {
-  const parts = path.split("/");
-  let normalizedParts: string[] = [];
-
-  for (const part of parts) {
-    switch (part) {
-      case "":
-      case ".":
-        continue;
-      case "..":
-        normalizedParts.pop();
-        break;
-      case "~":
-        normalizedParts = ["/home", whoami(state)];
-        break;
-      default:
-        normalizedParts.push(part);
-    }
-  }
-
-  let normalizedPath = normalizedParts.join("/");
-  if (path.startsWith("/") && !normalizedPath.startsWith("/")) {
-    normalizedPath = "/" + normalizedPath;
-  }
-
-  return normalizedPath;
-}
-
-function resolvePath(state: State, path?: string): string {
-  let fullPath;
-  if (path === undefined) {
-    fullPath = cwd(state);
-  } else if (path.startsWith("/")) {
-    fullPath = path;
-  } else {
-    fullPath = cwd(state) + "/" + path;
-  }
-  return normalizePath(state, fullPath);
-}
-
-export function findEntry(state: State, path: string): Entry | null {
-  if (path === "/") {
-    return fileTree;
-  }
-
-  const parts = resolvePath(state, path).split("/").splice(1);
-  let dir = fileTree;
-  for (const part of parts) {
-    if (dir.type !== EntryType.directory) {
-      return null;
-    }
-
-    let found = false;
-    for (const child of dir.children(state)) {
-      if (child.name === part) {
-        dir = child;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      return null;
-    }
-  }
-  return dir;
-}
-
-export const exists = (state: State, path: string): boolean =>
-  findEntry(state, path) !== null;
-
-const resolveParentPath = (state: State, path: string): string =>
-  resolvePath(state, `${path}/..`);
-
-export const cwd = (state: State) => state.filesystem.cwd;
 
 const cd: CommandHandler = (state, params, { stdout }) => {
   if (params.length === 0) {
@@ -314,7 +112,7 @@ const ls: CommandHandler = (state, params, { stdout }) => {
   });
 };
 
-const cat: CommandHandler = (state, params, { stdout }) => {
+const cat: CommandHandler = async (state, params, { stdout }) => {
   for (const param of params) {
     const path = resolvePath(state, param);
     const item = findEntry(state, path);
@@ -326,7 +124,12 @@ const cat: CommandHandler = (state, params, { stdout }) => {
       stdout.writeln(`Cannot read '${path}': it is not a file`);
       continue;
     }
-    stdout.writeln(item.content);
+    if (typeof item.content === "string") {
+      stdout.writeln(item.content);
+    } else {
+      const content = item.content(state);
+      stdout.writeln(typeof content === "string" ? content : await content);
+    }
   }
 };
 

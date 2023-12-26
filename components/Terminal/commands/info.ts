@@ -1,6 +1,6 @@
 import { StdIO } from "../stdio";
 import systemInfo from "../systemInfo";
-import { EntryType, exists, findEntry } from "./filesystem";
+import { EntryType, findEntry, readFile } from "../filesystem";
 import type { CommandHandler, State } from "./registry";
 import { register, getHelp, getAllCommands } from "./registry";
 import { whoami } from "./session";
@@ -47,12 +47,12 @@ const neofetch: CommandHandler = (state, _params, { stdout }) => {
   stdout.writeln(`Processor: ${systemInfo.processor}`);
 };
 
-function printManPage(
+async function printManPage(
   section: string,
   page: string,
   state: State,
   { stdout }: StdIO,
-): boolean {
+): Promise<boolean> {
   const entry = findEntry(
     state,
     `/usr/share/man/man${section}/${page}.${section}`,
@@ -60,11 +60,11 @@ function printManPage(
   if (!entry || entry.type !== EntryType.file) {
     return false;
   }
-  stdout.writeln(entry.content);
+  stdout.writeln(await readFile(state, entry));
   return true;
 }
 
-const man: CommandHandler = (state, params, stdio) => {
+const man: CommandHandler = async (state, params, stdio) => {
   const { stdout } = stdio;
   if (params.length === 0) {
     const commandStrings = getAllCommands().sort().join("\n");
@@ -81,7 +81,7 @@ const man: CommandHandler = (state, params, stdio) => {
       return;
     }
     for (const section of "12345678") {
-      if (printManPage(section, params[0] as string, state, stdio)) {
+      if (await printManPage(section, params[0] as string, state, stdio)) {
         return;
       }
     }

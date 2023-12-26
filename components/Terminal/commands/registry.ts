@@ -22,7 +22,9 @@ export type State = {
   getEvents: () => EventType[] | null;
 };
 export type Params = string[];
-export type CommandHandler = (state: State, params: Params, io: StdIO) => void;
+export type CommandHandler =
+  | ((state: State, params: Params, io: StdIO) => void)
+  | ((state: State, params: Params, io: StdIO) => Promise<void>);
 type Command = { fn: CommandHandler; help?: string };
 export const registry: Record<string, Command> = {};
 

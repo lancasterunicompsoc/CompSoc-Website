@@ -1,0 +1,7 @@
+man-pages(7)
+
+[1mNAME[0m
+    man-pages - conventions for writing man pages
+
+[1mDESCRIPTION[0m
+    This page describes the conventions that should be employed when writing man pages for the Linux man-pages project, which documents the user-space API provided by the Linux kernel and the GNU C library.  The project thus provides most of the pages in Section 2, many of the pages that appear in Sections 3, 4, and 7, and a few of the pages that appear in Sections 1, 5, and 8 of the man pages on a Linux system.  The conventions described on this page may also be useful for authors writing man pages for other projects.

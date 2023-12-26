@@ -1,9 +1,10 @@
-import type { Entry } from "./filesystem";
-import { EntryType } from "./filesystem";
+import type { Entry } from "../filesystem";
+import { EntryType } from "../filesystem";
 
 import type { EventType } from "~/components/events/utils";
 
-const eventToSlug = (event: EventType) => `${event.id}-${event.name.toLowerCase().split(" ").join("-")}`;
+const eventToSlug = (event: EventType) =>
+  `${event.id}-${event.name.toLowerCase().split(" ").join("-")}`;
 
 export function eventToFile(event: EventType): Entry {
   const content = [

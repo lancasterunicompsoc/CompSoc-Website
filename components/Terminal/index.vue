@@ -5,7 +5,7 @@ import type { State, CommandHandler } from "./commands/registry";
 import type { StyledSpan, StdIO } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
-import { cwd, EntryType, findEntry } from "./commands/filesystem";
+import { EntryType, cwd, findEntry, readFile } from "./filesystem";
 import {
   getAllCommands,
   register,
@@ -148,7 +148,7 @@ function getCommand(
   // Path to command?
   const entry = findEntry(commandState, command);
   if (entry) {
-    return (_state, _params, stdio) => {
+    return async (_state, _params, stdio) => {
       if (entry.type !== EntryType.file) {
         stdio.stdout.writeln("Cannot execute directory");
         return;
@@ -157,7 +157,10 @@ function getCommand(
         stdio.stdout.writeln("You do not have permission to execute that file");
         return;
       }
-      entry.content.split("\n").forEach(line => handleCommand(line, stdio));
+      const lines = (await readFile(commandState, entry)).split("\n");
+      for (const line of lines) {
+        await handleCommand(line, stdio);
+      }
     };
   }
 
@@ -175,7 +178,7 @@ function getCommand(
   return undefined;
 }
 
-function handleCommand(command: string, stdio: StdIO): void {
+async function handleCommand(command: string, stdio: StdIO): Promise<void> {
   const [cmd, ...params] = parseCommand(command);
 
   if (!cmd) {
@@ -190,10 +193,13 @@ function handleCommand(command: string, stdio: StdIO): void {
     return;
   }
 
-  handler(commandState, params, stdio);
+  const result = handler(commandState, params, stdio);
+  if (result) {
+    await result;
+  }
 }
 
-function handleInput(event: KeyboardEvent) {
+async function handleInput(event: KeyboardEvent) {
   const { key } = event;
 
   event.preventDefault();
@@ -221,7 +227,7 @@ function handleInput(event: KeyboardEvent) {
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
     if (command !== "") {
-      handleCommand(command, { stdin, stdout });
+      await handleCommand(command, { stdin, stdout });
     }
     commandHistory.value.push(command);
 
@@ -239,6 +245,7 @@ function handleInput(event: KeyboardEvent) {
     });
     return;
   }
+
   if (key === "Backspace") {
     if (inputBuffer.value === "" && activeLineBuffer.value === "") {
       return;
@@ -317,8 +324,7 @@ register({
 });
 
 onMounted(() => {
-  handleCommand("cat /etc/motd", { stdin, stdout });
-  prompt();
+  handleCommand("cat /etc/motd", { stdin, stdout }).then(() => prompt());
 });
 
 watch(

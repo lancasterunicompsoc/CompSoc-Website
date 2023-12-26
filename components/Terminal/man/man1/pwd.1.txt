@@ -1,0 +1,10 @@
+PWD(1)
+
+[1mNAME[0m
+    pwd - print name of current/working directory
+
+[1mSYNOPSIS[0m
+    pwd
+
+[1mDESCRIPTION[0m
+    Print the full filename of the current working directory.
