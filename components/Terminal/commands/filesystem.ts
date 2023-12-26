@@ -89,7 +89,7 @@ const fileTree: Entry = {
             getAllCommands().map(cmd => ({
               type: EntryType.file,
               name: cmd,
-              content: (getCommand(cmd)?.toString() ?? "") + "\n",
+              content: getCommand(cmd)?.toString() ?? "",
             })),
         },
       ],
