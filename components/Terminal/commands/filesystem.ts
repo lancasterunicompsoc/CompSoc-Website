@@ -13,27 +13,30 @@ const cd: CommandHandler = (state, params, { stdout }) => {
   if (params.length === 0) {
     state.filesystem.previous_cwd = state.filesystem.cwd;
     state.filesystem.cwd = userHome(state);
-    return;
+    return 0;
   }
   if (params[0] === "-") {
     const current = state.filesystem.cwd;
     state.filesystem.cwd = state.filesystem.previous_cwd;
     state.filesystem.previous_cwd = current;
-    return;
+    stdout.writeln(state.filesystem.cwd);
+    return 0;
   }
   const path = resolvePath(state, params[0]);
   const item = findEntry(state, path);
   if (item === null) {
     stdout.writeln(`Cannot cd to ${path}: directory does not exist`);
-    return;
+    return 0;
   }
   if (item.type !== EntryType.directory) {
     stdout.writeln(`Cannot cd to ${path}: file is not a directory`);
-    return;
+    return 0;
   }
 
   state.filesystem.previous_cwd = state.filesystem.cwd;
   state.filesystem.cwd = path;
+
+  return 1;
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {

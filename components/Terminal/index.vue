@@ -15,7 +15,6 @@ import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
 const characterBuffer = ref("");
-// const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -42,6 +41,9 @@ const commandState = reactive<State>({
         state.filesystem.previous_cwd = state.filesystem.cwd;
         state.filesystem.cwd = value;
       },
+    },
+    OLDPWD: {
+      get: (state: State) => state.filesystem.previous_cwd,
     },
   },
   filesystem: {

@@ -1,0 +1,16 @@
+cd(1)
+
+[1mNAME[0m
+    cd - change the current directory
+
+[1mSYNOPSIS[0m
+    cd [[3mDIR[0m]
+
+[1mDESCRIPTION[0m
+    Change the current directory to [3mdir[0m. If [3mdir[0m is not supplied, the user home directory is the default.
+
+    If .. appears in dir, it is processed by removing the immediately previous pathname component from dir, back to a slash or the beginning of dir.
+    An argument of - is converted to $OLDPWD before the directory change is attempted.
+    If - is the first argument, and the directory change is successful, the absolute pathname of the new  working  directory is written to the standard output.
+    If the directory change is successful, cd sets the value of the PWD environment variable to the new directory name, and sets the OLDPWD environment variable to the value  of the current working directory before the change.
+    The return value is true if the directory was successfully changed; false otherwise.
