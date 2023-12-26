@@ -142,9 +142,5 @@ const cat: CommandHandler = async (state, params, { stdout }) => {
 };
 
 register({ name: "cat", fn: cat });
-register({
-  name: "cd",
-  fn: cd,
-  help: "Change working directory to the one specified in the first argument",
-});
+register({ name: "cd", fn: cd });
 register({ name: "ls", fn: ls });
