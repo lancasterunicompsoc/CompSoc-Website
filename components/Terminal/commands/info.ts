@@ -2,7 +2,11 @@ import { StdIO } from "../stdio";
 import systemInfo from "../systemInfo";
 import { EntryType, findEntry, readFile } from "../filesystem";
 import type { CommandHandler, State } from "./registry";
-import { register, getHelp, getAllCommands } from "./registry";
+import {
+  register,
+  getHelp,
+  getAllCommands as getNativeCommands,
+} from "./registry";
 import { whoami } from "./session";
 
 const echo: CommandHandler = (_state, params, { stdout }) => {
@@ -67,11 +71,12 @@ async function printManPage(
 const man: CommandHandler = async (state, params, stdio) => {
   const { stdout } = stdio;
   if (params.length === 0) {
-    const commandStrings = getAllCommands().sort().join("\n");
+    const commandStrings = getNativeCommands().sort().join("\n");
     stdout.writeln("Help:");
     stdout.writeln("The following commands are available:");
     stdout.writeln(commandStrings);
     stdout.writeln("For more information, run `man PROGRAMNAME`");
+    return 1;
   }
 
   if (params.length === 1) {
@@ -100,6 +105,33 @@ const man: CommandHandler = async (state, params, stdio) => {
   }
 };
 
+const which: CommandHandler = (state, params, { stdout }) => {
+  if (params.length === 0) {
+    stdout.writeln("Usage:");
+    stdout.writeln("    which <FILE>");
+    return 1;
+  }
+
+  for (const cmd of params) {
+    if (getNativeCommands().includes(cmd)) {
+      stdout.writeln("native command");
+      continue;
+    }
+    let found = false;
+    for (const dir of state.filesystem.path) {
+      const entry = findEntry(state, dir + "/" + cmd);
+      if (entry && entry.type === EntryType.file) {
+        stdout.writeln(`${dir}/${cmd}`);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      stdout.writeln(`could not find ${cmd}`);
+    }
+  }
+};
+
 register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
 register({
   name: "info",
@@ -109,7 +141,8 @@ register({
 register({
   name: "neofetch",
   fn: neofetch,
-  help: "Display informations about the current shell",
+  help: "A fast system info script",
 });
 register({ name: "help", fn: man, help: "Get help about available commands" });
 register({ name: "man", fn: man, help: "Get help about available commands" });
+register({ name: "which", fn: which, help: "Retrieves the paths of commands" });

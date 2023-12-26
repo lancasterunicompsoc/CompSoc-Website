@@ -28,9 +28,9 @@ export type CommandHandler =
 type Command = { fn: CommandHandler; help?: string };
 export const registry: Record<string, Command> = {};
 
-type registerParams = { name: string; fn: CommandHandler; help?: string };
+type RegisterParams = { name: string; fn: CommandHandler; help?: string };
 
-export function register({ name, fn, help }: registerParams) {
+export function register({ name, fn, help }: RegisterParams) {
   registry[name] = { fn, help };
 }
 
