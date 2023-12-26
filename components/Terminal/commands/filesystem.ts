@@ -120,9 +120,7 @@ const fileTree: Entry = {
 
 \x1B[1mDESCRIPTION\x1B[0m
     Print the full filename of the current working directory.
-
-\x1B[1mAUTHOR\x1B[0m
-    Written by Jonathan Leeming.`,
+`,
                     },
                   ],
                 },
