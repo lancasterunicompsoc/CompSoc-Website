@@ -1,4 +1,4 @@
-cat(1)
+CAT(1)
 
 [1mNAME[0m
     cat - concatenate files and print on the standard output

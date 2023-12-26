@@ -1,4 +1,4 @@
-which(1)
+WHICH(1)
 
 [1mNAME[0m
     which - shows the full path of (shell) commands.

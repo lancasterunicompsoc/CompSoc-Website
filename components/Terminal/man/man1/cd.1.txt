@@ -1,4 +1,4 @@
-cd(1)
+CD(1)
 
 [1mNAME[0m
     cd - change the current directory

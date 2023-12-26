@@ -1,4 +1,4 @@
-ls(1)
+LS(1)
 
 [1mNAME[0m
     ls - list directory contents

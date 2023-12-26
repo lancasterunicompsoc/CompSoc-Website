@@ -1,4 +1,4 @@
-set(1)
+SET(1)
 
 [1mNAME[0m
     set - sets environment variables
