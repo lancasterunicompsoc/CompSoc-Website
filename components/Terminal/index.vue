@@ -5,7 +5,7 @@ import type { State, CommandHandler } from "./commands/registry";
 import type { StdIO } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
-import { EntryType, cwd, findEntry, readFile } from "./filesystem";
+import { EntryType, cwd, findEntry, readFile, userHome } from "./filesystem";
 import {
   getAllCommands,
   register,
@@ -35,6 +35,12 @@ const getEvents = () => eventsStore.events;
 // TODO: We could think about persisting the state in the future
 const commandState = reactive<State>({
   environment: {
+    HOME: {
+      get: (state: State) => userHome(state),
+    },
+    PATH: {
+      get: (state: State) => state.filesystem.path.join(":"),
+    },
     PWD: {
       get: (state: State) => state.filesystem.cwd,
       set: (state: State, value: string) => {
