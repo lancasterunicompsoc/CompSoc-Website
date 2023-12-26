@@ -110,8 +110,19 @@ const fileTree: Entry = {
                     {
                       type: EntryType.file,
                       name: "pwd.1",
-                      content:
-                        "PWD(1)\n\n\x1B[1mNAME\x1B[0m\n\tpwd - print name of current/working directory\n\n\x1B[1mSYNOPSIS\x1B[0m\n\tpwd\n\n\x1B[1mDESCRIPTION\x1B[0m\n\tPrint the full filename of the current working directory.\n\n\x1B[1mAUTHOR\x1B[0m\n\tWritten by Jonathan Leeming.",
+                      content: `PWD(1)
+
+\x1B[1mNAME\x1B[0m
+    pwd - print name of current/working directory
+
+\x1B[1mSYNOPSIS\x1B[0m
+    pwd
+
+\x1B[1mDESCRIPTION\x1B[0m
+    Print the full filename of the current working directory.
+
+\x1B[1mAUTHOR\x1B[0m
+    Written by Jonathan Leeming.`,
                     },
                   ],
                 },
