@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TerminalBlinker from "./TerminalBlinker.vue";
-import type { State } from "./commands/registry";
-import type { StyledSpan } from "./stdio";
+import type { State, CommandHandler } from "./commands/registry";
+import type { StyledSpan, StdIO } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
-import { cwd } from "./commands/filesystem";
-import { getAllCommands, register, getCommand } from "./commands/registry";
+import { cwd, EntryType, findEntry } from "./commands/filesystem";
+import {
+  getAllCommands,
+  register,
+  getCommand as getNativeCommand,
+} from "./commands/registry";
 import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
@@ -30,10 +34,20 @@ onMounted(() => eventsStore.getAllEvents());
 const getEvents = () => eventsStore.events;
 
 // TODO: We could think about persisting the state in the future
-const commandState = ref<State>({
+const commandState = reactive<State>({
+  environment: {
+    PWD: {
+      get: (state: State) => state.filesystem.cwd,
+      set: (state: State, value: string) => {
+        state.filesystem.previous_cwd = state.filesystem.cwd;
+        state.filesystem.cwd = value;
+      },
+    },
+  },
   filesystem: {
     cwd: `/home/${username}`,
     previous_cwd: `/home/${username}`,
+    path: ["/usr/bin"],
   },
   session: {
     username,
@@ -44,8 +58,8 @@ const commandState = ref<State>({
 watch(
   () => authStore.payload?.username,
   username => {
-    commandState.value.session.username = username ?? "anonymous";
-    handleCommand("cd");
+    commandState.session.username = username ?? "anonymous";
+    handleCommand("cd", { stdin, stdout });
   },
 );
 
@@ -68,7 +82,7 @@ const stdout = {
 
 function prompt() {
   stdout.write("\x1B[0;31;1m");
-  stdout.write(cwd(commandState.value));
+  stdout.write(cwd(commandState));
   stdout.write(">");
   stdout.write("\x1B[0m");
 }
@@ -77,16 +91,35 @@ function parseCommand(command: string): string[] {
   let buffer = "";
   // eslint-disable-next-line quotes
   let inQuotes: false | '"' | "'" = false;
-  const parts = [];
+  const parts: string[] = [];
+
+  function reset() {
+    buffer = "";
+    inQuotes = false;
+  }
+
+  function addPart() {
+    if (!inQuotes && buffer.startsWith("$")) {
+      const envVar = commandState.environment[buffer.slice(1)];
+      if (envVar) {
+        parts.push(
+          typeof envVar === "string" ? envVar : envVar.get(commandState),
+        );
+        reset();
+        return;
+      }
+    }
+    parts.push(buffer);
+    reset();
+  }
+
   for (const char of command) {
     if (!inQuotes && " \t\n\r".includes(char)) {
-      parts.push(buffer);
-      buffer = "";
+      addPart();
       continue;
     }
     if (inQuotes && char === inQuotes && !buffer.endsWith("\\")) {
-      parts.push(buffer);
-      buffer = "";
+      addPart();
       continue;
     }
     // eslint-disable-next-line quotes
@@ -97,12 +130,52 @@ function parseCommand(command: string): string[] {
     buffer += char;
   }
   if (buffer) {
-    parts.push(buffer);
+    addPart();
   }
   return parts;
 }
 
-function handleCommand(command: string): void {
+function getCommand(
+  command: string,
+  checkPath = true,
+): CommandHandler | undefined {
+  // Native command?
+  const native = getNativeCommand(command);
+  if (native) {
+    return native;
+  }
+
+  // Path to command?
+  const entry = findEntry(commandState, command);
+  if (entry) {
+    return (_state, _params, stdio) => {
+      if (entry.type !== EntryType.file) {
+        stdio.stdout.writeln("Cannot execute directory");
+        return;
+      }
+      if (!entry.executable) {
+        stdio.stdout.writeln("You do not have permission to execute that file");
+        return;
+      }
+      entry.content.split("\n").forEach(line => handleCommand(line, stdio));
+    };
+  }
+
+  // Command is file in path?
+  if (checkPath) {
+    for (const entry of commandState.filesystem.path) {
+      const handler = getCommand(entry + "/" + command, false);
+      if (handler) {
+        return handler;
+      }
+    }
+  }
+
+  // Command not found
+  return undefined;
+}
+
+function handleCommand(command: string, stdio: StdIO): void {
   const [cmd, ...params] = parseCommand(command);
 
   if (!cmd) {
@@ -117,7 +190,7 @@ function handleCommand(command: string): void {
     return;
   }
 
-  handler(commandState.value, params, { stdin, stdout });
+  handler(commandState, params, stdio);
 }
 
 function handleInput(event: KeyboardEvent) {
@@ -148,7 +221,7 @@ function handleInput(event: KeyboardEvent) {
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
     if (command !== "") {
-      handleCommand(command);
+      handleCommand(command, { stdin, stdout });
     }
     commandHistory.value.push(command);
 
@@ -244,7 +317,7 @@ register({
 });
 
 onMounted(() => {
-  handleCommand("cat /etc/motd");
+  handleCommand("cat /etc/motd", { stdin, stdout });
   prompt();
 });
 

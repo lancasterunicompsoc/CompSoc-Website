@@ -9,6 +9,8 @@ export interface OStream {
 
 export type IOStream = IStream & OStream;
 
+export type StdIO = { stdin: IStream, stdout: OStream }
+
 enum Color {
   black = "black",
   red = "red",

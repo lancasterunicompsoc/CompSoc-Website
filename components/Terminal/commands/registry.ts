@@ -1,23 +1,28 @@
-import type { IStream, OStream } from "../stdio";
+import type { StdIO } from "../stdio";
 
 import { EventType } from "~/components/events/utils";
 
+export type EnvironmentVariable =
+  | string
+  | {
+      get: (state: State) => string;
+      set?: (state: State, value: string) => void;
+    };
+
 export type State = {
+  environment: Record<string, EnvironmentVariable>;
   filesystem: {
     cwd: string;
     previous_cwd: string;
+    path: string[];
   };
   session: {
     username: string;
   };
-  getEvents: () => EventType[] | null
+  getEvents: () => EventType[] | null;
 };
 export type Params = string[];
-export type CommandHandler = (
-  state: State,
-  params: Params,
-  io: { stdin: IStream, stdout: OStream },
-) => void;
+export type CommandHandler = (state: State, params: Params, io: StdIO) => void;
 type Command = { fn: CommandHandler; help?: string };
 export const registry: Record<string, Command> = {};
 

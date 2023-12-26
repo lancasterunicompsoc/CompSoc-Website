@@ -1,5 +1,5 @@
 import type { CommandHandler, State } from "./registry";
-import { register, getAllCommands, getCommand } from "./registry";
+import { register } from "./registry";
 import { whoami } from "./session";
 import { eventToFile } from "./utils";
 import { MOTD } from "~/components/Terminal/systemInfo";
@@ -19,6 +19,7 @@ export interface FileEntry {
   type: EntryType.file;
   name: string;
   content: string;
+  executable?: boolean;
 }
 
 export type Entry = DirEntry | FileEntry;
@@ -85,12 +86,14 @@ const fileTree: Entry = {
         {
           type: EntryType.directory,
           name: "bin",
-          children: _state =>
-            getAllCommands().map(cmd => ({
+          children: _state => [
+            {
               type: EntryType.file,
-              name: cmd,
-              content: getCommand(cmd)?.toString() ?? "",
-            })),
+              name: "pwd",
+              content: "echo $PWD",
+              executable: true,
+            },
+          ],
         },
         {
           type: EntryType.directory,
@@ -150,12 +153,12 @@ function resolvePath(state: State, path?: string): string {
   return normalizePath(state, fullPath);
 }
 
-function findEntry(state: State, path: string): Entry | null {
+export function findEntry(state: State, path: string): Entry | null {
   if (path === "/") {
     return fileTree;
   }
 
-  const parts = normalizePath(state, path).split("/").splice(1);
+  const parts = resolvePath(state, path).split("/").splice(1);
   let dir = fileTree;
   for (const part of parts) {
     if (dir.type !== EntryType.directory) {
@@ -314,16 +317,6 @@ register({
   name: "cd",
   fn: cd,
   help: "Change working directory to the one specified in the first argument",
-});
-register({
-  name: "cwd",
-  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
-  help: "Display current working directory",
-});
-register({
-  name: "pwd",
-  fn: (state, _, { stdout }) => stdout.writeln(cwd(state)),
-  help: "Display current working directory",
 });
 register({
   name: "ls",
