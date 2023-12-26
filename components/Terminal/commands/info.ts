@@ -73,7 +73,9 @@ const man: CommandHandler = async (state, params, stdio) => {
   if (params.length === 0) {
     const commandStrings = getNativeCommands().sort().join("\n");
     stdout.writeln("Help:");
-    stdout.writeln("The following commands are available:");
+    stdout.writeln(
+      "The following commands are available natively in the shell, others may be available in your path:",
+    );
     stdout.writeln(commandStrings);
     stdout.writeln("For more information, run `man PROGRAMNAME`");
     return 1;
