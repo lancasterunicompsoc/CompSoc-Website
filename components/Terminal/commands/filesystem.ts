@@ -4,6 +4,7 @@ import {
   resolvePath,
   resolveParentPath,
   findEntry,
+  readFile,
 } from "../filesystem";
 import type { CommandHandler } from "./registry";
 import { register } from "./registry";
@@ -124,12 +125,7 @@ const cat: CommandHandler = async (state, params, { stdout }) => {
       stdout.writeln(`Cannot read '${path}': it is not a file`);
       continue;
     }
-    if (typeof item.content === "string") {
-      stdout.writeln(item.content);
-    } else {
-      const content = item.content(state);
-      stdout.writeln(typeof content === "string" ? content : await content);
-    }
+    stdout.writeln(await readFile(state, item));
   }
 };
 

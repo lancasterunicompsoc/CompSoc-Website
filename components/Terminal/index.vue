@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import TerminalBlinker from "./TerminalBlinker.vue";
 import type { State, CommandHandler } from "./commands/registry";
-import type { StyledSpan, StdIO } from "./stdio";
+import type { StdIO } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
 import { EntryType, cwd, findEntry, readFile } from "./filesystem";
@@ -15,7 +15,7 @@ import { useAuthStore } from "~/stores/auth";
 import { useEventStore } from "~/stores/event";
 
 const characterBuffer = ref("");
-const outputBuffer = ref<StyledSpan[]>([]);
+// const outputBuffer = ref<StyledSpan[]>([]);
 const commandHistory = ref<string[]>([]);
 const inputBuffer = ref(""); // inputBuffer holds the user input
 const activeLineBuffer = ref(""); // while activeLineBuffer holds the contents of the current line, they can be different when a user is scrubbing through the history
@@ -226,15 +226,15 @@ async function handleInput(event: KeyboardEvent) {
     stdout.write(" ");
     stdout.writeln(activeLineBuffer.value);
     activeLineBuffer.value = "";
-    if (command !== "") {
-      await handleCommand(command, { stdin, stdout });
+    if (command === "") {
+      prompt();
+    } else {
+      await handleCommand(command, { stdin, stdout }).then(() => prompt());
     }
     commandHistory.value.push(command);
 
     inputBuffer.value = "";
     historySelectionOffset.value = 0;
-
-    prompt();
 
     // Autoscroll down to the output of the last run command
     // This needs to be done after the next rendercycle, because the output of the last command won't have rendered yet
@@ -327,13 +327,7 @@ onMounted(() => {
   handleCommand("cat /etc/motd", { stdin, stdout }).then(() => prompt());
 });
 
-watch(
-  characterBuffer,
-  buffer => {
-    outputBuffer.value = colorize(buffer);
-  },
-  { immediate: true },
-);
+const outputBuffer = computed(() => colorize(characterBuffer.value));
 </script>
 
 <template>

@@ -88,7 +88,14 @@ const man: CommandHandler = async (state, params, stdio) => {
     stdout.writeln(`No manual entry for ${params[0]}`);
   }
 
-  if (!printManPage(params[0] as string, params[1] as string, state, stdio)) {
+  if (
+    !(await printManPage(
+      params[0] as string,
+      params[1] as string,
+      state,
+      stdio,
+    ))
+  ) {
     stdout.writeln(`No manual entry for ${params[1]} in section ${params[0]}`);
   }
 };
