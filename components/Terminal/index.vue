@@ -103,12 +103,10 @@ function parseCommand(command: string): string[] {
   function addPart() {
     if (!inQuotes && buffer.startsWith("$")) {
       const envVar = commandState.environment[buffer.slice(1)];
-      if (envVar) {
-        parts.push(
-          typeof envVar === "string" ? envVar : envVar.get(commandState),
-        );
-        reset();
-        return;
+      if (!envVar || typeof envVar === "string") {
+        buffer = envVar ?? "";
+      } else {
+        buffer = envVar.get(commandState);
       }
     }
     parts.push(buffer);
