@@ -5,3 +5,12 @@ ls(1)
 
 [1mSYNOPSIS[0m
     ls [[3mOPTION[0m]... [[3mFILE[0m]...
+
+[1mDESCRIPTION[0m
+    List information about the FILEs (the current directory by default). Sorts entries alphabetically.
+
+    [1m-a[0m, [1m--all[0m
+        do not ignore entries starting with .
+
+    [1m-A[0m, [1m--almost-all[0m
+        do not list implied . and ..
