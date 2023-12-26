@@ -48,12 +48,15 @@ const neofetch: CommandHandler = (state, _params, { stdout }) => {
 };
 
 function printManPage(
-  page: 1,
-  name: string,
+  section: string,
+  page: string,
   state: State,
   { stdout }: StdIO,
 ): boolean {
-  const entry = findEntry(state, `/usr/share/man/man${page}/${name}.${page}`);
+  const entry = findEntry(
+    state,
+    `/usr/share/man/man${section}/${page}.${section}`,
+  );
   if (!entry || entry.type !== EntryType.file) {
     return false;
   }
@@ -77,10 +80,16 @@ const man: CommandHandler = (state, params, stdio) => {
       stdout.writeln(helptext);
       return;
     }
-    if (printManPage(1, params[0] as string, state, stdio)) {
-      return;
+    for (const section of "12345678") {
+      if (printManPage(section, params[0] as string, state, stdio)) {
+        return;
+      }
     }
     stdout.writeln(`No manual entry for ${params[0]}`);
+  }
+
+  if (!printManPage(params[0] as string, params[1] as string, state, stdio)) {
+    stdout.writeln(`No manual entry for ${params[1]} in section ${params[0]}`);
   }
 };
 
