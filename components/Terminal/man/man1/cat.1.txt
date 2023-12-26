@@ -1,0 +1,15 @@
+cat(1)
+
+[1mNAME[0m
+    cat - concatenate files and print on the standard output
+
+[1mSYNOPSIS[0m
+    cat [[3mFILE[0m]...
+
+[1mDESCRIPTION[0m
+    Concatenate FILE(s) to standard output.
+
+[1mEXAMPLES[0m
+    cat f g
+        Output f's contents, then g's contents.
+
