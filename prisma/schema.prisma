@@ -34,6 +34,7 @@ model Event {
   image         String?         @db.LongText
   unixEndTime   Int
   unixStartTime Int
+  hidden        Boolean         @default(false)
   reviews       Review[]
   announcement  Announcement[]
 }

@@ -6,7 +6,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const { pending, data, status, refresh } = useFetch("/api/users", {
+const { pending, data, status, refresh } = await useFetch("/api/users", {
   headers: { Bearer: authStore.jwt as unknown as string },
 });
 

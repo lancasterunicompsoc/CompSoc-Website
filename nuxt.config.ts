@@ -4,6 +4,7 @@ const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7/join";
 export default defineNuxtConfig({
   modules: [
     "@nuxt/devtools",
+    "@nuxtjs/color-mode",
     "@vueuse/nuxt",
     "@nuxt/content",
     "@unocss/nuxt",
@@ -18,14 +19,12 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
-  ssr: false,
+  ssr: true,
   runtimeConfig: {
     secret: "", // override using NUXT_SECRET in .env
-    github_client_id: "", // same here
-    github_client_secret: "", // same here
     database_url: "", // same here
-    discord_client_secret: "",
-    discord_client_id: "",
+    discord_id: "",
+    discord_token: "",
     public: {
       loginUrl: "",
     },
@@ -33,6 +32,16 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "LUCompSoc",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Website of the Lancaster University Computing Society, LUCompSoc",
+        },
+      ],
+      htmlAttrs: {
+        lang: "en",
+      },
     },
   },
   routeRules: {
@@ -53,5 +62,11 @@ export default defineNuxtConfig({
     "/start": { redirect: joinLink },
     "/join": { redirect: joinLink },
     "/admin/reviews": { redirect: "/admin/reviews/0" },
+  },
+  colorMode: {
+    preference: "system", // default value of $colorMode.preference
+    fallback: "dark", // fallback value if not system preference found
+    storageKey: "nuxt-color-mode",
+    classSuffix: "",
   },
 });

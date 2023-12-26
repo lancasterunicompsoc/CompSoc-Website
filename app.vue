@@ -1,13 +1,15 @@
 <template>
-  <div class="dark:bg-darkgrey dark:text-gray-300 bg-lightbg">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <noscript>
-      This website only works if you enable Javascript in your browser, please
-      enable Javascript execution and reload the page.
-    </noscript>
-  </div>
+  <Body class="dark:bg-darkgrey dark:text-gray-300 bg-lightbg">
+    <div>
+      <noscript>
+        This website only works if you enable Javascript in your browser, please
+        enable Javascript execution and reload the page.
+      </noscript>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </div>
+  </Body>
 </template>
 
 <style>
@@ -16,6 +18,14 @@
   --highlight2Dark: #d14537;
   --highlight1Light: #d12415;
   --highlight2Light: #ae3428;
+
+  --highlight1: var(--highlight1Light);
+  --highlight2: var(--highlight2Light);
+}
+
+.dark {
+  --highlight1: var(--highlight1Dark);
+  --highlight2: var(--highlight2Dark);
 }
 
 * {
