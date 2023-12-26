@@ -1,5 +1,5 @@
 import type { CommandHandler, State } from "./registry";
-import { register } from "./registry";
+import { register, getAllCommands, getCommand } from "./registry";
 import { whoami } from "./session";
 import { eventToFile } from "./utils";
 import { MOTD } from "~/components/Terminal/systemInfo";
@@ -75,9 +75,25 @@ const fileTree: Entry = {
           type: EntryType.file,
           name: "motd",
           content: MOTD,
-        }
+        },
       ],
-    }
+    },
+    {
+      type: EntryType.directory,
+      name: "usr",
+      children: (_state: State) => [
+        {
+          type: EntryType.directory,
+          name: "bin",
+          children: (_state: State) =>
+            getAllCommands().map(cmd => ({
+              type: EntryType.file,
+              name: cmd,
+              content: (getCommand(cmd)?.toString() ?? "") + "\n",
+            })),
+        },
+      ],
+    },
   ],
 };
 
@@ -186,7 +202,9 @@ const cd: CommandHandler = (state, params, { stdout }) => {
 };
 
 const ls: CommandHandler = (state, params, { stdout }) => {
-  const flagStrings = params.filter(p => p.startsWith("-")).map(p => p.substring(1));
+  const flagStrings = params
+    .filter(p => p.startsWith("-"))
+    .map(p => p.substring(1));
   const targets = params.filter(p => !p.startsWith("-"));
   if (targets.length === 0) {
     targets.push(".");
@@ -226,7 +244,8 @@ const ls: CommandHandler = (state, params, { stdout }) => {
       return;
     }
 
-    const children = item.children(state)
+    const children = item
+      .children(state)
       .filter(child => !child.name.startsWith(".") || flags.most);
     if (flags.all) {
       const parent = findEntry(state, resolveParentPath(state, path));
@@ -241,11 +260,11 @@ const ls: CommandHandler = (state, params, { stdout }) => {
     if (flags.list) {
       stdout.writeln(`total ${children.length}`);
       children
-        .sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : 1)
+        .sort((a, b) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1))
         .forEach(child => {
           stdout.writeln(child.name);
         });
-    } else {
+    } else if (children.length > 0) {
       stdout.writeln(
         children
           .map(child => child.name)
@@ -271,7 +290,7 @@ const cat: CommandHandler = (state, params, { stdout }) => {
       stdout.writeln(`Cannot read '${path}': it is not a file`);
       continue;
     }
-    stdout.write(item.content);
+    stdout.writeln(item.content);
   }
 };
 
