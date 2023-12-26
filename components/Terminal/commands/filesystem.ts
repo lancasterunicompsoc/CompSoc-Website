@@ -52,6 +52,15 @@ const ls: CommandHandler = (state, params, { stdout }) => {
   };
   for (const flag of flagStrings) {
     if (flag.startsWith("-")) {
+      switch (flag) {
+        case "-all":
+          flags.all = true;
+          flags.most = true;
+          break;
+        case "-almost-all":
+          flags.most = true;
+          break;
+      }
       continue;
     }
     if (flag.includes("a")) {
@@ -142,5 +151,4 @@ register({
 register({
   name: "ls",
   fn: ls,
-  help: "List all files and directories in current working directory, or in the specified directory when passed an argument",
 });
