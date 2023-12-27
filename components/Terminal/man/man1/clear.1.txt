@@ -1,0 +1,10 @@
+CLEAR(1)
+
+[1mNAME[0m
+    clear - clear the terminal screen
+
+[1mSYNOPSIS[0m
+    clear
+
+[1mDESCRIPTION[0m
+    [1mclear[0m clears the terminal screen.
