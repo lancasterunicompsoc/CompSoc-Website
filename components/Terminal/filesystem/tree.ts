@@ -4,7 +4,7 @@ import type { State } from "../commands/registry";
 import { eventToFile } from "../commands/utils";
 import { whoami } from "../commands/session";
 import { Entry, EntryType } from "./types";
-import { MOTD } from "~/components/Terminal/systemInfo";
+import systemInfo, { MOTD } from "~/components/Terminal/systemInfo";
 
 function manpage(section: string, page: string): Entry {
   return {
@@ -90,6 +90,29 @@ export const fileTree: Entry = {
               type: EntryType.file,
               name: "pwd",
               content: "echo $PWD",
+              executable: true,
+            },
+          ],
+        },
+        {
+          type: EntryType.directory,
+          name: "lib",
+          children: _state => [
+            {
+              type: EntryType.file,
+              name: "os-release",
+              content: `
+NAME="${systemInfo.os.name}"
+VERSION="${systemInfo.os.version} (${systemInfo.os.edition})"
+ID=compsoc
+VERSION_ID=0
+VERSION_CODENAME=""
+PRETTY_NAME="CompSoc OS 0 (Terminal Edition)"
+DEFAULT_HOSTNAME="compsoc"
+HOME_URL="https://compsoc.io/"
+VARIANT="Termainl Edition"
+VARIANT_ID=terminal
+`.trim(),
               executable: true,
             },
           ],

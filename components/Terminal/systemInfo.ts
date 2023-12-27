@@ -1,5 +1,5 @@
 const systemInfo = {
-  os: { name: "CompSocOS", edition: "Terminal Edition" },
+  os: { name: "CompSocOS", edition: "Terminal Edition", version: "0.1.0" },
   shell: { name: "holy-sea", version: "0.0.2" },
   resolution: "80x25",
   theme: "matrix-red",
