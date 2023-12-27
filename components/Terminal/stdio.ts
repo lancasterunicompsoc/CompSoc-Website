@@ -9,7 +9,7 @@ export interface OStream {
 
 export type IOStream = IStream & OStream;
 
-export type StdIO = { stdin: IStream, stdout: OStream }
+export type StdIO = { stdin: IStream; stdout: OStream };
 
 enum Color {
   black = "black",
@@ -110,6 +110,9 @@ export function colorize(input: string): StyledSpan[] {
     } else {
       buffer += input[i];
     }
+  }
+  if (buffer) {
+    tokens.push({ text: buffer, style: currentStyle });
   }
   return tokens;
 }
