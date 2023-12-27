@@ -137,7 +137,7 @@ const which: CommandHandler = (state, params, { stdout }) => {
   return params.length === 0 ? -1 : failedArguments;
 };
 
-register({ name: "echo", fn: echo, help: "Print the argument passed to echo" });
+register({ name: "echo", fn: echo });
 register({
   name: "info",
   fn: info,

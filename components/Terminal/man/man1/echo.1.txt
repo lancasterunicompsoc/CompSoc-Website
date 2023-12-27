@@ -1,0 +1,10 @@
+ECHO(1)
+
+[1mNAME[0m
+    echo - display a line of text
+
+[1mSYNOPSIS[0m
+    clear [[3mSTRING[0m]...
+
+[1mDESCRIPTION[0m
+    Echo the STRING(s) to standard output.
