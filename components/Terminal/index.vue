@@ -51,6 +51,9 @@ const commandState = reactive<State>({
     OLDPWD: {
       get: (state: State) => state.filesystem.previous_cwd,
     },
+    USER: {
+      get: (state: State) => state.session.username,
+    },
   },
   filesystem: {
     cwd: `/home/${username}`,
@@ -106,16 +109,50 @@ function parseCommand(command: string): string[] {
     inQuotes = false;
   }
 
-  function addPart() {
-    if (!inQuotes && buffer.startsWith("$")) {
-      const envVar = commandState.environment[buffer.slice(1)];
-      if (!envVar || typeof envVar === "string") {
-        buffer = envVar ?? "";
-      } else {
-        buffer = envVar.get(commandState);
-      }
+  function resolveVariable(name: string): string {
+    const envVar = commandState.environment[name];
+    if (!envVar || typeof envVar === "string") {
+      return envVar ?? "";
     }
-    parts.push(buffer);
+    return envVar.get(commandState);
+  }
+
+  function addPart() {
+    if (!buffer.includes("$")) {
+      parts.push(buffer);
+      reset();
+      return;
+    }
+
+    let expandedBuffer = "";
+    let variableBuffer = "";
+    let inVariable = false;
+
+    for (const char of buffer) {
+      if (char === "$") {
+        inVariable = true;
+        continue;
+      }
+      if (!inVariable) {
+        expandedBuffer += char;
+        continue;
+      }
+      if (char.match(/[a-z_-]/i)) {
+        variableBuffer += char;
+        continue;
+      }
+
+      expandedBuffer += resolveVariable(variableBuffer);
+      variableBuffer = "";
+      inVariable = false;
+
+      expandedBuffer += char;
+    }
+    if (variableBuffer) {
+      expandedBuffer += resolveVariable(variableBuffer);
+    }
+
+    parts.push(expandedBuffer);
     reset();
   }
 
