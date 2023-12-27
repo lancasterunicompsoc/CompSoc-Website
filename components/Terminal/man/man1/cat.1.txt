@@ -4,7 +4,7 @@ CAT(1)
     cat - concatenate files and print on the standard output
 
 [1mSYNOPSIS[0m
-    cat [[3mFILE[0m]...
+    cat [[4mFILE[0m]...
 
 [1mDESCRIPTION[0m
     Concatenate FILE(s) to standard output.

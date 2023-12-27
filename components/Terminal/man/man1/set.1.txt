@@ -4,10 +4,10 @@ SET(1)
     set - sets environment variables
 
 [1mSYNOPSIS[0m
-    set <[3mVAR[0m [3mVAL[0m>...
+    set <[4mVAR[0m [4mVAL[0m>...
 
 [1mDESCRIPTION[0m
-    For each pair of arguments, [1mset[0m updates the value of the environment variable named by [3mVAR[0m to [3mVAL[0m.
+    For each pair of arguments, [1mset[0m updates the value of the environment variable named by [4mVAR[0m to [4mVAL[0m.
 
 [1mRETURN VALUE[0m
     The number of variables which couldn't be set, or -1 when no variable/value pairs were given.

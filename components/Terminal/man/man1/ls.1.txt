@@ -4,7 +4,7 @@ LS(1)
     ls - list directory contents
 
 [1mSYNOPSIS[0m
-    ls [[3mOPTION[0m]... [[3mFILE[0m]...
+    ls [[4mOPTION[0m]... [[4mFILE[0m]...
 
 [1mDESCRIPTION[0m
     List information about the FILEs (the current directory by default). Sorts entries alphabetically.
