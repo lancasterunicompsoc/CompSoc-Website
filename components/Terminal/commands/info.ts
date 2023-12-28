@@ -148,6 +148,6 @@ register({
   fn: neofetch,
   help: "A fast system info script",
 });
-register({ name: "help", fn: man, help: "Get help about available commands" });
-register({ name: "man", fn: man, help: "Get help about available commands" });
+register({ name: "help", fn: man });
+register({ name: "man", fn: man });
 register({ name: "which", fn: which });

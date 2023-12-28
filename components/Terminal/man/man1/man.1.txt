@@ -1,0 +1,32 @@
+MAN(1)
+
+[1mNAME[0m
+    man - an interface to the system reference manuals
+
+[1mSYNOPSIS[0m
+    [1mman[0m [[[4msection[0m] [4mpage[0m]
+
+[1mDESCRIPTION[0m
+    [1mman[0m is the system's manual pager.
+    The page argument given to [1mman[0m is normally the name of a program, utility, or function.
+    The manual page associated with each of these arguments is then found and displayed.
+    A section, if provided, will direct [1mman[0m to look only in that section of the manual.
+    The default action is to search in all of the available sections following a pre-defined order (see DEFAULTS), and to show only the first page found, even if the page exists in several sections.
+
+    The table below shows the section numbers of the manual followed by the types of pages they contain.
+    All sections contain `intro`, which provides a preface to the section.
+
+    1  Executable programs or shell commands
+    4  Special files
+    5  File formats and conventions
+    6  Games
+    7  Miscellaneous
+
+[1mDEFAULTS[0m
+    The order of sections to search is as follows:
+
+            1 2 3 4 5 6 7 
+
+[1mFILES[0m
+    [4m/usr/share/man[0m
+        A global manual page hierarchy
