@@ -5,7 +5,7 @@ import type { State, CommandHandler } from "./commands/registry";
 import type { StdIO } from "./stdio";
 import { colorize } from "./stdio";
 import "./commands/";
-import { EntryType, cwd, findEntry, readFile, userHome } from "./filesystem";
+import { EntryType, findEntry, readFile, userHome } from "./filesystem";
 import {
   getAllCommands,
   register,
@@ -51,6 +51,7 @@ const commandState = reactive<State>({
     OLDPWD: {
       get: (state: State) => state.filesystem.previous_cwd,
     },
+    PS1: "\x1B[0;31;1m$PWD>\x1B[0m",
     USER: {
       get: (state: State) => state.session.username,
     },
@@ -91,11 +92,49 @@ const stdout = {
   },
 };
 
-function prompt() {
-  stdout.write("\x1B[0;31;1m");
-  stdout.write(cwd(commandState));
-  stdout.write(">");
-  stdout.write("\x1B[0m");
+const prompt = () =>
+  stdout.write(expandString((commandState.environment.PS1 as string) ?? ""));
+
+function resolveVariable(name: string): string {
+  const envVar = commandState.environment[name];
+  if (!envVar || typeof envVar === "string") {
+    return envVar ?? "";
+  }
+  return envVar.get(commandState);
+}
+function expandString(buffer: string): string {
+  if (!buffer.includes("$")) {
+    return buffer;
+  }
+
+  let expandedBuffer = "";
+  let variableBuffer = "";
+  let inVariable = false;
+
+  for (const char of buffer) {
+    if (char === "$") {
+      inVariable = true;
+      continue;
+    }
+    if (!inVariable) {
+      expandedBuffer += char;
+      continue;
+    }
+    if (char.match(/[a-z0-9_-]/i)) {
+      variableBuffer += char;
+      continue;
+    }
+
+    expandedBuffer += resolveVariable(variableBuffer);
+    variableBuffer = "";
+    inVariable = false;
+
+    expandedBuffer += char;
+  }
+  if (variableBuffer) {
+    expandedBuffer += resolveVariable(variableBuffer);
+  }
+  return expandedBuffer;
 }
 
 function parseCommand(command: string): string[] {
@@ -109,50 +148,8 @@ function parseCommand(command: string): string[] {
     inQuotes = false;
   }
 
-  function resolveVariable(name: string): string {
-    const envVar = commandState.environment[name];
-    if (!envVar || typeof envVar === "string") {
-      return envVar ?? "";
-    }
-    return envVar.get(commandState);
-  }
-
   function addPart() {
-    if (!buffer.includes("$")) {
-      parts.push(buffer);
-      reset();
-      return;
-    }
-
-    let expandedBuffer = "";
-    let variableBuffer = "";
-    let inVariable = false;
-
-    for (const char of buffer) {
-      if (char === "$") {
-        inVariable = true;
-        continue;
-      }
-      if (!inVariable) {
-        expandedBuffer += char;
-        continue;
-      }
-      if (char.match(/[a-z_-]/i)) {
-        variableBuffer += char;
-        continue;
-      }
-
-      expandedBuffer += resolveVariable(variableBuffer);
-      variableBuffer = "";
-      inVariable = false;
-
-      expandedBuffer += char;
-    }
-    if (variableBuffer) {
-      expandedBuffer += resolveVariable(variableBuffer);
-    }
-
-    parts.push(expandedBuffer);
+    parts.push(expandString(buffer));
     reset();
   }
 
