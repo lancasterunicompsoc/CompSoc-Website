@@ -21,7 +21,7 @@ function manpage(section: string, page: string): Entry {
 }
 
 const MANPAGES: Record<string, string[]> = {
-  1: ["cat", "cd", "clear", "echo", "ls", "man", "pwd", "set", "which"],
+  1: ["cat", "cd", "clear", "echo", "ls", "man", "pwd", "set", "tac", "which"],
   7: ["man-pages"],
 };
 

@@ -141,6 +141,27 @@ const cat: CommandHandler = async (state, params, { stdout }) => {
   }
 };
 
+const tac: CommandHandler = async (state, params, { stdout }) => {
+  for (const param of params) {
+    const path = resolvePath(state, param);
+    const item = findEntry(state, path);
+    if (item === null) {
+      stdout.writeln(`Cannot access '${path}': no such file or directory`);
+      continue;
+    }
+    if (item.type !== EntryType.file) {
+      stdout.writeln(`Cannot read '${path}': it is not a file`);
+      continue;
+    }
+    stdout.writeln(
+      await readFile(state, item).then(data =>
+        data.split("\n").reverse().join("\n"),
+      ),
+    );
+  }
+};
+
 register({ name: "cat", fn: cat });
+register({ name: "tac", fn: tac });
 register({ name: "cd", fn: cd });
 register({ name: "ls", fn: ls });

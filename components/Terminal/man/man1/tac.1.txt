@@ -1,0 +1,11 @@
+TAC(1)
+
+[1mNAME[0m
+    tac - concatenate and print files in reverse
+
+[1mSYNOPSIS[0m
+    tac [[4mFILE[0m]...
+
+[1mDESCRIPTION[0m
+    Write each FILE to standard output, last line first.
+
