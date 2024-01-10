@@ -1,0 +1,14 @@
+NEOFETCH(1)
+
+[1mNAME[0m
+    Neofetch - A fast system info script
+
+[1mSYNOPSIS[0m
+    neofetch
+
+[1mDESCRIPTION[0m
+    Neofetch is a CLI system information tool. Neofetch displays information about your system.
+
+[1mCREDIT[0m
+    Inspired by Neofetch, the BASH script (https://github.com/dylanaraps/neofetch).
+    Please do not pester them about bugs.

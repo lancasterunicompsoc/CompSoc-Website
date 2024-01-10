@@ -146,7 +146,6 @@ register({
 register({
   name: "neofetch",
   fn: neofetch,
-  help: "A fast system info script",
 });
 register({ name: "help", fn: man });
 register({ name: "man", fn: man });
