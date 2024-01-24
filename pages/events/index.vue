@@ -26,6 +26,21 @@ const { data: allEvents } = await useFetch(
   () => `/api/events/all?past=${fetchPast.value}`,
   { watch: [fetchPast] },
 );
+
+const confirmAndRunWebhook = async () => {
+  // Ask for confirmation
+  const confirmed = window.confirm("Are you sure you want to notify everyone in discord?");
+
+  // If user confirms, make the GET request to the webhook
+  if (confirmed) {
+    try {
+      const response = await useFetch("https://event-notification-discord.lucompsoc.workers.dev/");
+      console.log("Webhook executed successfully:", response);
+    } catch (error) {
+      console.error("Error executing webhook:", error);
+    }
+  }
+};
 </script>
 <template>
   <main class="main-container">
@@ -49,6 +64,11 @@ const { data: allEvents } = await useFetch(
         @click="router.push('/events/add')"
       >
         Add Event
+      </button>
+      <button class="bg-#ddd dark:bg-lightgrey p-4"
+        @click="confirmAndRunWebhook()"
+        >
+        Push Discord Notification
       </button>
     </div>
     <div>
