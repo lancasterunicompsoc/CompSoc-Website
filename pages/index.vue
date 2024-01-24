@@ -1,6 +1,10 @@
 <template>
   <main class="main-container">
-    <Terminal />
+    <Suspense>
+      <ClientOnly>
+        <Terminal />
+      </ClientOnly>
+    </Suspense>
 
     <p class="info-line">
       Lancaster University Computer Science Society exists to promote interest
@@ -15,6 +19,11 @@
     </a>
   </main>
 </template>
+<script setup lang="ts">
+const Terminal = defineAsyncComponent(
+  () => import("~/components/Terminal/index.vue"),
+);
+</script>
 
 <style scoped>
 .button {
