@@ -1,0 +1,23 @@
+intro(1)
+
+[1mNAME[0m
+    intro - introduction to user commands
+
+[1mDESCRIPTION[0m
+    Section 1 of the manual describes user commands and tools, for example, file manipulation tools, shells, compilers, file viewers and editors, and so on.
+    More tools are planned, so check back to see if your favourite has been implemented yet.
+
+[1mNOTEs[0m
+    CompSocOS is a flavour of UNIX, and all user commands under UNIX work approximately the same under CompSocOS, when implemented.
+    This means that you can transfer much your knowledge from Linux and FreeBSD to this environment.
+
+    You might be used to using GUIs (graphical user interfaces), where you can point and click and drag, and hopefully get work done without first reading lots of documentation. The traditional UNIX environment is a CLI (command line interface), where you type commands to tell the computer what to do. That is faster and more powerful, but requires finding out what the commands are. Below a bare minimum, to get started.
+
+  [1mThe Shell[0m
+    One types commands to the shell, the command interpreter. Unlike in other flavours of UNIX, the shell is built into CompSocOS. It is based on bash and sh.
+
+    A session might go like:
+
+        /home/anonymous> ls
+        events
+        /home/anonymous> ls -l

@@ -26,6 +26,7 @@ const MANPAGES: Record<string, string[]> = {
     "cd",
     "clear",
     "echo",
+    "intro",
     "ls",
     "man",
     "neofetch",
