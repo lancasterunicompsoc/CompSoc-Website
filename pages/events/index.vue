@@ -29,20 +29,22 @@ const { data: allEvents } = await useFetch(
 
 const confirmAndRunWebhook = async () => {
   // Ask for confirmation
-  const confirmed = window.confirm("Are you sure you want to notify everyone in discord?");
+  const confirmed = window.confirm(
+    "Are you sure you want to notify everyone in discord?",
+  );
 
   // If user confirms, make the GET request to the webhook
   if (confirmed) {
     try {
-      const response = await useFetch(
+      const { data } = await useFetch(
         "https://event-notification-discord.lucompsoc.workers.dev/",
         {
           headers: {
-            'X-CS-Clippy': 'true'
-          }
-        }
+            "X-CS-Clippy": "true",
+          },
+        },
       );
-      console.log("Webhook executed successfully:", response);
+      console.log("Webhook executed successfully:", data.value);
     } catch (error) {
       console.error("Error executing webhook:", error);
     }
@@ -52,15 +54,30 @@ const confirmAndRunWebhook = async () => {
 <template>
   <main class="main-container">
     <div flex ml-auto justify-end>
-      <a target="_blank" href="/events.ics" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">iCalendar/ICS
-        Feed</a>
-      <a target="_blank" href="/feed.xml" class="btn text-sm bg-highlight2Light dark:bg-highlight2Light">RSS Feed</a>
+      <a
+        target="_blank"
+        href="/events.ics"
+        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+        >iCalendar/ICS Feed</a
+      >
+      <a
+        target="_blank"
+        href="/feed.xml"
+        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+        >RSS Feed</a
+      >
     </div>
     <div v-if="isAdmin">
-      <button class="bg-#ddd dark:bg-lightgrey p-4" @click="router.push('/events/add')">
+      <button
+        class="bg-#ddd dark:bg-lightgrey p-4"
+        @click="router.push('/events/add')"
+      >
         Add Event
       </button>
-      <button class="bg-#ddd dark:bg-lightgrey p-4" @click="confirmAndRunWebhook()">
+      <button
+        class="bg-#ddd dark:bg-lightgrey p-4"
+        @click="confirmAndRunWebhook()"
+      >
         Push Discord Notification
       </button>
     </div>
@@ -69,8 +86,13 @@ const confirmAndRunWebhook = async () => {
         <h2>All Events</h2>
         <div>
           <span hidden id="filterLabel">Filters:</span>
-          <select aria-labelledby="filterLabel" name="" id="futurePast" class="bg-lightbg dark:bg-darkgrey"
-            v-model="pastFuture">
+          <select
+            aria-labelledby="filterLabel"
+            name=""
+            id="futurePast"
+            class="bg-lightbg dark:bg-darkgrey"
+            v-model="pastFuture"
+          >
             <option value="future">Future Events</option>
             <option value="past">Past Events</option>
           </select>
@@ -113,7 +135,7 @@ ul {
   filter: brightness(1.3);
 }
 
-.card:nth-child(2n)> :is(h1, h2, h3, h4, h5, h6) {
+.card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
 }
 </style>
