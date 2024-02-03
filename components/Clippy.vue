@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from "vue";
 
+const props = defineProps<{ message: string }>();
+
 let running = false;
 
 const eyeColour = ref("#111");
@@ -71,14 +73,14 @@ class Point {
   }
 }
 
-const leftEye = reactive(new Point(262.682, 280.135));
+const leftEye = reactive(new Point(263, 280));
 leftEye.name = "leftEye";
-const rightEye = reactive(new Point(474.642, 275.742));
+const rightEye = reactive(new Point(475, 276));
 rightEye.name = "rightEye";
-const tailEnd = reactive(new Point(604.325, 156.203));
+const tailEnd = reactive(new Point(604, 156));
 tailEnd.speed = 400 / 1000;
 tailEnd.name = "tailEnd";
-const noseBase = reactive(new Point(20.316, 370.667));
+const noseBase = reactive(new Point(20, 371));
 noseBase.name = "noseBase";
 
 function lookLeft() {
@@ -168,7 +170,7 @@ onUnmounted(() => {
   <svg
     width="100%"
     height="100%"
-    viewBox="0 0 800 800"
+    viewBox="0 0 800 1500"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -181,42 +183,68 @@ onUnmounted(() => {
       stroke-linejoin: round;
     "
   >
-    <g>
-      <path
-        :d="`
+    <g transform="translate(-75 0)">
+      <g transform="scale(0.75) translate(150 -15)">
+        <path
+          d="M1044 145c0-60-49-110-110-110H94C34 35-16 85-16 145v221c0 61 50 110 110 110h580L542 797l272-321h120c61 0 110-49 110-110V145Z"
+          style="fill: #ddd; stroke: #ae3428; stroke-width: 37px"
+        />
+        <foreignObject
+          x="25"
+          y="100"
+          width="1000"
+          height="300"
+          class="clippy-say"
+        >
+          <p xmlns="http://www.w3.org/1999/xhtml">{{ message }}</p>
+        </foreignObject>
+      </g>
+      <g transform="translate(0 500)">
+        <path
+          :d="`
           M ${tailEnd.x}, ${tailEnd.y}
-          C 604.325,  156.203    625.522,  542.948    625.522,  542.948
-          c   5.813,  106.056    -84.983,  196.116   -176.892,  201.153
-          c -91.91,     5.038   -171.129,  -76.855   -176.942, -182.911
-          l -20.348, -371.263
-          c  -3.875,  -70.704     42.655, -130.744    103.927, -134.102
-          c  61.274,   -3.358    114.088,   51.236    117.963,  121.941
+          C 604,  156    626,  543    626,  543
+          c   7,  106    -85,  196   -177,  201
+          c -93,    5   -171,  -77   -177, -183
+          l -20, -371
+          c  -5,  -71     43, -131    104, -134
+          c  61,   -3    114,   51    118,  122
           l  ${noseBase.x}, ${noseBase.y}
-          c   1.937,   35.354    -21.328,   65.374    -51.965,   67.053
-          c -30.638,    1.679    -57.045,  -25.619    -58.982,  -60.972
-          l  -4.858, -154.514
+          c   2,   35    -21,   65    -52,   67
+          c -31,    2    -57,  -26    -59,  -61
+          l  -5, -155
         `"
-        style="
-          fill: none;
-          fill-rule: nonzero;
-          stroke: #ae3428;
-          stroke-width: 39.95px;
-        "
-      />
-      <circle
-        :cx="leftEye.x"
-        :cy="leftEye.y"
-        r="67.542"
-        :fill="eyeColour"
-        style="stroke: #ae3428; stroke-width: 37px; stroke-miterlimit: 1.5"
-      />
-      <circle
-        :cx="rightEye.x"
-        :cy="rightEye.y"
-        r="63.149"
-        :fill="eyeColour"
-        style="stroke: #ae3428; stroke-width: 37px; stroke-miterlimit: 1.5"
-      />
+          style="
+            fill: none;
+            fill-rule: nonzero;
+            stroke: #ae3428;
+            stroke-width: 40px;
+          "
+        />
+        <circle
+          :cx="leftEye.x"
+          :cy="leftEye.y"
+          r="68"
+          :fill="eyeColour"
+          style="stroke: #ae3428; stroke-width: 37px; stroke-miterlimit: 1.5"
+        />
+        <circle
+          :cx="rightEye.x"
+          :cy="rightEye.y"
+          r="63"
+          :fill="eyeColour"
+          style="stroke: #ae3428; stroke-width: 37px; stroke-miterlimit: 1.5"
+        />
+      </g>
     </g>
   </svg>
 </template>
+
+<style scoped>
+.clippy-say {
+  fill: #000;
+  color: black;
+  font: 64px sans-serif;
+  white-space: pre-line;
+}
+</style>
