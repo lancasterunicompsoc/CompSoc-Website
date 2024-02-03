@@ -19,7 +19,7 @@ const historySelectionOffset = ref(0);
 
 const coderef = ref<HTMLElement | null>(null);
 
-const { focused } = useFocus(coderef, { initialValue: true });
+const { focused } = useFocus(coderef, { initialValue: false });
 
 const eventsStore = useEventStore();
 const authStore = useAuthStore();

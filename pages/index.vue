@@ -1,5 +1,15 @@
 <template>
   <main class="main-container">
+    <div class="row">
+      <Clippy style="height: 75vh" />
+
+      <div class="pt-16">
+        <NuxtLink to="/join" class="button block text-white text-size-10">
+          Join
+        </NuxtLink>
+      </div>
+    </div>
+
     <Suspense>
       <ClientOnly>
         <Terminal />
@@ -11,12 +21,9 @@
       in computing and technology among students and wider society.
     </p>
 
-    <a
-      href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
-      class="button block text-white"
-    >
+    <NuxtLink to="/join" class="button block text-white">
       Join the society
-    </a>
+    </NuxtLink>
   </main>
 </template>
 <script setup lang="ts">
@@ -30,7 +37,8 @@ const Terminal = defineAsyncComponent(
   background-color: var(--highlight2Light);
   width: fit-content;
   margin: auto;
-  padding: 1rem;
+  padding: 1rem 2rem;
+  text-align: center;
 }
 .info-line {
   text-align: center;
