@@ -5,11 +5,11 @@ const authStore = useAuthStore();
 
 const config = useRuntimeConfig();
 const route = useRoute();
-const { loginUrl } = config.public;
+const { login_url: loginUrl } = config.public;
 
 const startLogin = () => {
   setLaterRedirect(route.fullPath);
-  window.location.href = loginUrl;
+  window.location.href = loginUrl as string;
 };
 </script>
 
@@ -18,8 +18,8 @@ const startLogin = () => {
     <a
       v-if="!authStore.isLoggedIn"
       class="pointer-cursor"
+      :href="loginUrl as string"
       @click="startLogin"
-      :href="loginUrl"
       >Log In</a
     >
     <a v-else href="#" class="pointer-cursor" @click="authStore.logOut"

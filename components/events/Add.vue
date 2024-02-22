@@ -2,6 +2,7 @@
 import IconBack from "../SVG/IconBack.vue";
 import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
+import SGD from "~/components/SGD.vue";
 
 type formType = Omit<EventType, "id"> & { id?: string };
 type formWithoutId = Omit<EventType, "id">;
@@ -32,6 +33,8 @@ const formData = ref<formType>({
   unixEndTime: props?.formValues?.unixEndTime ?? 0,
   difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
+const summaryOk = ref(false);
+const descriptionOk = ref(false);
 
 const inputStartTime = ref(
   convertToLocalDate(unixToDate(formData.value.unixStartTime)),
@@ -100,6 +103,7 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
+        <SGD :content="formData.summary" @validate="ok => (summaryOk = ok)" />
       </div>
       <div>
         <label for="description">Description:</label>
@@ -110,6 +114,10 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
+        <SGD
+          :content="formData.description"
+          @validate="ok => (descriptionOk = ok)"
+        />
       </div>
       <div>
         <label for="image">Image:</label>
@@ -199,6 +207,7 @@ function addEvent() {
       <button
         class="submit bg-#ddd dark:bg-lightgrey float-right"
         type="submit"
+        :disabled="!(summaryOk && descriptionOk)"
       >
         <template v-if="isEdit">Save Changes</template>
         <template v-else>Add Event</template>
@@ -234,8 +243,15 @@ h2 {
   font-weight: 600;
 }
 
+div {
+  margin-block: 0.5rem;
+}
+
 .submit {
   background-color: var(--highlight2Light);
+}
+.submit[disabled] {
+  background-color: #222;
 }
 
 .close {
