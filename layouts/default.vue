@@ -10,7 +10,7 @@
           >
             <h1>Error: {{ error.statusMessage ?? error.message }}</h1>
             <button class="btn-secondary" @click="clearError">
-              Clear errormessage
+              Clear error message
             </button>
           </div>
         </template>

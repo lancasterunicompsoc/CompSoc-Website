@@ -1,6 +1,6 @@
 import type { IStream, OStream } from "../stdio";
 
-import { EventType } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 
 export type State = {
   filesystem: {

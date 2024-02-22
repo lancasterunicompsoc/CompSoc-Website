@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     discord_id: "",
     discord_token: "",
     public: {
-      loginUrl: "",
+      login_url: "",
     },
   },
   app: {
