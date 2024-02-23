@@ -1,6 +1,7 @@
 const SAFE_DOMAINS = [
   "compsoc.io",
   "forms.gle",
+  "gdsc.community.dev",
   "lancasteruni.eu.qualtrics.com",
 ];
 
