@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
 import Add from "~/components/events/Add.vue";
-import { EventType } from "~/components/events/utils";
+import type { EventType } from "~/components/events/utils";
 
 definePageMeta({
   middleware: ["auth-admin"],
