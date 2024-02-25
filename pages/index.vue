@@ -13,9 +13,9 @@ Why not join CompSoc?`;
       <Clippy style="height: 75vh" :message="clippyMessage" />
 
       <div class="pt-16">
-        <NuxtLink to="/join" class="button block text-white text-size-10">
+        <a href="/join" class="button block text-white text-size-10">
           Join
-        </NuxtLink>
+        </a>
       </div>
     </div>
 
