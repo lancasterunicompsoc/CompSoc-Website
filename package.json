@@ -30,15 +30,17 @@
     "nuxt": "^3.8.1",
     "nuxt-icon": "^0.4.2",
     "prettier": "^3.0.3",
-    "prisma": "^4.16.2",
+    "prisma": "^5.18.0",
     "typescript": "^4.9.5",
     "vue-tsc": "^1.8.22"
   },
   "dependencies": {
+    "@libsql/client": "^0.9.0",
     "@nuxt/content": "^2.9.0",
     "@nuxtjs/color-mode": "^3.3.0",
     "@pinia/nuxt": "^0.4.11",
-    "@prisma/client": "^4.16.2",
+    "@prisma/adapter-libsql": "^5.18.0",
+    "@prisma/client": "^5.18.0",
     "@trpc/client": "^10.43.3",
     "@trpc/server": "^10.43.3",
     "@vercel/analytics": "^1.1.1",
@@ -52,5 +54,6 @@
     "trpc-nuxt": "^0.7.0",
     "xp.css": "^0.2.6",
     "zod": "^3.22.4"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }

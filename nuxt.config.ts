@@ -23,6 +23,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     iss_jwt_secret: "", // override using NUXT_SECRET in .env,
     site_jwt_secret: "",
+    turso_auth_token: "",
+    turso_database_url: "",
     discord_id: "",
     discord_token: "",
     public: {
