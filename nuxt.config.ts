@@ -21,8 +21,8 @@ export default defineNuxtConfig({
   },
   ssr: true,
   runtimeConfig: {
-    secret: "", // override using NUXT_SECRET in .env
-    database_url: "", // same here
+    iss_jwt_secret: "", // override using NUXT_SECRET in .env,
+    site_jwt_secret: "",
     discord_id: "",
     discord_token: "",
     public: {
