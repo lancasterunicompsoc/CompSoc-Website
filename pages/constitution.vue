@@ -800,6 +800,14 @@
         <p>Decisions made by the Assembly shall be binding to the
           Executive.</p>
       </li>
+      <li>
+        <p>In the event of an executive, or membership vote resulting in a
+          stalemate, The President shall cast an additional vote to end the
+          stalemate. This is the only time The President may vote more than once.
+          Any suspicion of The President abusing this right, or employing this
+          practice in a setting which is not to settle a stalemate should be
+          reported through the complaints and appeals process.</p>
+      </li>
     </ol>
     <h2 id="gm--documentation-amendment">Documentation Amendments</h2>
     <ol>
@@ -1127,6 +1135,5 @@
           complaints shall be escalated to the Student Union.</p>
       </li>
     </ol>
-
   </main>
 </template>
