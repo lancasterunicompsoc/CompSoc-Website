@@ -36,11 +36,6 @@ import Instagram from "./SVG/Instagram.vue";
         info@compsoc.io
       </a>
     </div>
-    <div class="text-#888 flex m-0 items-center flex-row justify-center">
-      <a href="https://decrees.docs.compsoc.io" target="_blank">
-        Presidential Decrees
-      </a>
-    </div>
   </footer>
 </template>
 
