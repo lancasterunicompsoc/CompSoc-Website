@@ -53,7 +53,7 @@ export default defineNuxtConfig({
       },
     },
     "/slides": { redirect: "https://slides.compsoc.io" },
-    "/discord": { redirect: "https://discord.gg/zH5MsZCrJG" },
+    "/discord": { redirect: "https://discord.gg/compsoc" },
     "/github": { redirect: "https://github.com/LUCompSoc" },
     "/github/CompSoc-Website": {
       redirect: "https://github.com/lancasterunicompsoc/CompSoc-Website",
