@@ -1,4 +1,6 @@
+import type { PrismaClient, Prisma } from "@prisma/client";
 import { useValidatedBody, z } from "h3-zod";
+import type { authType } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
@@ -17,18 +19,34 @@ export default defineEventHandler(async event => {
         speaker: z.string(),
       }),
     );
-    const newEvent = await prisma.slides.create({
-      data: {
-        name,
-        link,
-        speaker,
-        creatorId: auth.decoded?.id,
-      },
+
+    const created = await createSlides({
+      prisma,
+      auth,
+      data: { name, link, speaker },
     });
-    // Send the ID of the newly created event in the response
-    return { id: newEvent.id, ok: true } as const;
+    return { id: created.id, ok: true } as const;
   } catch (error) {
     console.error("Error adding slides:", error);
-    throw createError("failed to add event");
+    throw createError("failed to add slides");
   }
 });
+
+type SlidesCreateType = Omit<
+  Prisma.SlidesUncheckedCreateInput,
+  "id" | "creatorId"
+>;
+
+export const createSlides = async ({
+  prisma,
+  auth,
+  data,
+}: {
+  prisma: PrismaClient;
+  auth: authType;
+  data: SlidesCreateType;
+}) => {
+  return await prisma.slides.create({
+    data: { ...data, creatorId: auth.decoded.id },
+  });
+};

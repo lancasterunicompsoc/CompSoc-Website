@@ -2,7 +2,7 @@ import type { jwtPayloadType } from "~/utils/jwt";
 import { userRoles } from "~/utils/roles";
 import { verifyJWT } from "~/utils/jwt";
 
-type authType = {
+export type authType = {
   jwt: string;
   decoded: jwtPayloadType;
   isAdmin: boolean;

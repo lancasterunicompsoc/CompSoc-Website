@@ -1,7 +1,11 @@
 import { useValidatedBody, z } from "h3-zod";
+import { createSlides } from "../slides/index.post";
 
 export default defineEventHandler(async event => {
-  if (!event.context.auth?.isAdmin) {
+  const {
+    context: { auth, prisma },
+  } = event;
+  if (!auth?.isAdmin) {
     throw new Error("you do not belong here");
   }
   try {
@@ -35,7 +39,7 @@ export default defineEventHandler(async event => {
     );
 
     // Use Prisma to create a new event
-    const newEvent = await event.context.prisma.event.create({
+    const newEvent = await prisma.event.create({
       data: {
         name,
         location,
@@ -50,6 +54,14 @@ export default defineEventHandler(async event => {
         difficulty,
       },
     });
+
+    if (slides && slides.startsWith("http")) {
+      await createSlides({
+        prisma,
+        auth,
+        data: { name, speaker: organizer, link: slides },
+      });
+    }
     // Send the ID of the newly created event in the response
     return { id: newEvent.id, ok: true } as const;
   } catch (error) {
