@@ -28,8 +28,8 @@ const formData = ref<formType>({
   slides: props?.formValues?.slides ?? "",
   image: props?.formValues?.image ?? "",
   organizer: props?.formValues?.organizer ?? "",
-  unixStartTime: props?.formValues?.unixStartTime ?? 0,
-  unixEndTime: props?.formValues?.unixEndTime ?? 0,
+  unixStartTime: props?.formValues?.unixStartTime ?? dateToUnix(new Date()),
+  unixEndTime: props?.formValues?.unixEndTime ?? dateToUnix(new Date()),
   difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
 
