@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/stores/auth";
-
-const { isAdmin, jwt, isLoggedIn } = storeToRefs(useAuthStore());
-
 export type SlidesType = {
   id: string;
   link: string;
   name: string;
-  talkOrganizerName: string;
+  speaker: string;
   createdAt: Date;
   updatedAt: Date;
   creatorId: string;
@@ -25,13 +20,10 @@ const props = defineProps<{ slides: SlidesType }>();
           <h3 class="text-2xl font-bold">
             {{ props.slides.name }}
           </h3>
-          <p>{{ props.slides.talkOrganizerName }}</p>
+          <p>{{ props.slides.speaker }}</p>
         </div>
         <span>{{ convertToLocalDate(props.slides.createdAt) }}</span>
       </div>
     </a>
-    <!-- <div v-if="isAdmin" class="my-4">
-      <EventsIconEdit class="cursor-pointer" />
-    </div> -->
   </div>
 </template>

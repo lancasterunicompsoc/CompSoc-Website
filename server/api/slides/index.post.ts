@@ -9,19 +9,19 @@ export default defineEventHandler(async event => {
     throw new Error("you do not belong here");
   }
   try {
-    const { name, link, talkOrganizerName } = await useValidatedBody(
+    const { name, link, speaker } = await useValidatedBody(
       event,
       z.object({
         name: z.string().min(1),
         link: z.string().min(1),
-        talkOrganizerName: z.string(),
+        speaker: z.string(),
       }),
     );
     const newEvent = await prisma.slides.create({
       data: {
         name,
         link,
-        talkOrganizerName,
+        speaker,
         creatorId: auth.decoded?.id,
       },
     });
