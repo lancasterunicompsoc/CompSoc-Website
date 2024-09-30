@@ -15,17 +15,24 @@ declare module "h3" {
 }
 
 export default eventHandler(event => {
-  if (!libsql) {
-    libsql = createClient({
-      url: `${config.turso_database_url}`,
-      authToken: `${config.turso_auth_token}`,
-    });
-  }
-  if (!adapter) {
-    adapter = new PrismaLibSQL(libsql);
-  }
-  if (!prisma) {
-    prisma = new PrismaClient({ adapter });
+  // use local sqlite for development
+  if (import.meta.dev) {
+    if (!prisma) {
+      prisma = new PrismaClient();
+    }
+  } else {
+    if (!libsql) {
+      libsql = createClient({
+        url: `${config.turso_database_url}`,
+        authToken: `${config.turso_auth_token}`,
+      });
+    }
+    if (!adapter) {
+      adapter = new PrismaLibSQL(libsql);
+    }
+    if (!prisma) {
+      prisma = new PrismaClient({ adapter });
+    }
   }
   event.context.prisma = prisma;
 });
