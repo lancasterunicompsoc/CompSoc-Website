@@ -1,4 +1,30 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "~/stores/auth";
+
+const authStore = useAuthStore();
+const { isAdmin, jwt } = storeToRefs(authStore);
+
+const deleteSlides = () => {
+  $fetch<{ ok: boolean }>("/api/slides", {
+    method: "DELETE",
+    headers: {
+      Bearer: jwt.value,
+    },
+    body: { id: props.slides.id },
+  })
+    .then(response => {
+      if (!response.ok) {
+        console.error("Failed to delete event.");
+      }
+      // forces refresh of data
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+};
+
 export type SlidesType = {
   id: string;
   link: string;
@@ -25,5 +51,8 @@ const props = defineProps<{ slides: SlidesType }>();
         <span>{{ convertToLocalDate(props.slides.createdAt) }}</span>
       </div>
     </a>
+    <div v-if="isAdmin">
+      <EventsIconDelete class="cursor-pointer" @click="deleteSlides" />
+    </div>
   </div>
 </template>
