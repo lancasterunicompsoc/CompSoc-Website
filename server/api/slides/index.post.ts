@@ -1,15 +1,14 @@
 import type { PrismaClient, Prisma } from "@prisma/client";
 import { useValidatedBody, z } from "h3-zod";
-import type { authType } from "~/server/middleware/1.auth";
+import { ensureIsAdmin, type authType } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
     context: { prisma, auth },
   } = event;
 
-  if (!auth?.isAdmin) {
-    throw new Error("you do not belong here");
-  }
+  ensureIsAdmin(event);
+
   try {
     const { name, link, speaker } = await useValidatedBody(
       event,

@@ -1,11 +1,11 @@
 import { useValidatedBody } from "h3-zod";
 import { createError as createServerError } from "h3";
 import { z } from "zod";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
-  if (!event.context.auth?.isAdmin) {
-    throw new Error("you do not belong here");
-  }
+  ensureIsAdmin(event);
+
   const { id } = await useValidatedBody(event, z.object({ id: z.string() }));
 
   const {

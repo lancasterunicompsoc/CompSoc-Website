@@ -10,7 +10,6 @@ const slidesData = await useFetch("/api/slides/", {
   },
 });
 
-// TODO: deserialize the data from unixtime
 const { data, status } = slidesData;
 </script>
 

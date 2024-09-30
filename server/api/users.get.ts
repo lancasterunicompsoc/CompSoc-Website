@@ -1,9 +1,7 @@
-import { createError as createServerError } from "h3";
+import { ensureIsAdmin } from "../middleware/1.auth";
 
-export default defineEventHandler(async ({ context: { auth, prisma } }) => {
-  if (!auth?.isAdmin) {
-    throw createServerError("you do not belong here");
-  }
+export default defineEventHandler(async event => {
+  ensureIsAdmin(event);
 
-  return prisma.user.findMany();
+  return event.context.prisma.user.findMany();
 });

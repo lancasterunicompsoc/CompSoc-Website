@@ -1,15 +1,12 @@
-import { createError as createServerError } from "h3";
+import { createError as createServerError, type EventHandler } from "h3";
 import { useValidatedQuery, z } from "h3-zod";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
-    context: { auth, prisma },
+    context: { prisma },
   } = event;
-  if (!auth?.isAdmin) {
-    throw createServerError(
-      "you do not belong here, go back to where you came from",
-    );
-  }
+  ensureIsAdmin(event);
 
   const query = await useValidatedQuery(
     event,

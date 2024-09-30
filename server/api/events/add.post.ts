@@ -1,13 +1,14 @@
 import { useValidatedBody, z } from "h3-zod";
 import { createSlides } from "../slides/index.post";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
     context: { auth, prisma },
   } = event;
-  if (!auth?.isAdmin) {
-    throw new Error("you do not belong here");
-  }
+
+  ensureIsAdmin(event);
+
   try {
     const {
       name,

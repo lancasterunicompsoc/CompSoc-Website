@@ -1,13 +1,13 @@
 import { useValidatedBody, z } from "h3-zod";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
-    context: { prisma, auth },
+    context: { prisma },
   } = event;
 
-  if (!auth?.isAdmin) {
-    throw new Error("you do not belong here");
-  }
+  ensureIsAdmin(event);
+
   try {
     const { id } = await useValidatedBody(
       event,
