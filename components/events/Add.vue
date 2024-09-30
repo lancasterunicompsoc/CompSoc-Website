@@ -2,7 +2,6 @@
 import IconBack from "../SVG/IconBack.vue";
 import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
-import SGD from "~/components/SGD.vue";
 
 type formType = Omit<EventType, "id"> & { id?: string };
 type formWithoutId = Omit<EventType, "id">;
@@ -103,7 +102,6 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
-        <SGD :content="formData.summary" @validate="ok => (summaryOk = ok)" />
       </div>
       <div>
         <label for="description">Description:</label>
@@ -114,10 +112,6 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
-        <SGD
-          :content="formData.description"
-          @validate="ok => (descriptionOk = ok)"
-        />
       </div>
       <div>
         <label for="image">Image:</label>
