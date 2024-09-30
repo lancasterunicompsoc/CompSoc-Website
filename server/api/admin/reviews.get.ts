@@ -5,7 +5,7 @@ export default defineEventHandler(async event => {
   const {
     context: { auth, prisma },
   } = event;
-  if (!auth || auth.decoded.role !== "ADMIN") {
+  if (!auth?.isAdmin) {
     throw createServerError(
       "you do not belong here, go back to where you came from",
     );

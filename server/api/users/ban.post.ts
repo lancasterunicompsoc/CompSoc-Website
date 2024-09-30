@@ -3,7 +3,7 @@ import { createError as createServerError } from "h3";
 import { z } from "zod";
 
 export default defineEventHandler(async event => {
-  if (event.context.auth?.decoded?.role !== "ADMIN") {
+  if (!event.context.auth?.isAdmin) {
     throw new Error("you do not belong here");
   }
   const { id } = await useValidatedBody(event, z.object({ id: z.string() }));

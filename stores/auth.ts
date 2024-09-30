@@ -76,7 +76,7 @@ export const useAuthStore = defineStore("auth", {
       }
       return false;
     },
-    isAdmin: state => state.payload?.role === "ADMIN",
+    isAdmin: state => state.payload?.role === userRoles.ADMIN,
     isExpired: state =>
       state.payload === null ||
       state.payload.exp - Math.floor(Date.now() / 1000) <= 0,

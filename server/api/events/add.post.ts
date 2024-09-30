@@ -1,6 +1,7 @@
 import { useValidatedBody, z } from "h3-zod";
+
 export default defineEventHandler(async event => {
-  if (event.context.auth?.decoded?.role !== "ADMIN") {
+  if (!event.context.auth?.isAdmin) {
     throw new Error("you do not belong here");
   }
   try {

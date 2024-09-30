@@ -4,6 +4,7 @@ import { verifyJWT } from "~/utils/jwt";
 type authType = {
   jwt: string;
   decoded: jwtPayloadType;
+  isAdmin: boolean;
 };
 
 declare module "h3" {
@@ -36,7 +37,9 @@ export default eventHandler(async event => {
       payload.role = user.role;
     }
 
-    event.context.auth = { jwt, decoded: payload };
+    const isAdmin = user.role === userRoles.ADMIN;
+
+    event.context.auth = { jwt, decoded: payload, isAdmin };
   } catch (e) {
     console.error("error while verifying jwt");
     console.error(e);

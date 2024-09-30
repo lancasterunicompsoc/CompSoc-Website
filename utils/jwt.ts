@@ -14,7 +14,7 @@ export type jwtDecodedType = {
   mail: string;
 };
 
-export type Role = "USER" | "PRIVILEGED" | "ADMIN";
+export type Role = keyof typeof userRoles;
 export type jwtPayloadType = {
   id: string;
   username: string;

@@ -1,7 +1,7 @@
 import { createError as createServerError } from "h3";
 
 export default defineEventHandler(async ({ context: { auth, prisma } }) => {
-  if (!auth || auth.decoded.role !== "ADMIN") {
+  if (!auth?.isAdmin) {
     throw createServerError("you do not belong here");
   }
 

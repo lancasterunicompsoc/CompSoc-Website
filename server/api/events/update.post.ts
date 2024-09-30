@@ -2,7 +2,7 @@ import { useValidatedBody, z } from "h3-zod";
 
 export default defineEventHandler(async event => {
   const { prisma, auth } = event.context;
-  if (auth?.decoded.role !== "ADMIN") {
+  if (!auth?.isAdmin) {
     throw createError("check your privileges");
   }
 

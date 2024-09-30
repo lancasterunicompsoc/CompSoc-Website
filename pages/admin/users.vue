@@ -85,10 +85,7 @@ function changeRole(event: Event) {
             />
           </td>
           <td class="dark:bg-#222">
-            <input
-              type="checkbox"
-              :checked="!!user.suVerified"
-            />
+            <input type="checkbox" :checked="!!user.suVerified" />
           </td>
         </tr>
       </tbody>
