@@ -1,4 +1,5 @@
 import type { jwtPayloadType } from "~/utils/jwt";
+import { userRoles } from "~/utils/roles";
 import { verifyJWT } from "~/utils/jwt";
 
 type authType = {

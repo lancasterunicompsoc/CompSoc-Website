@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
-import { createClient, type Client } from "@libsql/client";
+// import { PrismaLibSQL } from "@prisma/adapter-libsql";
+// import { createClient, type Client } from "@libsql/client";
 
 const config = useRuntimeConfig();
 
@@ -15,17 +15,17 @@ declare module "h3" {
 }
 
 export default eventHandler(event => {
-  if (!libsql) {
-    libsql = createClient({
-      url: `${config.turso_database_url}`,
-      authToken: `${config.turso_auth_token}`,
-    });
-  }
-  if (!adapter) {
-    adapter = new PrismaLibSQL(libsql);
-  }
+  // if (!libsql) {
+  //   libsql = createClient({
+  //     url: `${config.turso_database_url}`,
+  //     authToken: `${config.turso_auth_token}`,
+  //   });
+  // }
+  // if (!adapter) {
+  //   adapter = new PrismaLibSQL(libsql);
+  // }
   if (!prisma) {
-    prisma = new PrismaClient({ adapter });
+    prisma = new PrismaClient();
   }
   event.context.prisma = prisma;
 });

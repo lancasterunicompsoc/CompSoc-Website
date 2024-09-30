@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { userRoles } from "~/utils/roles";
 
 export type jwtMetadataType = {
   iss?: string;

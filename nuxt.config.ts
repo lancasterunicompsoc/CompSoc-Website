@@ -12,14 +12,19 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
   ],
+
   build: {
     transpile: ["trpc-nuxt"],
   },
+
   css: ["@unocss/reset/tailwind.css"],
+
   typescript: {
     shim: false,
   },
+
   ssr: true,
+
   runtimeConfig: {
     iss_jwt_secret: "", // override using NUXT_SECRET in .env,
     site_jwt_secret: "",
@@ -31,6 +36,7 @@ export default defineNuxtConfig({
       login_url: "",
     },
   },
+
   app: {
     head: {
       title: "LUCompSoc",
@@ -46,13 +52,13 @@ export default defineNuxtConfig({
       },
     },
   },
+
   routeRules: {
     "/img/**": {
       headers: {
         "Cache-Control": "max-age=604800, public",
       },
     },
-    "/slides": { redirect: "https://slides.compsoc.io" },
     "/discord": { redirect: "https://discord.gg/compsoc" },
     "/github": { redirect: "https://github.com/LUCompSoc" },
     "/github/CompSoc-Website": {
@@ -65,10 +71,13 @@ export default defineNuxtConfig({
     "/join": { redirect: joinLink },
     "/admin/reviews": { redirect: "/admin/reviews/0" },
   },
+
   colorMode: {
     preference: "system", // default value of $colorMode.preference
     fallback: "dark", // fallback value if not system preference found
     storageKey: "nuxt-color-mode",
     classSuffix: "",
   },
+
+  compatibilityDate: "2024-09-30",
 });

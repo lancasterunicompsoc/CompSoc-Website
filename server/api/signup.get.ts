@@ -1,4 +1,5 @@
 import { createError as createServerError } from "h3";
+import { userRoles } from "~/utils/roles";
 import { verifyIssJwt, createJWT } from "~/utils/jwt";
 
 export default defineEventHandler(async event => {

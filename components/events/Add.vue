@@ -32,14 +32,12 @@ const formData = ref<formType>({
   unixEndTime: props?.formValues?.unixEndTime ?? 0,
   difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
-const summaryOk = ref(false);
-const descriptionOk = ref(false);
 
 const inputStartTime = ref(
-  convertToLocalDate(unixToDate(formData.value.unixStartTime)),
+  convertToLocalDateTime(unixToDate(formData.value.unixStartTime)),
 );
 const inputEndTime = ref(
-  convertToLocalDate(unixToDate(formData.value.unixEndTime)),
+  convertToLocalDateTime(unixToDate(formData.value.unixEndTime)),
 );
 
 function addEvent() {
@@ -201,7 +199,6 @@ function addEvent() {
       <button
         class="submit bg-#ddd dark:bg-lightgrey float-right"
         type="submit"
-        :disabled="!(summaryOk && descriptionOk)"
       >
         <template v-if="isEdit">Save Changes</template>
         <template v-else>Add Event</template>

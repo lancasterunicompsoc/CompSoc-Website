@@ -18,6 +18,7 @@ model User {
   role        String   @default("USER") // one of USER, PRIVILEGED, or ADMIN
   username    String   @unique
   reviews     Review[]
+  Slides      Slides[]
 
   @@index([id, username])
 }
@@ -38,6 +39,20 @@ model Event {
   hidden        Boolean        @default(false)
   reviews       Review[]
   announcement  Announcement[]
+}
+
+model Slides {
+  id                String   @id @default(cuid())
+  link              String
+  name              String
+  talkOrganizerName String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  creator           User     @relation(fields: [creatorId], references: [id])
+
+  creatorId String
+
+  @@index([creatorId])
 }
 
 model Announcement {
