@@ -56,6 +56,7 @@ export async function createJWT(
     id: user.id,
     username,
     banned: user.banned,
+    // @ts-expect-error yeah yeah dw ts
     role: user.role,
     displayName: user.displayName,
     mail: user.mail,

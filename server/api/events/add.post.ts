@@ -25,12 +25,7 @@ export default defineEventHandler(async event => {
         mazemapLink: z.string(),
         summary: z.string().min(1),
         description: z.string().min(1),
-        slides: z
-          .string()
-          .refine(
-            value =>
-              value.startsWith("https://slides.compsoc.io/") || value === "",
-          ),
+        slides: z.string(),
         image: z.string(),
         organizer: z.string().min(1),
         unixStartTime: z.number(),
