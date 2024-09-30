@@ -99,11 +99,13 @@ const handleEventFilter = () => {
       <button @click="reviewsRefresh" class="btn">Refresh</button>
       <table class="mt-8 dark:bg-#222">
         <thead class="dark:bg-#222">
-          <th class="dark:bg-#222">Event</th>
-          <th class="dark:bg-#222">User</th>
-          <th class="dark:bg-#222">Rating</th>
-          <th class="dark:bg-#222">Comment</th>
-          <th class="dark:bg-#222">Timestamp</th>
+          <tr>
+            <th class="dark:bg-#222">Event</th>
+            <th class="dark:bg-#222">User</th>
+            <th class="dark:bg-#222">Rating</th>
+            <th class="dark:bg-#222">Comment</th>
+            <th class="dark:bg-#222">Timestamp</th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="review in reviewsData" :key="review.id">
