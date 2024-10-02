@@ -28,7 +28,7 @@
     </Card>
 
     <a
-      href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
+      href="https://lancastersu.co.uk/groups/compsoc-2be7"
       class="button btn centered"
     >
       Join the society

@@ -1,4 +1,4 @@
-const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7/join";
+const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
