@@ -23,7 +23,7 @@
     >
       <NuxtLink class="hover:bg-darkred" to="/about">About Us</NuxtLink>
       <NuxtLink class="hover:bg-darkred" to="/events">Events</NuxtLink>
-      <a class="hover:bg-darkred" href="https://slides.compsoc.io/">Slides</a>
+      <NuxtLink class="hover:bg-darkred" to="/slides">Slides</NuxtLink>
       <a class="hover:bg-darkred" href="https://photos.compsoc.io/">Photos</a>
       <template v-if="authStore.isAdmin">
         <NuxtLink class="hover:bg-darkred" to="/admin/users">Users</NuxtLink>

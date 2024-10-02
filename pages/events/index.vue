@@ -108,6 +108,7 @@ const confirmAndRunWebhook = async () => {
             <Event :event="event" :is-full-size="false" />
           </NuxtLink>
         </li>
+        <li v-if="allEvents.length === 0">No upcoming events...</li>
       </ul>
     </div>
   </main>

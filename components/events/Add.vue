@@ -2,7 +2,6 @@
 import IconBack from "../SVG/IconBack.vue";
 import { EventDifficulty } from "./utils";
 import type { EventType } from "./utils";
-import SGD from "~/components/SGD.vue";
 
 type formType = Omit<EventType, "id"> & { id?: string };
 type formWithoutId = Omit<EventType, "id">;
@@ -29,18 +28,16 @@ const formData = ref<formType>({
   slides: props?.formValues?.slides ?? "",
   image: props?.formValues?.image ?? "",
   organizer: props?.formValues?.organizer ?? "",
-  unixStartTime: props?.formValues?.unixStartTime ?? 0,
-  unixEndTime: props?.formValues?.unixEndTime ?? 0,
+  unixStartTime: props?.formValues?.unixStartTime ?? dateToUnix(new Date()),
+  unixEndTime: props?.formValues?.unixEndTime ?? dateToUnix(new Date()),
   difficulty: props?.formValues?.difficulty ?? EventDifficulty.EASY,
 });
-const summaryOk = ref(false);
-const descriptionOk = ref(false);
 
 const inputStartTime = ref(
-  convertToLocalDate(unixToDate(formData.value.unixStartTime)),
+  convertToLocalDateTime(unixToDate(formData.value.unixStartTime)),
 );
 const inputEndTime = ref(
-  convertToLocalDate(unixToDate(formData.value.unixEndTime)),
+  convertToLocalDateTime(unixToDate(formData.value.unixEndTime)),
 );
 
 function addEvent() {
@@ -103,7 +100,6 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
-        <SGD :content="formData.summary" @validate="ok => (summaryOk = ok)" />
       </div>
       <div>
         <label for="description">Description:</label>
@@ -114,10 +110,6 @@ function addEvent() {
           type="datetime-local"
           required
         ></textarea>
-        <SGD
-          :content="formData.description"
-          @validate="ok => (descriptionOk = ok)"
-        />
       </div>
       <div>
         <label for="image">Image:</label>
@@ -207,7 +199,6 @@ function addEvent() {
       <button
         class="submit bg-#ddd dark:bg-lightgrey float-right"
         type="submit"
-        :disabled="!(summaryOk && descriptionOk)"
       >
         <template v-if="isEdit">Save Changes</template>
         <template v-else>Add Event</template>

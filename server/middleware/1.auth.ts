@@ -1,9 +1,12 @@
 import type { jwtPayloadType } from "~/utils/jwt";
+import { type H3Event, createError } from "h3";
+import { userRoles } from "~/utils/roles";
 import { verifyJWT } from "~/utils/jwt";
 
-type authType = {
+export type authType = {
   jwt: string;
   decoded: jwtPayloadType;
+  isAdmin: boolean;
 };
 
 declare module "h3" {
@@ -11,6 +14,12 @@ declare module "h3" {
     auth?: authType;
   }
 }
+
+export const ensureIsAdmin = (event: H3Event) => {
+  if (!event.context.auth?.isAdmin) {
+    throw createError({ statusCode: 401, statusMessage: "unauthenticated" });
+  }
+};
 
 export default eventHandler(async event => {
   const jwt = getRequestHeader(event, "Bearer");
@@ -36,7 +45,9 @@ export default eventHandler(async event => {
       payload.role = user.role;
     }
 
-    event.context.auth = { jwt, decoded: payload };
+    const isAdmin = user.role === userRoles.ADMIN;
+
+    event.context.auth = { jwt, decoded: payload, isAdmin };
   } catch (e) {
     console.error("error while verifying jwt");
     console.error(e);
