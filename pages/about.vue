@@ -7,7 +7,7 @@
         in computing and technology among students and wider society. Social and
         educational events are run every week, with beginner and advanced topics
         to cover a wide variety of interests. See our
-        <NuxtLink to="/events">
+        <NuxtLink to="/events" class="text-blue-600 dark:text-blue-500">
           events
         </NuxtLink> for more information.
       </p>
@@ -21,14 +21,14 @@
         acquire funding, and generally make the Society function. The Exec is
         voted for by the members, and each role is typically held for a year.
         More information about the Exec can be found in the
-        <NuxtLink to="/constitution">
+        <NuxtLink to="/constitution" class="text-blue-600 dark:text-blue-500">
           Constitution
         </NuxtLink>.
       </p>
     </Card>
 
     <a
-      href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
+      href="https://lancastersu.co.uk/groups/compsoc-2be7"
       class="button btn centered"
     >
       Join the society

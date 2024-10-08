@@ -1,10 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("NUXT_DATABASE_URL")
+  provider     = "sqlite"
+  url          = "file:./db.sqlite"
   relationMode = "prisma"
 }
 
@@ -14,7 +15,7 @@ model User {
   suVerified  Boolean? @default(false)
   displayName String
   mail        String
-  role        Role     @default(USER)
+  role        String   @default("USER") // one of USER, PRIVILEGED, or ADMIN
   username    String   @unique
   reviews     Review[]
 
@@ -22,19 +23,19 @@ model User {
 }
 
 model Event {
-  id            Int             @id @default(autoincrement())
-  name          String          @db.LongText
-  location      String          @db.LongText
-  mazemapLink   String          @default("") @db.VarChar(2048)
-  summary       String          @db.LongText
-  description   String          @db.LongText
-  slides        String          @db.LongText
+  id            Int            @id @default(autoincrement())
+  name          String
+  location      String
+  mazemapLink   String         @default("")
+  summary       String
+  description   String
+  slides        String
   organizer     String
-  difficulty    EventDifficulty
-  image         String?         @db.LongText
+  difficulty    String // one of EASY, HARD, or SOCIAL
+  image         String?
   unixEndTime   Int
   unixStartTime Int
-  hidden        Boolean         @default(false)
+  hidden        Boolean        @default(false)
   reviews       Review[]
   announcement  Announcement[]
 }
@@ -55,21 +56,21 @@ model Review {
   user      User   @relation(fields: [userId], references: [id])
   userId    String
   rating    Int
-  comment   String @db.LongText
+  comment   String
 
   @@unique([eventId, userId])
   @@index([eventId])
   @@index([userId])
 }
 
-enum EventDifficulty {
-  EASY
-  HARD
-  SOCIAL
-}
+// enum EventDifficulty {
+//   EASY
+//   HARD
+//   SOCIAL
+// }
 
-enum Role {
-  USER
-  PRIVILEGED
-  ADMIN
-}
+// enum Role {
+//   USER
+//   PRIVILEGED
+//   ADMIN
+// }

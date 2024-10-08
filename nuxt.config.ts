@@ -1,4 +1,4 @@
-const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7/join";
+const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/content",
     "@unocss/nuxt",
-    "nuxt-icon",
+    "@nuxt/icon",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
   ],
@@ -21,8 +21,10 @@ export default defineNuxtConfig({
   },
   ssr: true,
   runtimeConfig: {
-    secret: "", // override using NUXT_SECRET in .env
-    database_url: "", // same here
+    iss_jwt_secret: "", // override using NUXT_SECRET in .env,
+    site_jwt_secret: "",
+    turso_auth_token: "",
+    turso_database_url: "",
     discord_id: "",
     discord_token: "",
     public: {
@@ -51,7 +53,7 @@ export default defineNuxtConfig({
       },
     },
     "/slides": { redirect: "https://slides.compsoc.io" },
-    "/discord": { redirect: "https://discord.gg/zH5MsZCrJG" },
+    "/discord": { redirect: "https://discord.gg/compsoc" },
     "/github": { redirect: "https://github.com/LUCompSoc" },
     "/github/CompSoc-Website": {
       redirect: "https://github.com/lancasterunicompsoc/CompSoc-Website",

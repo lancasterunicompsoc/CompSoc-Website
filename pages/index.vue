@@ -1,33 +1,25 @@
-<script setup lang="ts">
-const Terminal = defineAsyncComponent(
-  () => import("~/components/Terminal/index.vue"),
-);
-
-const clippyMessage = `It looks like you're interested in Computer Science.
-Why not join CompSoc?`;
-</script>
-
 <template>
   <main class="main-container">
-    <div class="clippy-row">
-      <Clippy style="height: 75vh" :message="clippyMessage" />
-
-      <div class="pt-16">
-        <a href="/join" class="button block text-white text-size-10">
-          Join
-        </a>
-      </div>
-    </div>
-
-    <Suspense>
-      <ClientOnly>
-        <Terminal />
-      </ClientOnly>
-    </Suspense>
+    <p class="info-line">
+      This Website is changing, please stay tuned.
+    </p>
 
     <p class="info-line">
       Lancaster University Computer Science Society exists to promote interest
       in computing and technology among students and wider society.
+    </p>
+
+    <div class="row">
+      <a href="/join" class="button block text-white text-size-5">
+        Join the Society
+      </a>
+    </div>
+
+    <p class="info-line">
+      Previously on this front page was a
+      <NuxtLink to="/terminal" class="link">
+        Toy Terminal Emulator</NuxtLink>,
+      which has now been moved to its own page.
     </p>
   </main>
 </template>
@@ -40,19 +32,25 @@ Why not join CompSoc?`;
   padding: 1rem 2rem;
   text-align: center;
 }
+
 .info-line {
   text-align: center;
 }
 
-.clippy-row {
+.row {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
 }
 
-@media (max-width: 30rem) {
-  .clippy-row {
+.link {
+  color: var(--highlight2);
+  text-decoration: underline;
+}
+
+@media (max-width: 35rem) {
+  .row {
     flex-direction: column;
   }
 }

@@ -6,7 +6,7 @@ export const whoami = (state: State): string => {
 };
 
 const join: CommandHandler = (_state, _params) => {
-  navigateTo("https://lancastersu.co.uk/groups/compsoc-2be7/join", {
+  navigateTo("https://lancastersu.co.uk/groups/compsoc-2be7", {
     external: true,
   });
 };

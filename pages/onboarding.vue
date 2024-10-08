@@ -6,7 +6,7 @@
         society over at the Lancaster University Student Union page
       </h1>
       <a
-        href="https://lancastersu.co.uk/groups/compsoc-2be7/join"
+        href="https://lancastersu.co.uk/groups/compsoc-2be7"
         class="bg-highlight1Light hover:bg-highlight2Light dark:bg-highlight1Dark dark:hover:bg-highlight2Dark block w-fit p-4 mt-8"
       >
         Join the society

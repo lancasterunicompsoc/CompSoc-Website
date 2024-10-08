@@ -9,3 +9,4 @@ dist
 .idea/
 db.sqlite
 .DS_Store
+prisma/db.sqlite-journal

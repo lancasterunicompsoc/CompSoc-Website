@@ -2,8 +2,9 @@ import type { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { jwtVerify as joseJwtVerify } from "jose";
 
-const { secret } = useRuntimeConfig();
-const encodedSecret = new TextEncoder().encode(secret);
+// eslint-disable-next-line camelcase
+const { iss_jwt_secret, site_jwt_secret } = useRuntimeConfig();
+const encodedIssSecret = new TextEncoder().encode(iss_jwt_secret);
 
 export type jwtDecodedType = {
   iat: number;
@@ -24,14 +25,14 @@ export type jwtPayloadType = {
 };
 
 export async function verifyIssJwt(jwt: string): Promise<jwtDecodedType> {
-  const { payload } = await joseJwtVerify(jwt, encodedSecret, {
+  const { payload } = await joseJwtVerify(jwt, encodedIssSecret, {
     clockTolerance: 60, // due to ISS issuing tokens which only last for 5 seconds, people on a bad connection might have troubles completing the login cycle in less than 5s
   });
   return payload as unknown as jwtDecodedType;
 }
 
 export async function verifyJWT(token: string) {
-  return jwt.verify(token, secret) as jwtPayloadType & {
+  return jwt.verify(token, site_jwt_secret) as jwtPayloadType & {
     iat: number;
     exp: number;
   };
@@ -60,7 +61,7 @@ export async function createJWT(
     mail: user.mail,
   };
 
-  return jwt.sign(payload, secret, {
+  return jwt.sign(payload, site_jwt_secret, {
     expiresIn: "1 week",
     issuer: "compsoc",
   });
