@@ -1,3 +1,3 @@
 export default defineEventHandler(event => {
-  console.log(event.context.auth);
+  console.log(`authenticated request from ${event.context.auth?.decoded.username}`);
 });

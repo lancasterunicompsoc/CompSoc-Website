@@ -8,4 +8,5 @@ dist
 .tools/
 .idea/
 db.sqlite
+.DS_Store
 prisma/db.sqlite-journal
