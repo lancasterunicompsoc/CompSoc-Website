@@ -4,7 +4,7 @@ import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
-    context: { auth, prisma },
+    context: { prisma },
   } = event;
 
   ensureIsAdmin(event);
@@ -16,7 +16,6 @@ export default defineEventHandler(async event => {
       mazemapLink,
       summary,
       description,
-      slides,
       image,
       organizer,
       unixStartTime,
@@ -30,7 +29,6 @@ export default defineEventHandler(async event => {
         mazemapLink: z.string(),
         summary: z.string().min(1),
         description: z.string().min(1),
-        slides: z.string(),
         image: z.string(),
         organizer: z.string().min(1),
         unixStartTime: z.number(),
@@ -47,7 +45,6 @@ export default defineEventHandler(async event => {
         mazemapLink,
         summary,
         description,
-        slides,
         image,
         organizer,
         unixStartTime,
@@ -56,13 +53,6 @@ export default defineEventHandler(async event => {
       },
     });
 
-    if (slides && slides.startsWith("http")) {
-      await createSlides({
-        prisma,
-        auth,
-        data: { name, speaker: organizer, link: slides },
-      });
-    }
     // Send the ID of the newly created event in the response
     return { id: newEvent.id, ok: true } as const;
   } catch (error) {

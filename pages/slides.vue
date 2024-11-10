@@ -15,6 +15,9 @@ const { data, status } = slidesData;
 
 <template>
   <div class="flex flex-col p-8 items-center">
+    <div v-if="authStore.isAdmin">
+      <NuxtLink class="btn" to="/admin/slides/new">Upload slides</NuxtLink>
+    </div>
     <div v-if="status === 'pending'">Loading...</div>
     <div v-if="status === 'success'">
       <ul v-for="slides in data" :key="slides.id">

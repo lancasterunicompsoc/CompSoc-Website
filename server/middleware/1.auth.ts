@@ -21,6 +21,26 @@ export const ensureIsAdmin = (event: H3Event) => {
   }
 };
 
+export async function authenticate(event: H3Event, jwt: string) {
+  const payload = await verifyJWT(jwt);
+  const { prisma } = event.context;
+  const user = await prisma.user.findUnique({
+    where: { username: payload.username },
+  });
+  if (!user) {
+    throw new Error("error while verifying request");
+  }
+
+  if (user.banned) {
+    throw new Error("banned user");
+  }
+
+  if (user.role !== payload.role) {
+    payload.role = user.role;
+  }
+  return { user, payload };
+}
+
 export default eventHandler(async event => {
   const jwt = getRequestHeader(event, "Bearer");
   if (!jwt || jwt === "undefined") {
@@ -28,22 +48,7 @@ export default eventHandler(async event => {
   }
 
   try {
-    const payload = await verifyJWT(jwt);
-    const { prisma } = event.context;
-    const user = await prisma.user.findUnique({
-      where: { username: payload.username },
-    });
-    if (!user) {
-      throw new Error("error while verifying request");
-    }
-
-    if (user.banned) {
-      throw new Error("banned user");
-    }
-
-    if (user.role !== payload.role) {
-      payload.role = user.role;
-    }
+    const { user, payload } = await authenticate(event, jwt);
 
     const isAdmin = user.role === userRoles.ADMIN;
 

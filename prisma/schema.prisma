@@ -18,7 +18,6 @@ model User {
   role        String   @default("USER") // one of USER, PRIVILEGED, or ADMIN
   username    String   @unique
   reviews     Review[]
-  Slides      Slides[]
 
   @@index([id, username])
 }
@@ -30,7 +29,6 @@ model Event {
   mazemapLink   String         @default("")
   summary       String
   description   String
-  slides        String
   organizer     String
   difficulty    String // one of EASY, HARD, or SOCIAL
   image         String?
@@ -39,20 +37,22 @@ model Event {
   hidden        Boolean        @default(false)
   reviews       Review[]
   announcement  Announcement[]
+  Slides        Slides?
 }
 
 model Slides {
   id        String   @id @default(cuid())
-  link      String
   name      String
   speaker   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  creator   User     @relation(fields: [creatorId], references: [id])
+  link      String
+  mimetype  String
+  event     Event?   @relation(fields: [eventId], references: [id])
 
-  creatorId String
+  eventId Int? @unique
 
-  @@index([creatorId])
+  @@index([eventId])
 }
 
 model Announcement {

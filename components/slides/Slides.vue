@@ -9,7 +9,7 @@ const deleteSlides = () => {
   $fetch<{ ok: boolean }>("/api/slides", {
     method: "DELETE",
     headers: {
-      Bearer: jwt.value,
+      Bearer: jwt.value as string,
     },
     body: { id: props.slides.id },
   })
