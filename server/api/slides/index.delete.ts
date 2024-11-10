@@ -27,8 +27,11 @@ export default defineEventHandler(async event => {
       });
     }
 
-    // delete the blob at vercel storage
-    await del(slides.link);
+    // delete the blob at vercel storage, but only if its stored on that
+    // the links look smth like this: https://1vzq7232vosxriru.public.blob.vercel-storage.com/ocaml-Gs5v4y8AhydfulkQl2hrlEP6cwFlXX.jpg
+    if (slides.link.search(/blob\.vercel-storage\.com\//) !== -1) {
+      await del(slides.link);
+    }
 
     await prisma.slides.delete({ where: { id } });
 
