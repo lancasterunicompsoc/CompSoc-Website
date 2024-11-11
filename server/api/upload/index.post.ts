@@ -96,7 +96,6 @@ export const createSlides = async ({
   prisma: PrismaClient;
   data: SlidesCreateType;
 }) => {
-  // TODO: this function just isn't working it appears
   return prisma.slides.create({
     data,
   });
