@@ -1,30 +1,28 @@
 import type { PrismaClient, Prisma } from "@prisma/client";
 import { useValidatedBody, z } from "h3-zod";
-import { ensureIsAdmin, type authType } from "~/server/middleware/1.auth";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
   const {
-    context: { prisma, auth },
+    context: { prisma },
   } = event;
 
   ensureIsAdmin(event);
 
   try {
-    const { name, link, speaker } = await useValidatedBody(
+    const data = await useValidatedBody(
       event,
       z.object({
         name: z.string().min(1),
         link: z.string().min(1),
+        mimetype: z.string().min(1),
         speaker: z.string(),
       }),
     );
 
-    const checkedAuth = auth!;
-
     const created = await createSlides({
       prisma,
-      auth: checkedAuth,
-      data: { name, link, speaker, mimetype: "" },
+      data,
     });
     return { id: created.id, ok: true } as const;
   } catch (error) {
@@ -33,21 +31,16 @@ export default defineEventHandler(async event => {
   }
 });
 
-type SlidesCreateType = Omit<
-  Prisma.SlidesUncheckedCreateInput,
-  "id" /*| "creatorId"*/
->;
+type SlidesCreateType = Omit<Prisma.SlidesUncheckedCreateInput, "id">;
 
 export const createSlides = async ({
   prisma,
-  auth,
   data,
 }: {
   prisma: PrismaClient;
-  auth: authType;
   data: SlidesCreateType;
 }) => {
   return await prisma.slides.create({
-    data: { ...data, /*creatorId: auth.decoded.id,*/ },
+    data: { ...data },
   });
 };
