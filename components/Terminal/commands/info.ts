@@ -29,7 +29,7 @@ const info: CommandHandler = (_state, params, { stdout }) => {
 };
 
 const neofetch: CommandHandler = (state, _params, { stdout }) => {
-  const n = stdout.writeln(`${whoami(state, [])}@compsoc.io`);
+  const n = stdout.writeln(`${whoami(state)}@compsoc.io`);
   stdout.writeln("-".repeat(n - 1));
   stdout.writeln(`OS: ${systemInfo.os.name} (${systemInfo.os.edition})`);
   stdout.writeln(`Shell: ${systemInfo.shell.name} ${systemInfo.shell.version}`);

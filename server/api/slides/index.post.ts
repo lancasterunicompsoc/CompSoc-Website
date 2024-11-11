@@ -19,10 +19,12 @@ export default defineEventHandler(async event => {
       }),
     );
 
+    const checkedAuth = auth!;
+
     const created = await createSlides({
       prisma,
-      auth,
-      data: { name, link, speaker },
+      auth: checkedAuth,
+      data: { name, link, speaker, mimetype: "" },
     });
     return { id: created.id, ok: true } as const;
   } catch (error) {
@@ -33,7 +35,7 @@ export default defineEventHandler(async event => {
 
 type SlidesCreateType = Omit<
   Prisma.SlidesUncheckedCreateInput,
-  "id" | "creatorId"
+  "id" /*| "creatorId"*/
 >;
 
 export const createSlides = async ({
@@ -46,6 +48,6 @@ export const createSlides = async ({
   data: SlidesCreateType;
 }) => {
   return await prisma.slides.create({
-    data: { ...data, creatorId: auth.decoded.id },
+    data: { ...data, /*creatorId: auth.decoded.id,*/ },
   });
 };
