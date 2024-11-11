@@ -64,6 +64,8 @@ export default defineNuxtConfig({
     "/start": { redirect: joinLink },
     "/join": { redirect: joinLink },
     "/admin/reviews": { redirect: "/admin/reviews/0" },
+    "/bright-signup": { redirect: "https://www.brightnetwork.co.uk/signup/?utm_medium=university&utm_source=society&utm_campaign=referral_challenge_2024&utm_content=the_computer_science_society_of_lancaster_university_lancaster_university" },
+    
   },
   colorMode: {
     preference: "system", // default value of $colorMode.preference
