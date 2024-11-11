@@ -29,6 +29,7 @@ model Event {
   mazemapLink   String         @default("")
   summary       String
   description   String
+  slides        String
   organizer     String
   difficulty    String // one of EASY, HARD, or SOCIAL
   image         String?

@@ -13,6 +13,7 @@ export type EventType = {
   mazemapLink: string;
   summary: string;
   description: string;
+  slides: string;
   image: string;
   organizer: string;
   unixStartTime: number;

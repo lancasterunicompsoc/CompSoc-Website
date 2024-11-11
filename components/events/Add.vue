@@ -25,6 +25,7 @@ const formData = ref<formType>({
   mazemapLink: props?.formValues?.mazemapLink ?? "",
   summary: props?.formValues?.summary ?? "",
   description: props?.formValues?.description ?? "",
+  slides: props?.formValues?.slides ?? "",
   image: props?.formValues?.image ?? "",
   organizer: props?.formValues?.organizer ?? "",
   unixStartTime: props?.formValues?.unixStartTime ?? dateToUnix(new Date()),
@@ -115,6 +116,15 @@ function addEvent() {
         <input
           id="image"
           v-model="formData.image"
+          class="bg-#ddd dark:bg-lightgrey"
+          type="text"
+        />
+      </div>
+      <div>
+        <label for="slides">Slides:</label>
+        <input
+          id="slides"
+          v-model="formData.slides"
           class="bg-#ddd dark:bg-lightgrey"
           type="text"
         />
