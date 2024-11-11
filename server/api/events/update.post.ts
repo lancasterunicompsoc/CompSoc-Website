@@ -1,10 +1,9 @@
 import { useValidatedBody, z } from "h3-zod";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
-  const { prisma, auth } = event.context;
-  if (auth?.decoded.role !== "ADMIN") {
-    throw createError("check your privileges");
-  }
+  const { prisma } = event.context;
+  ensureIsAdmin(event);
 
   const { id, ...body } = await useValidatedBody(
     event,

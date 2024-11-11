@@ -10,3 +10,10 @@ dist
 db.sqlite
 .DS_Store
 prisma/db.sqlite-journal
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

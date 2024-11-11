@@ -52,7 +52,6 @@ export default defineNuxtConfig({
         "Cache-Control": "max-age=604800, public",
       },
     },
-    "/slides": { redirect: "https://slides.compsoc.io" },
     "/discord": { redirect: "https://discord.gg/compsoc" },
     "/github": { redirect: "https://github.com/LUCompSoc" },
     "/github/CompSoc-Website": {
