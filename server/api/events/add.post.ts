@@ -44,6 +44,7 @@ export default defineEventHandler(async event => {
         location,
         mazemapLink,
         summary,
+        slides: "",
         description,
         image,
         organizer,
