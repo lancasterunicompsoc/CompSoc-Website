@@ -6,7 +6,7 @@ export default defineEventHandler(async event => {
   } = event;
 
   const results = await prisma.slides.findMany({
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
   });
   // work around the limitations of json serialization
   const data = {
