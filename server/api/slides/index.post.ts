@@ -11,6 +11,8 @@ export default defineEventHandler(async event => {
   ensureIsAdmin(event);
 
   try {
+    const body = await readBody(event);
+    return body;
     const validated = await useSafeValidatedBody(
       event,
       z.object({
