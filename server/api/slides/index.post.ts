@@ -1,5 +1,6 @@
 import type { PrismaClient, Prisma } from "@prisma/client";
-import { useValidatedBody, z } from "h3-zod";
+import { useSafeValidatedBody, useValidatedBody, z } from "h3-zod";
+import { ZodError } from "zod";
 import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
@@ -10,23 +11,37 @@ export default defineEventHandler(async event => {
   ensureIsAdmin(event);
 
   try {
-    const data = await useValidatedBody(
+    const validated = await useSafeValidatedBody(
       event,
       z.object({
         name: z.string().min(1),
         link: z.string().min(1),
         mimetype: z.string().min(1),
         speaker: z.string(),
+        createdAt: z.string().transform(s => new Date(s)),
+        updatedAt: z.string().transform(s => new Date(s)),
       }),
     );
+    if (!validated.success) {
+      console.error(validated.error.issues);
+      throw createError({
+        message: "validation error",
+        statusMessage: JSON.stringify(validated.error.issues, null, 2),
+        statusCode: 400,
+      });
+    }
 
     const created = await createSlides({
       prisma,
-      data,
+      data: validated.data,
     });
     return { id: created.id, ok: true } as const;
   } catch (error) {
-    console.error("Error adding slides:", error);
+    if (error instanceof ZodError) {
+      console.error(error.issues);
+    } else {
+      console.error("Error adding slides:", error);
+    }
     throw createError("failed to add slides");
   }
 });
