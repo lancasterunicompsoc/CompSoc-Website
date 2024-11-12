@@ -10,44 +10,45 @@ export default defineEventHandler(async event => {
 
   ensureIsAdmin(event);
 
-  try {
-    const body = await readBody(event);
-    return body;
-    const validated = await useSafeValidatedBody(
-      event,
-      z.object({
-        name: z.string().min(1),
-        link: z.string().min(1),
-        mimetype: z.string().min(1),
-        speaker: z.string(),
-        createdAt: z.string().transform(s => new Date(s)),
-        updatedAt: z.string().transform(s => new Date(s)),
-      }),
-    );
-    console.dir(validated);
-    if (!validated.success) {
-      console.error(validated.error.issues);
-      throw createError({
-        message: "validation error",
-        stack: JSON.stringify(validated.error.issues, null, 2),
-        statusCode: 400,
-      });
-    }
-    console.log(validated.data);
+  // try {
+  const body = await readBody(event);
+  console.dir(body);
+  return { ok: true, body: body };
+  //   const validated = await useSafeValidatedBody(
+  //     event,
+  //     z.object({
+  //       name: z.string().min(1),
+  //       link: z.string().min(1),
+  //       mimetype: z.string().min(1),
+  //       speaker: z.string(),
+  //       createdAt: z.string().transform(s => new Date(s)),
+  //       updatedAt: z.string().transform(s => new Date(s)),
+  //     }),
+  //   );
+  //   console.dir(validated);
+  //   if (!validated.success) {
+  //     console.error(validated.error.issues);
+  //     throw createError({
+  //       message: "validation error",
+  //       stack: JSON.stringify(validated.error.issues, null, 2),
+  //       statusCode: 400,
+  //     });
+  //   }
+  //   console.log(validated.data);
 
-    const created = await createSlides({
-      prisma,
-      data: validated.data,
-    });
-    return { id: created.id, ok: true } as const;
-  } catch (error) {
-    if (error instanceof ZodError) {
-      console.error(error.issues);
-    } else {
-      console.error("Error adding slides:", error);
-    }
-    throw createError("failed to add slides");
-  }
+  //   const created = await createSlides({
+  //     prisma,
+  //     data: validated.data,
+  //   });
+  //   return { id: created.id, ok: true } as const;
+  // } catch (error) {
+  //   if (error instanceof ZodError) {
+  //     console.error(error.issues);
+  //   } else {
+  //     console.error("Error adding slides:", error);
+  //   }
+  //   throw createError("failed to add slides");
+  // }
 });
 
 type SlidesCreateType = Omit<Prisma.SlidesUncheckedCreateInput, "id">;
