@@ -21,15 +21,28 @@
       class="flex grow flex-col items-center sm:flex-row sm:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
       v-show="!isMobile || isMenuOpen"
     >
-      <NuxtLink class="hover:bg-darkred" to="/about">About Us</NuxtLink>
-      <NuxtLink class="hover:bg-darkred" to="/events">Events</NuxtLink>
-      <NuxtLink class="hover:bg-darkred" to="/slides">Slides</NuxtLink>
-      <a class="hover:bg-darkred" href="https://photos.compsoc.io/">Photos</a>
+      <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/about"
+        >About Us</NuxtLink
+      >
+      <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/events"
+        >Events</NuxtLink
+      >
+      <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/slides"
+        >Slides</NuxtLink
+      >
+      <a class="hover:bg-[rgba(91,0,0,0.24)]" href="https://photos.compsoc.io/"
+        >Photos</a
+      >
       <template v-if="authStore.isAdmin">
-        <NuxtLink class="hover:bg-darkred" to="/admin/users">Users</NuxtLink>
-        <NuxtLink class="hover:bg-darkred" to="/admin/reviews/0"
+        <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/admin/users"
+          >Users</NuxtLink
+        >
+        <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/admin/reviews/0"
           >Reviews</NuxtLink
         >
+        <button class="hover:bg-[rgba(91,0,0,0.24)]" @click="logOut">
+          Log out
+        </button>
       </template>
     </nav>
   </header>
@@ -38,6 +51,7 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore();
+const logOut = () => authStore.logOut();
 const isMenuOpen = ref(false);
 const { width } = useWindowSize();
 const isMobile = computed(() => width.value && width.value < 640);

@@ -54,16 +54,10 @@ const confirmAndRunWebhook = async () => {
 <template>
   <main class="main-container">
     <div flex ml-auto justify-end>
-      <a
-        target="_blank"
-        href="/events.ics"
-        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+      <a target="_blank" href="/events.ics" class="btn text-sm bg-box"
         >iCalendar/ICS Feed</a
       >
-      <a
-        target="_blank"
-        href="/feed.xml"
-        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+      <a target="_blank" href="/feed.xml" class="btn text-sm bg-box"
         >RSS Feed</a
       >
     </div>
@@ -90,7 +84,7 @@ const confirmAndRunWebhook = async () => {
             aria-labelledby="filterLabel"
             name=""
             id="futurePast"
-            class="bg-lightbg dark:bg-darkgrey"
+            class="bg-transparent"
             v-model="pastFuture"
           >
             <option value="future">Future Events</option>
@@ -108,7 +102,7 @@ const confirmAndRunWebhook = async () => {
             <Event :event="event" :is-full-size="false" />
           </NuxtLink>
         </li>
-        <li v-if="allEvents.length === 0">No upcoming events...</li>
+        <li v-if="allEvents.length === 0">No events found</li>
       </ul>
     </div>
   </main>

@@ -10,3 +10,6 @@ if (!authStore.isLoggedIn) {
   window.location.href = loginUrl as string;
 }
 </script>
+<template>
+  <NuxtLink to="/">Home</NuxtLink>
+</template>

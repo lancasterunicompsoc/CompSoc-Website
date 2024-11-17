@@ -39,7 +39,7 @@ const props = defineProps<{ slides: SlidesType }>();
 </script>
 
 <template>
-  <div class="bg-#ddd dark:bg-lightgrey p-4 my-2 w-90vw md:w-70vw lg:w-50vw">
+  <div class="bg-box p-4 my-2 w-90vw md:w-70vw lg:w-50vw">
     <a :href="slides.link" target="_blank" class="hover:underline">
       <div flex flex-row items-start justify-between gap-2>
         <div>

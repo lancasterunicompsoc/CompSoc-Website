@@ -1,5 +1,5 @@
 <template>
-  <main class="main-container">
+  <main class="flex flex-col items-center">
     <Card id="society">
       <h2>The Society</h2>
       <p>
@@ -9,7 +9,8 @@
         to cover a wide variety of interests. See our
         <NuxtLink to="/events" class="text-blue-600 dark:text-blue-500">
           events
-        </NuxtLink> for more information.
+        </NuxtLink>
+        for more information.
       </p>
     </Card>
 
@@ -22,17 +23,12 @@
         voted for by the members, and each role is typically held for a year.
         More information about the Exec can be found in the
         <NuxtLink to="/constitution" class="text-blue-600 dark:text-blue-500">
-          Constitution
-        </NuxtLink>.
+          Constitution </NuxtLink
+        >.
       </p>
     </Card>
 
-    <a
-      href="https://lancastersu.co.uk/groups/compsoc-2be7"
-      class="button btn centered"
-    >
-      Join the society
-    </a>
+    <Join class="mt-4em" />
   </main>
 </template>
 
@@ -43,17 +39,5 @@
   margin: auto;
   padding: 1rem;
   border-radius: 0;
-}
-
-.main-container {
-  margin: auto;
-}
-
-/* CARDS */
-.cards {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 30px;
 }
 </style>

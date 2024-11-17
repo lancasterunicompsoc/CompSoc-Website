@@ -11,6 +11,7 @@ import {
 
 export default defineConfig({
   shortcuts: [
+    ["bg-box", "bg-[rgba(0,0,0,0.5)]"],
     [
       "btn",
       "px-4 py-1 mr-1 mb-1 w-max block bg-highlight1Light dark:bg-highlight1Dark text-white text-center no-underline cursor-pointer hover:bg-highlight2Light dark:hover:bg-highlight2Dark disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50",
@@ -25,7 +26,7 @@ export default defineConfig({
     ],
     [
       "card",
-      "px-4 py-4 bg-#ddd dark:bg-lightgrey shadow-highlight2Light dark:shadow-highlight2Dark hover:shadow-highlight1Light hover:dark:shadow-highlight1Dark",
+      "px-4 py-4 bg-box shadow-highlight2Light hover:bg-[rgba(0,0,0,0.6)]",
     ],
     ["centered", "mx-auto"],
     ["row", "flex flex-row justify-evenly items-stretch"],
