@@ -42,7 +42,7 @@ body {
     rgba(180, 34, 34, 1) 50%,
     rgba(87, 1, 164, 1) 100%
   );
-  font-size: 19px;
+  @apply font-sans;
 }
 
 .page {

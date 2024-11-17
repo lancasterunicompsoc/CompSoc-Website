@@ -41,8 +41,8 @@ export default defineConfig({
     presetWebFonts({
       provider: "google",
       fonts: {
-        sans: "Poppins",
-        serif: "Poppins",
+        sans: "Poppins:300,400",
+        serif: "Poppins:300,400",
         heading: "Orbitron",
         mono: "Orbitron",
       },
