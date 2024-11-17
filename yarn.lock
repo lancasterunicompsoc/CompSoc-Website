@@ -3537,6 +3537,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/router@npm:^11.1.0":
+  version: 11.2.0
+  resolution: "@vueuse/router@npm:11.2.0"
+  dependencies:
+    "@vueuse/shared": "npm:11.2.0"
+    vue-demi: "npm:>=0.14.10"
+  peerDependencies:
+    vue-router: ">=4.0.0-rc.1"
+  checksum: 10c0/de7b69e9dc6c4148c7dc2c068a67f3c5664f4f67ff4d08f38dcd627001892171b07e64f20d03a1a335d159f9210faffb67a7670f8081083ba4f924ac1c5749bf
+  languageName: node
+  linkType: hard
+
 "@vueuse/shared@npm:11.2.0":
   version: 11.2.0
   resolution: "@vueuse/shared@npm:11.2.0"
@@ -11700,6 +11712,7 @@ __metadata:
     "@vercel/blob": "npm:^0.25.1"
     "@vueuse/core": "npm:^11.1.0"
     "@vueuse/nuxt": "npm:^11.1.0"
+    "@vueuse/router": "npm:^11.1.0"
     eslint: "npm:^9.11.1"
     eslint-plugin-vue: "npm:^9.28.0"
     feed: "npm:^4.2.2"

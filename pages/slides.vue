@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import superjson from "superjson";
+import { type SlidesType } from "~/components/slides/Slides.vue";
 import { useAuthStore } from "~/stores/auth";
 
+const orderBy = useRouteQuery<"asc" | "desc">("orderBy", "desc", {
+  transform: val => (val === "asc" ? "asc" : "desc"), // coerce the value into the acceptable values
+});
+
+const queryString = computed(() => {
+  const query = new URLSearchParams({
+    orderBy: orderBy.value,
+  });
+  return query.toString();
+});
+
 const authStore = useAuthStore();
-const slidesData = await useFetch("/api/slides/", {
+const slidesData = await useFetch(() => `/api/slides/?${queryString.value}`, {
   headers: { Bearer: authStore.jwt as unknown as string },
   transform: value => {
-    return superjson.parse(value as unknown as string);
+    return superjson.parse(value as unknown as string) as SlidesType[];
   },
 });
 
@@ -20,6 +32,19 @@ const { data, status } = slidesData;
     </div>
     <div v-if="status === 'pending'">Loading...</div>
     <div v-if="status === 'success'">
+      <div>
+        <span hidden id="orderBy">Filters:</span>
+        <select
+          aria-labelledby="filterLabel"
+          name=""
+          id="orderBy"
+          class="bg-transparent"
+          v-model="orderBy"
+        >
+          <option value="desc">Newest first</option>
+          <option value="asc">Oldest first</option>
+        </select>
+      </div>
       <ul v-for="slides in data" :key="slides.id">
         <li>
           <Slides :slides="slides" />

@@ -43,7 +43,7 @@ export async function authenticate(event: H3Event, jwt: string) {
 
 export default eventHandler(async event => {
   const jwt = getRequestHeader(event, "Bearer");
-  if (!jwt || jwt === "undefined") {
+  if (!jwt || jwt === "undefined" || jwt === "null" || jwt === "") {
     return;
   }
 
