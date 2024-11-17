@@ -38,6 +38,22 @@ model Event {
   hidden        Boolean        @default(false)
   reviews       Review[]
   announcement  Announcement[]
+  Slides        Slides?
+}
+
+model Slides {
+  id        String   @id @default(cuid())
+  name      String
+  speaker   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  link      String
+  mimetype  String
+  event     Event?   @relation(fields: [eventId], references: [id])
+
+  eventId Int? @unique
+
+  @@index([eventId])
 }
 
 model Announcement {

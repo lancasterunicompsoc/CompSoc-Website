@@ -1,9 +1,9 @@
 import { useValidatedBody, z } from "h3-zod";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
 
 export default defineEventHandler(async event => {
-  if (event.context.auth?.decoded?.role !== "ADMIN") {
-    throw new Error("you do not belong here");
-  }
+  ensureIsAdmin(event);
+
   const { id } = await useValidatedBody(
     event,
     z.object({ id: z.coerce.number() }),

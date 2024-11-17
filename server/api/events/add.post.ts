@@ -1,8 +1,14 @@
 import { useValidatedBody, z } from "h3-zod";
+import { createSlides } from "../slides/index.post";
+import { ensureIsAdmin } from "~/server/middleware/1.auth";
+
 export default defineEventHandler(async event => {
-  if (event.context.auth?.decoded?.role !== "ADMIN") {
-    throw new Error("you do not belong here");
-  }
+  const {
+    context: { prisma },
+  } = event;
+
+  ensureIsAdmin(event);
+
   try {
     const {
       name,
@@ -10,7 +16,6 @@ export default defineEventHandler(async event => {
       mazemapLink,
       summary,
       description,
-      slides,
       image,
       organizer,
       unixStartTime,
@@ -24,12 +29,6 @@ export default defineEventHandler(async event => {
         mazemapLink: z.string(),
         summary: z.string().min(1),
         description: z.string().min(1),
-        slides: z
-          .string()
-          .refine(
-            value =>
-              value.startsWith("https://slides.compsoc.io/") || value === "",
-          ),
         image: z.string(),
         organizer: z.string().min(1),
         unixStartTime: z.number(),
@@ -39,14 +38,14 @@ export default defineEventHandler(async event => {
     );
 
     // Use Prisma to create a new event
-    const newEvent = await event.context.prisma.event.create({
+    const newEvent = await prisma.event.create({
       data: {
         name,
         location,
         mazemapLink,
         summary,
+        slides: "",
         description,
-        slides,
         image,
         organizer,
         unixStartTime,
@@ -54,6 +53,7 @@ export default defineEventHandler(async event => {
         difficulty,
       },
     });
+
     // Send the ID of the newly created event in the response
     return { id: newEvent.id, ok: true } as const;
   } catch (error) {

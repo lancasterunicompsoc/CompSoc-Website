@@ -1,4 +1,5 @@
 import { createError as createServerError } from "h3";
+import { userRoles } from "~/utils/roles";
 import { verifyIssJwt, createJWT } from "~/utils/jwt";
 
 export default defineEventHandler(async event => {
@@ -11,7 +12,7 @@ export default defineEventHandler(async event => {
 
   try {
     const verified = await verifyIssJwt(jwt);
-    console.log("iss token was verified");
+    console.log(`iss token was verified for user: ${verified.mail}`);
     const { username, displayName, mail } = verified;
 
     const user = await event.context.prisma.user.findFirst({
@@ -29,6 +30,7 @@ export default defineEventHandler(async event => {
           username,
           displayName,
           mail,
+          role: userRoles.USER,
         },
       });
     }
@@ -36,7 +38,7 @@ export default defineEventHandler(async event => {
     const createdToken = await createJWT(verified, event.context.prisma);
     return { jwt: createdToken, ok: true, isFirstTime };
   } catch (e) {
-    console.log(`entered catch, ${e}`);
+    console.error(`error during signup: ${e}`);
     throw createServerError((e as Error).name);
   }
 });

@@ -14,7 +14,7 @@ export type jwtDecodedType = {
   mail: string;
 };
 
-export type Role = "USER" | "PRIVILEGED" | "ADMIN";
+export type Role = keyof typeof userRoles;
 export type jwtPayloadType = {
   id: string;
   username: string;
@@ -56,6 +56,7 @@ export async function createJWT(
     id: user.id,
     username,
     banned: user.banned,
+    // @ts-expect-error yeah yeah dw ts
     role: user.role,
     displayName: user.displayName,
     mail: user.mail,

@@ -21,7 +21,11 @@ export type EventType = {
   difficulty: EventDifficulty;
 };
 
-type getAllEventParams = { offset?: DateOffset; isXp?: Boolean, past?: boolean };
+type getAllEventParams = {
+  offset?: DateOffset;
+  isXp?: Boolean;
+  past?: boolean;
+};
 export function getAllEvents(options?: getAllEventParams) {
   const past = options?.past ?? false;
   const { years, months, weeks, days } = options?.offset ?? {
