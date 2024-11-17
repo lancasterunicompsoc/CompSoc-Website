@@ -39,10 +39,12 @@ export default defineConfig({
     }),
     presetTypography(),
     presetWebFonts({
+      provider: "google",
       fonts: {
-        sans: "DM Sans",
-        serif: "DM Serif Display",
-        mono: "DM Mono",
+        sans: "Poppins",
+        serif: "Poppins",
+        heading: "Orbitron",
+        mono: "Orbitron",
       },
     }),
   ],

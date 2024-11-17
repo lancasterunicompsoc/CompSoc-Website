@@ -1,6 +1,6 @@
 <template>
   <header
-    class="bg-#ddd dark:bg-lightgrey px-8 py-4 flex flex-col sm:flex-row m-0 justify-between items-center"
+    class="px-8 py-4 flex flex-col sm:flex-row m-0 justify-between items-center"
   >
     <div class="flex grow-0 items-center justify-between w-full">
       <NuxtLink to="/">

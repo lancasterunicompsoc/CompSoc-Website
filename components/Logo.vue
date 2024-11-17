@@ -1,7 +1,8 @@
 <template>
-  <div class="flex">
+  <div class="flex font-heading">
     <img src="/img/logo/full-transparent.png" alt="CompSoc Logo" />
-    LUCompSoc
+    &nbsp;
+    <LogoText />
   </div>
 </template>
 <style scoped>
