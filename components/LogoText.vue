@@ -5,5 +5,6 @@
 .heading-text {
   text-underline-offset: 0.3em;
   text-decoration-line: underline overline;
+  text-decoration-thickness: 3px;
 }
 </style>

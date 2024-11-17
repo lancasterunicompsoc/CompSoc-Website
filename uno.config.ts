@@ -44,7 +44,7 @@ export default defineConfig({
       fonts: {
         sans: "Poppins:300,400",
         serif: "Poppins:300,400",
-        heading: "Orbitron",
+        heading: "Orbitron:400",
         mono: "Orbitron",
       },
     }),

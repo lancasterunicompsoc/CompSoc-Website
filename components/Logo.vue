@@ -1,6 +1,10 @@
 <template>
   <div class="flex font-heading">
-    <img src="/img/logo/full-transparent.png" alt="CompSoc Logo" />
+    <NuxtImg
+      format="webp"
+      src="/img/logo/full-transparent.webp"
+      alt="CompSoc Logo"
+    />
     &nbsp;
     <LogoText />
   </div>

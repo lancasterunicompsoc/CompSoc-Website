@@ -2,16 +2,7 @@ const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    "@nuxt/devtools",
-    "@nuxtjs/color-mode",
-    "@vueuse/nuxt",
-    "@nuxt/content",
-    "@unocss/nuxt",
-    "@nuxt/icon",
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-  ],
+  modules: ["@nuxt/devtools", "@nuxtjs/color-mode", "@vueuse/nuxt", "@nuxt/content", "@unocss/nuxt", "@nuxt/icon", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@nuxt/image"],
 
   build: {
     transpile: ["trpc-nuxt"],
