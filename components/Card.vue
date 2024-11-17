@@ -1,5 +1,5 @@
 <template>
-  <section class="card rounded">
+  <section class="card px-8 py-6">
     <slot />
   </section>
 </template>
