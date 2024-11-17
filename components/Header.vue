@@ -31,8 +31,6 @@
           >Reviews</NuxtLink
         >
       </template>
-      <Login class="hover:bg-darkred" />
-      <DarkToggle />
     </nav>
   </header>
 </template>
