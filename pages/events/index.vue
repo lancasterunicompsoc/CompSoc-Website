@@ -14,7 +14,7 @@ useHead({
   ],
 });
 
-const { isAdmin } = storeToRefs(useAuthStore());
+const { isAdmin, jwt } = storeToRefs(useAuthStore());
 const router = useRouter();
 
 const hasErrored = ref(false);
@@ -36,15 +36,13 @@ const confirmAndRunWebhook = async () => {
   // If user confirms, make the GET request to the webhook
   if (confirmed) {
     try {
-      const { data } = await useFetch(
-        "https://event-notification-discord.lucompsoc.workers.dev/",
-        {
-          headers: {
-            "X-CS-Clippy": "true",
-          },
+      const data = await $fetch("/api/admin/discordnotifis", {
+        method: "POST",
+        headers: {
+          Bearer: jwt.value ?? "",
         },
-      );
-      console.log("Webhook executed successfully:", data.value);
+      });
+      console.log("Webhook executed successfully:", data);
     } catch (error) {
       console.error("Error executing webhook:", error);
     }
