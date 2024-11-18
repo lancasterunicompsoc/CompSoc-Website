@@ -36,13 +36,16 @@ const { data, status } = slidesData;
         <span hidden id="orderBy">Filters:</span>
         <select
           aria-labelledby="filterLabel"
-          name=""
           id="orderBy"
           class="bg-transparent"
           v-model="orderBy"
         >
-          <option value="desc">Newest first</option>
-          <option value="asc">Oldest first</option>
+          <option class="bg-[#4d4d4d] text-white" value="desc">
+            Newest first
+          </option>
+          <option class="bg-[#4d4d4d] text-white" value="asc">
+            Oldest first
+          </option>
         </select>
       </div>
       <ul v-for="slides in data" :key="slides.id">

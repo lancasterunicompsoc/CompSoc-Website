@@ -1,6 +1,6 @@
 <template>
   <header
-    class="px-8 py-4 flex flex-col sm:flex-row m-0 justify-between items-center"
+    class="px-8 py-4 flex flex-col lg:flex-row m-0 justify-between items-center"
   >
     <div class="flex grow-0 items-center justify-between w-full">
       <NuxtLink to="/">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <nav
-      class="flex grow flex-col items-center sm:flex-row sm:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
+      class="flex grow flex-col items-center lg:flex-row lg:ml-auto p-4 [&>*]:p-4 transition-colors w-full justify-end"
       v-show="!isMobile || isMenuOpen"
     >
       <NuxtLink class="hover:bg-[rgba(91,0,0,0.24)]" to="/about"
@@ -54,7 +54,7 @@ const authStore = useAuthStore();
 const logOut = () => authStore.logOut();
 const isMenuOpen = ref(false);
 const { width } = useWindowSize();
-const isMobile = computed(() => width.value && width.value < 640);
+const isMobile = computed(() => width.value && width.value < 1024);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
