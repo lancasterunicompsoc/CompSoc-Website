@@ -29,6 +29,7 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   background: rgb(246, 112, 3);
   background: linear-gradient(

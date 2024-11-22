@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ExternalLink from "~/components/SVG/ExternalLink.vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/stores/auth";
 
@@ -35,16 +36,26 @@ export type SlidesType = {
   creatorId: string;
 };
 
-const props = defineProps<{ slides: SlidesType }>();
+const props = defineProps<{ slides: SlidesType; isFullSize: boolean }>();
+const link = computed(() => {
+  if (props.isFullSize) {
+    return props.slides.link;
+  }
+  return `/slides/${encodeURIComponent(props.slides.id)}`;
+});
 </script>
 
 <template>
   <div class="bg-box p-4 my-2 w-90vw md:w-70vw lg:w-50vw hover:bg-box-hover">
-    <a :href="slides.link" target="_blank">
+    <a :href="link">
       <div flex flex-row items-start justify-between gap-2>
         <div>
-          <h3 class="text-2xl font-bold">
+          <h3 class="text-2xl font-bold flex flex-row">
             {{ props.slides.name }}
+            <span v-if="isFullSize" class="flex items-center">
+              &nbsp;
+              <ExternalLink size="0.8em" />
+            </span>
           </h3>
           <p>{{ props.slides.speaker }}</p>
         </div>
@@ -53,6 +64,16 @@ const props = defineProps<{ slides: SlidesType }>();
     </a>
     <div v-if="isAdmin">
       <EventsIconDelete class="cursor-pointer" @click="deleteSlides" />
+    </div>
+    <div v-if="isFullSize">
+      <h3 class="text-lg font-bold mt-8">Preview:</h3>
+      <iframe
+        class="h-90vh p-8"
+        id="slidespreview"
+        width="100%"
+        :src="props.slides.link"
+      >
+      </iframe>
     </div>
   </div>
 </template>

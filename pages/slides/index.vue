@@ -16,7 +16,6 @@ const queryString = computed(() => {
 
 const authStore = useAuthStore();
 const slidesData = await useFetch(() => `/api/slides/?${queryString.value}`, {
-  headers: { Bearer: authStore.jwt as unknown as string },
   transform: value => {
     return superjson.parse(value as unknown as string) as SlidesType[];
   },
@@ -50,7 +49,7 @@ const { data, status } = slidesData;
       </div>
       <ul v-for="slides in data" :key="slides.id">
         <li>
-          <Slides :slides="slides" />
+          <Slides :slides="slides" :isFullSize="false" />
         </li>
       </ul>
     </div>
