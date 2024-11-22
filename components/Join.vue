@@ -1,10 +1,12 @@
 <template>
-  <div class="button-container p-2 pl-4 max-w-max">
-    <span class="text-2xl">Join LUCompSoc</span>
-    <div class="arrow-circle">
-      <div class="i-carbon-arrow-right text-white text-2xl"></div>
+  <NuxtLink to="/join">
+    <div class="button-container p-2 pl-4 max-w-max">
+      <span class="text-2xl">Join LUCompSoc</span>
+      <div class="arrow-circle">
+        <div class="i-carbon-arrow-right text-white text-2xl"></div>
+      </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <style scoped>

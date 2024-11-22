@@ -1,10 +1,6 @@
 <template>
   <Body class="text-white">
     <div>
-      <noscript>
-        This website only works if you enable Javascript in your browser, please
-        enable Javascript execution and reload the page.
-      </noscript>
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>

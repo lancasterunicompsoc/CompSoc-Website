@@ -2,7 +2,17 @@ const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxt/devtools", "@nuxtjs/color-mode", "@vueuse/nuxt", "@nuxt/content", "@unocss/nuxt", "@nuxt/icon", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@nuxt/image"],
+  modules: [
+    "@nuxt/devtools",
+    "@nuxtjs/color-mode",
+    "@vueuse/nuxt",
+    "@nuxt/content",
+    "@unocss/nuxt",
+    "@nuxt/icon",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxt/image",
+  ],
 
   build: {
     transpile: ["trpc-nuxt"],
@@ -61,8 +71,12 @@ export default defineNuxtConfig({
     "/start": { redirect: joinLink },
     "/join": { redirect: joinLink },
     "/admin/reviews": { redirect: "/admin/reviews/0" },
-    "/bright-signup": { redirect: "https://www.brightnetwork.co.uk/signup/?utm_medium=university&utm_source=society&utm_campaign=referral_challenge_2024&utm_content=the_computer_science_society_of_lancaster_university_lancaster_university" },
-    
+    "/bright-signup": {
+      redirect:
+        "https://www.brightnetwork.co.uk/signup/?utm_medium=university&utm_source=society&utm_campaign=referral_challenge_2024&utm_content=the_computer_science_society_of_lancaster_university_lancaster_university",
+    },
+    "/": { prerender: true },
+    "/about": { prerender: true },
   },
 
   colorMode: {
