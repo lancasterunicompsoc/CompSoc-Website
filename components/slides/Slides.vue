@@ -46,11 +46,17 @@ const link = computed(() => {
 </script>
 
 <template>
-  <div class="bg-box p-4 my-2 w-90vw md:w-70vw lg:w-50vw hover:bg-box-hover">
+  <div
+    class="bg-box p-8 my-2 w-90vw hover:bg-box-hover"
+    :class="{ 'md:70vw': !isFullSize, 'lg:w-50vw': !isFullSize }"
+  >
     <a :href="link">
       <div flex flex-row items-start justify-between gap-2>
         <div>
-          <h3 class="text-2xl font-bold flex flex-row">
+          <h3
+            class="font-bold flex flex-row pb-4"
+            :class="{ 'text-4xl': isFullSize, 'text-2xl': !isFullSize }"
+          >
             {{ props.slides.name }}
             <span v-if="isFullSize" class="flex items-center">
               &nbsp;
@@ -68,7 +74,7 @@ const link = computed(() => {
     <div v-if="isFullSize">
       <h3 class="text-lg font-bold mt-8">Preview:</h3>
       <iframe
-        class="h-90vh p-8"
+        class="h-90vh pt-8"
         id="slidespreview"
         width="100%"
         :src="props.slides.link"
