@@ -75,8 +75,6 @@ export default defineNuxtConfig({
       redirect:
         "https://www.brightnetwork.co.uk/signup/?utm_medium=university&utm_source=society&utm_campaign=referral_challenge_2024&utm_content=the_computer_science_society_of_lancaster_university_lancaster_university",
     },
-    "/": { prerender: true },
-    "/about": { prerender: true },
   },
 
   colorMode: {
