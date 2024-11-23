@@ -29,9 +29,13 @@ export default defineEventHandler(async event => {
 
     // delete the blob at vercel storage, but only if its stored on that
     // the links look smth like this: https://1vzq7232vosxriru.public.blob.vercel-storage.com/ocaml-Gs5v4y8AhydfulkQl2hrlEP6cwFlXX.jpg
-    const parsedUrl = new URL(slides.link);
-    if (parsedUrl.hostname.endsWith("blob.vercel-storage.com")) {
-      await del(slides.link);
+    try {
+      const parsedUrl = new URL(slides.link);
+      if (parsedUrl.hostname.endsWith("blob.vercel-storage.com")) {
+        await del(slides.link);
+      }
+    } catch (e) {
+      console.error(`couldn't parse malformed url: ${slides.link}`);
     }
 
     await prisma.slides.delete({ where: { id } });

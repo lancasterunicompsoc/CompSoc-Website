@@ -38,7 +38,9 @@ function reviewEvent(id: number) {
 </script>
 
 <template>
-  <div :class="{ wrapper: isFullSize }" class="bg-#ddd dark:bg-lightgrey">
+  <div
+    :class="{ wrapper: isFullSize, 'bg-box': isFullSize, 'text-white': true }"
+  >
     <h3>{{ event.name }}</h3>
     <div class="flex info-line items-center flex-wrap">
       <figure class="flex">

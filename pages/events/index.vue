@@ -14,7 +14,7 @@ useHead({
   ],
 });
 
-const { isAdmin } = storeToRefs(useAuthStore());
+const { isAdmin, jwt } = storeToRefs(useAuthStore());
 const router = useRouter();
 
 const hasErrored = ref(false);
@@ -36,15 +36,13 @@ const confirmAndRunWebhook = async () => {
   // If user confirms, make the GET request to the webhook
   if (confirmed) {
     try {
-      const { data } = await useFetch(
-        "https://event-notification-discord.lucompsoc.workers.dev/",
-        {
-          headers: {
-            "X-CS-Clippy": "true",
-          },
+      const data = await $fetch("/api/admin/discordnotifis", {
+        method: "POST",
+        headers: {
+          Bearer: jwt.value ?? "",
         },
-      );
-      console.log("Webhook executed successfully:", data.value);
+      });
+      console.log("Webhook executed successfully:", data);
     } catch (error) {
       console.error("Error executing webhook:", error);
     }
@@ -54,16 +52,10 @@ const confirmAndRunWebhook = async () => {
 <template>
   <main class="main-container">
     <div flex ml-auto justify-end>
-      <a
-        target="_blank"
-        href="/events.ics"
-        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+      <a target="_blank" href="/events.ics" class="btn text-sm bg-box"
         >iCalendar/ICS Feed</a
       >
-      <a
-        target="_blank"
-        href="/feed.xml"
-        class="btn text-sm bg-highlight2Light dark:bg-highlight2Light"
+      <a target="_blank" href="/feed.xml" class="btn text-sm bg-box"
         >RSS Feed</a
       >
     </div>
@@ -90,7 +82,7 @@ const confirmAndRunWebhook = async () => {
             aria-labelledby="filterLabel"
             name=""
             id="futurePast"
-            class="bg-lightbg dark:bg-darkgrey"
+            class="bg-transparent"
             v-model="pastFuture"
           >
             <option value="future">Future Events</option>
@@ -108,7 +100,7 @@ const confirmAndRunWebhook = async () => {
             <Event :event="event" :is-full-size="false" />
           </NuxtLink>
         </li>
-        <li v-if="allEvents.length === 0">No upcoming events...</li>
+        <li v-if="allEvents.length === 0">No events found</li>
       </ul>
     </div>
   </main>

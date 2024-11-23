@@ -1,57 +1,14 @@
 <template>
-  <main class="main-container">
-    <p class="info-line">
-      This Website is changing, please stay tuned.
-    </p>
-
-    <p class="info-line">
-      Lancaster University Computer Science Society exists to promote interest
-      in computing and technology among students and wider society.
-    </p>
-
-    <div class="row">
-      <a href="/join" class="button block text-white text-size-5">
-        Join the Society
-      </a>
+  <main
+    class="flex flex-col h-full items-center min-h-[70vh] justify-center text-center text-2xl font-extralight"
+  >
+    <div>
+      <h1 class="font-bold text-5xl font-heading">
+        The Computer Science Society of Lancaster University
+      </h1>
+      <p mt-8>Preparing students to be tech career ready</p>
     </div>
 
-    <p class="info-line">
-      Previously on this front page was a
-      <NuxtLink to="/terminal" class="link">
-        Toy Terminal Emulator</NuxtLink>,
-      which has now been moved to its own page.
-    </p>
+    <Join />
   </main>
 </template>
-
-<style scoped>
-.button {
-  background-color: var(--highlight2Light);
-  width: fit-content;
-  margin: auto;
-  padding: 1rem 2rem;
-  text-align: center;
-}
-
-.info-line {
-  text-align: center;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.link {
-  color: var(--highlight2);
-  text-decoration: underline;
-}
-
-@media (max-width: 35rem) {
-  .row {
-    flex-direction: column;
-  }
-}
-</style>

@@ -1,10 +1,6 @@
 <template>
-  <Body class="dark:bg-darkgrey dark:text-gray-300 bg-lightbg">
+  <Body class="text-white">
     <div>
-      <noscript>
-        This website only works if you enable Javascript in your browser, please
-        enable Javascript execution and reload the page.
-      </noscript>
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>
@@ -23,20 +19,23 @@
   --highlight2: var(--highlight2Light);
 }
 
-.dark {
-  --highlight1: var(--highlight1Dark);
-  --highlight2: var(--highlight2Dark);
-}
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
+html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: rgb(246, 112, 3);
+  background: linear-gradient(
+    135deg,
+    rgba(246, 112, 3, 1) 0%,
+    rgba(180, 34, 34, 1) 50%,
+    rgba(87, 1, 164, 1) 100%
+  );
+  @apply font-sans;
 }
 
 .page {
@@ -59,10 +58,6 @@ main > * {
 
 main a:not([class]) {
   color: var(--highlight1Light);
-}
-
-.dark main a:not([class]) {
-  color: var(--highlight1Dark);
 }
 
 @media (min-width: 30rem) {

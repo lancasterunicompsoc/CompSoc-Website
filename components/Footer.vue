@@ -4,10 +4,8 @@ import Github from "./SVG/Github.vue";
 import Instagram from "./SVG/Instagram.vue";
 </script>
 <template>
-  <footer
-    class="bg-#ddd dark:bg-lightgrey p-4 m-0 flex items-center flex-col justify-center"
-  >
-    <div class="flex m-0 mb-2 items-center flex-row justify-center">
+  <footer class="p-4 m-0 flex items-center flex-col justify-center text-white">
+    <div class="flex m-0 items-center flex-row justify-center">
       <a
         href="https://discord.gg/compsoc"
         target="_blank"
@@ -32,7 +30,11 @@ import Instagram from "./SVG/Instagram.vue";
       >
         <Instagram />
       </a>
-      <a href="mailto:info@compsoc.io" aria-label="email" class="email">
+      <a
+        href="mailto:info@compsoc.io"
+        aria-label="email"
+        class="hover:underline"
+      >
         info@compsoc.io
       </a>
     </div>
@@ -44,7 +46,7 @@ import Instagram from "./SVG/Instagram.vue";
   margin: 0.3rem;
 }
 
-.email:hover {
-  color: var(--highlight2);
+footer {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 </style>
