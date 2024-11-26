@@ -4,7 +4,6 @@ const joinLink = "https://lancastersu.co.uk/groups/compsoc-2be7";
 export default defineNuxtConfig({
   modules: [
     "@nuxt/devtools",
-    "@nuxtjs/color-mode",
     "@vueuse/nuxt",
     "@nuxt/content",
     "@unocss/nuxt",
@@ -13,10 +12,6 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxt/image",
   ],
-
-  build: {
-    transpile: ["trpc-nuxt"],
-  },
 
   css: ["@unocss/reset/tailwind.css"],
 
@@ -75,13 +70,6 @@ export default defineNuxtConfig({
       redirect:
         "https://www.brightnetwork.co.uk/signup/?utm_medium=university&utm_source=society&utm_campaign=referral_challenge_2024&utm_content=the_computer_science_society_of_lancaster_university_lancaster_university",
     },
-  },
-
-  colorMode: {
-    preference: "system", // default value of $colorMode.preference
-    fallback: "dark", // fallback value if not system preference found
-    storageKey: "nuxt-color-mode",
-    classSuffix: "",
   },
 
   compatibilityDate: "2024-11-17",

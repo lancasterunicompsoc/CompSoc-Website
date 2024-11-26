@@ -1690,18 +1690,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxtjs/color-mode@npm:^3.5.1":
-  version: 3.5.2
-  resolution: "@nuxtjs/color-mode@npm:3.5.2"
-  dependencies:
-    "@nuxt/kit": "npm:^3.13.2"
-    pathe: "npm:^1.1.2"
-    pkg-types: "npm:^1.2.1"
-    semver: "npm:^7.6.3"
-  checksum: 10c0/81b19c3ab82b9eeb8909666ba9c0ce714a51e481515269e71efe000e915b07ab228c989b045b889a925a63b5ad696a53f13ac9f676a76c58df85177fa1321aca
-  languageName: node
-  linkType: hard
-
 "@nuxtjs/eslint-config-typescript@npm:^12.1.0":
   version: 12.1.0
   resolution: "@nuxtjs/eslint-config-typescript@npm:12.1.0"
@@ -2459,22 +2447,6 @@ __metadata:
   version: 3.1.2
   resolution: "@socket.io/component-emitter@npm:3.1.2"
   checksum: 10c0/c4242bad66f67e6f7b712733d25b43cbb9e19a595c8701c3ad99cbeb5901555f78b095e24852f862fffb43e96f1d8552e62def885ca82ae1bb05da3668fd87d7
-  languageName: node
-  linkType: hard
-
-"@trpc/client@npm:^10.45.2":
-  version: 10.45.2
-  resolution: "@trpc/client@npm:10.45.2"
-  peerDependencies:
-    "@trpc/server": 10.45.2
-  checksum: 10c0/15c277a35f15108346902507c7f04fdcdf008d7fd8232f28806518af555ce72273a06d024b727494684c9d8752949b3e334437f321a7f3228be6411511b553f0
-  languageName: node
-  linkType: hard
-
-"@trpc/server@npm:^10.45.2":
-  version: 10.45.2
-  resolution: "@trpc/server@npm:10.45.2"
-  checksum: 10c0/c6bff389f7c4e273101834d55c917c2fe271189ee17985b79e4a925920afc39d45da3f247611cd7f8aeca3a461739118c621679bd183e9ad8765676e85c95712
   languageName: node
   linkType: hard
 
@@ -6953,7 +6925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"h3@npm:^1.10.0, h3@npm:^1.11.1, h3@npm:^1.12.0, h3@npm:^1.13.0":
+"h3@npm:^1.10.0, h3@npm:^1.12.0, h3@npm:^1.13.0":
   version: 1.13.0
   resolution: "h3@npm:1.13.0"
   dependencies:
@@ -11717,15 +11689,12 @@ __metadata:
     "@nuxt/devtools": "npm:^1.5.1"
     "@nuxt/icon": "npm:^1.5.2"
     "@nuxt/image": "npm:^1.8.1"
-    "@nuxtjs/color-mode": "npm:^3.5.1"
     "@nuxtjs/eslint-config-typescript": "npm:^12.1.0"
     "@nuxtjs/tailwindcss": "npm:^6.12.1"
     "@pinia-plugin-persistedstate/nuxt": "npm:^1.2.1"
     "@pinia/nuxt": "npm:^0.5.5"
     "@prisma/adapter-libsql": "npm:^5.20.0"
     "@prisma/client": "npm:^5.20.0"
-    "@trpc/client": "npm:^10.45.2"
-    "@trpc/server": "npm:^10.45.2"
     "@types/jsonwebtoken": "npm:^9.0.7"
     "@types/node": "npm:^18.19.54"
     "@unocss/nuxt": "npm:^0.63.1"
@@ -11747,7 +11716,6 @@ __metadata:
     prettier: "npm:^3.3.3"
     prisma: "npm:^5.20.0"
     superjson: "npm:^2.2.1"
-    trpc-nuxt: "npm:^0.10.22"
     typescript: "npm:^5.6.2"
     vue-tsc: "npm:^2.1.6"
     xp.css: "npm:^0.2.6"
@@ -12820,20 +12788,6 @@ __metadata:
   version: 2.2.0
   resolution: "trough@npm:2.2.0"
   checksum: 10c0/58b671fc970e7867a48514168894396dd94e6d9d6456aca427cc299c004fe67f35ed7172a36449086b2edde10e78a71a284ec0076809add6834fb8f857ccb9b0
-  languageName: node
-  linkType: hard
-
-"trpc-nuxt@npm:^0.10.22":
-  version: 0.10.22
-  resolution: "trpc-nuxt@npm:0.10.22"
-  dependencies:
-    h3: "npm:^1.11.1"
-    ohash: "npm:^1.1.3"
-  peerDependencies:
-    "@trpc/client": ^10.38.1 <11
-    "@trpc/server": ^10.38.1 <11
-    ofetch: ^1.3.3
-  checksum: 10c0/351abbfa94040e1491fd6378c0430a110c40f02ffdcfa3e3fab53297d983f2677a018bd228f37ec43595cd039f0af85e976c9db232238c04b896091528676902
   languageName: node
   linkType: hard
 

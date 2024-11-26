@@ -40,12 +40,9 @@
   "dependencies": {
     "@libsql/client": "^0.14.0",
     "@nuxt/content": "^2.13.2",
-    "@nuxtjs/color-mode": "^3.5.1",
     "@pinia/nuxt": "^0.5.5",
     "@prisma/adapter-libsql": "^5.20.0",
     "@prisma/client": "^5.20.0",
-    "@trpc/client": "^10.45.2",
-    "@trpc/server": "^10.45.2",
     "@vercel/blob": "^0.25.1",
     "feed": "^4.2.2",
     "h3-zod": "^0.5.3",
@@ -54,7 +51,6 @@
     "jsonwebtoken": "^9.0.2",
     "ofetch": "^1.4.0",
     "superjson": "^2.2.1",
-    "trpc-nuxt": "^0.10.22",
     "xp.css": "^0.2.6",
     "zod": "^3.23.8"
   },
