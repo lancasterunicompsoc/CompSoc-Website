@@ -10,7 +10,7 @@
       </NuxtLink>
     </div>
 
-    <nav role="navigation">
+    <nav role="navigation" ref="nav">
       <div id="menuToggle">
         <input type="checkbox" id="menuCheckbox" ref="navigationCheckbox" />
 
@@ -91,7 +91,14 @@ const closeMenu = () => {
   }
   navigationCheckbox.value.click();
 };
-// const isMobile = computed(() => width.value && width.value < 1024);
+
+const nav = ref<HTMLElement | null>();
+
+onClickOutside(nav, () => {
+  if (navigationCheckbox.value?.checked) {
+    navigationCheckbox.value.click();
+  }
+});
 </script>
 
 <style scoped>
