@@ -4,7 +4,6 @@ export default defineEventHandler(async event => {
   const {
     context: { prisma },
   } = event;
-  console.log("hit id route");
   const id = getRouterParam(event, "id");
   if (!id) {
     return {};

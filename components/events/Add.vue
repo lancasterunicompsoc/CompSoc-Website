@@ -53,7 +53,7 @@ function addEvent() {
 }
 </script>
 <template>
-  <div class="dark:bg-darkgrey bg-#e7e7e7">
+  <div class="bg-box p-8">
     <div class="flex flex-justify-between flex-items-center">
       <button class="close" @click="$router.go(-1)">
         <IconBack />
@@ -67,7 +67,7 @@ function addEvent() {
         <input
           id="name"
           v-model="formData.name"
-          class="bg-#ddd dark:bg-lightgrey"
+          class=""
           type="text"
           required
         />
@@ -96,7 +96,7 @@ function addEvent() {
         <textarea
           id="summary"
           v-model="formData.summary"
-          class="bg-#ddd dark:bg-lightgrey"
+          class="mt-2"
           type="datetime-local"
           required
         ></textarea>
@@ -106,7 +106,7 @@ function addEvent() {
         <textarea
           id="description"
           v-model="formData.description"
-          class="bg-#ddd dark:bg-lightgrey"
+          class="mt-2"
           type="datetime-local"
           required
         ></textarea>
@@ -196,10 +196,7 @@ function addEvent() {
           <label for="social">Social</label>
         </div>
       </div>
-      <button
-        class="submit bg-#ddd dark:bg-lightgrey float-right"
-        type="submit"
-      >
+      <button class="submit mt-4" type="submit">
         <template v-if="isEdit">Save Changes</template>
         <template v-else>Add Event</template>
       </button>
@@ -207,15 +204,6 @@ function addEvent() {
   </div>
 </template>
 <style scoped>
-input,
-textarea {
-  color: inherit;
-  background-color: inherit;
-  border: none;
-  outline: none;
-  resize: none;
-}
-
 textarea {
   height: 10ch;
   width: 100%;
@@ -250,5 +238,18 @@ div {
   font-weight: 600;
   margin: 0;
   padding: 0;
+}
+
+form {
+  input,
+  textarea {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.2em;
+    padding-left: 0.7em;
+  }
+  input:focus,
+  textarea:focus {
+    outline: #7a7a7a solid 1px;
+  }
 }
 </style>

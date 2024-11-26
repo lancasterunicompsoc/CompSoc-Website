@@ -60,16 +60,10 @@ const confirmAndRunWebhook = async () => {
       >
     </div>
     <div v-if="isAdmin">
-      <button
-        class="bg-#ddd dark:bg-lightgrey p-4"
-        @click="router.push('/events/add')"
-      >
+      <button class="bg-box p-4" @click="router.push('/events/add')">
         Add Event
       </button>
-      <button
-        class="bg-#ddd dark:bg-lightgrey p-4"
-        @click="confirmAndRunWebhook()"
-      >
+      <button class="bg-box p-4" @click="confirmAndRunWebhook()">
         Push Discord Notification
       </button>
     </div>
