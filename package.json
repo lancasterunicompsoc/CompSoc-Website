@@ -11,7 +11,7 @@
     "lint:ci": "prettier --check . && eslint .",
     "lint:fix": "prettier --write --list-different . && eslint --max-warnings 0 --fix .",
     "typecheck": "nuxt typecheck",
-    "start": "NODE_ENV=production node .output/server/index.mjs"
+    "start": "NODE_ENV=production env $(grep -v '^#' .env | xargs) node .output/server/index.mjs"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.1",

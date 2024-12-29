@@ -131,4 +131,9 @@ ul {
 .card:nth-child(2n) > :is(h1, h2, h3, h4, h5, h6) {
   text-align: unset;
 }
+
+select option {
+  background-color: #222;
+  color: #ddd;
+}
 </style>
