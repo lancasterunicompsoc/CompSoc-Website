@@ -49,6 +49,9 @@
             href="https://photos.compsoc.io/"
             >Photos</a
           >
+          <a class="hover:bg-[rgba(91,0,0,0.24)]" href="mailto:info@compsoc.io"
+            >Contact</a
+          >
 
           <template v-if="authStore.isAdmin">
             <NuxtLink
