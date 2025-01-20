@@ -53,7 +53,7 @@ function addEvent() {
 }
 </script>
 <template>
-  <div class="dark:bg-darkgrey bg-#e7e7e7">
+  <div class="dark:bg-darkgrey">
     <div class="flex flex-justify-between flex-items-center">
       <button class="close" @click="$router.go(-1)">
         <IconBack />
