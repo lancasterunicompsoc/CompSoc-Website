@@ -62,14 +62,14 @@ const onSubmit = async (event: Event) => {
         type="text"
         v-model="name"
         id="nameinput"
-        class="dark:text-black"
+        class="text-black pl-2"
       />
       <label for="speakerinput">Name of the speaker</label>
       <input
         type="text"
         v-model="speaker"
         id="speakerinput"
-        class="dark:text-black"
+        class="text-black pl-2"
       />
       <label for="slideupload"> Slides file </label>
       <input type="file" name="file" @change="fileChanged" id="slideupload" />
