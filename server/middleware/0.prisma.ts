@@ -16,7 +16,7 @@ declare module "h3" {
 
 export default eventHandler(event => {
   // use local sqlite for development
-  if (import.meta.dev) {
+  if (import.meta.dev || config.turso_database_url === "") {
     if (!prisma) {
       prisma = new PrismaClient();
     }
