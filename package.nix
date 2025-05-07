@@ -1,6 +1,7 @@
 {
   fixup-yarn-lock,
   lib,
+  makeWrapper,
   nix-gitignore,
   nodejs_22,
   node-gyp,
@@ -43,6 +44,7 @@ stdenv.mkDerivation (finalAttrs: {
     yarn-berry.yarnBerryConfigHook
     yarn-berry
     node-gyp
+    makeWrapper
     pkg-config
     prisma
     python3
@@ -56,14 +58,22 @@ stdenv.mkDerivation (finalAttrs: {
   env = {
     PRISMA_QUERY_ENGINE_LIBRARY = "${prisma-engines}/lib/libquery_engine.node";
     PRISMA_SCHEMA_ENGINE_BINARY = lib.getExe' prisma-engines "schema-engine";
+    NUXT_TELEMETRY_DISABLED = 1;
   };
 
   buildPhase = ''
-    export NUXT_TELEMETRY_DISABLED=1
-    yarn build --offline --development
+    runHook preBuild
+    yarn build --offline
+    runHook postBuild
   '';
 
   installPhase = ''
+    runHook preInstall
     mv .output $out
+    mkdir -p $out/bin
+    makeWrapper ${lib.getExe nodejs_22} $out/bin/server --append-flags \
+      $out/server/index.mjs --set PRISMA_QUERY_ENGINE_LIBRARY \
+      "$PRISMA_QUERY_ENGINE_LIBRARY"
+    runHook postInstall
   '';
 })
